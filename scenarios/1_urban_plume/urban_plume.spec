@@ -1,5 +1,5 @@
 run_type particle               # particle-resolved run
-output_prefix out/urban_plume_ch   # prefix of output files
+output_prefix out/urban_plume   # prefix of output files
 n_repeat 1                      # number of Monte Carlo repeats
 n_part 1000                     # total number of particles
 restart no                      # whether to restart from saved state (yes/no)
@@ -19,7 +19,7 @@ aerosol_init aero_init_dist.dat # aerosol initial condition file
 temp_profile temp.dat           # temperature profile file
 pressure_profile pres.dat       # pressure profile file
 height_profile height.dat       # height profile file
-gas_emissions gas_emit_lownox.dat      # gas emissions file
+gas_emissions gas_emit.dat      # gas emissions file
 gas_background gas_back.dat     # background gas concentrations file
 aero_emissions aero_emit.dat    # aerosol emissions file
 aero_background aero_back.dat   # aerosol background file

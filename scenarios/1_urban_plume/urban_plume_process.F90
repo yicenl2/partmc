@@ -285,7 +285,7 @@ program process
         call stats_1d_add(stats_gamma_surf_pr, gamma_surf_pr)
 
         mass_dist_pr = bin_grid_histogram_1d(diam_grid, dry_diameters, &
-             wet_masses * num_concs)
+             dry_masses * num_concs)
         call stats_1d_add(stats_mass_dist_pr, mass_dist_pr)
 
         call stats_1d_add_entry(stats_n2o5_uptake_pr, aero_state_n2o5_uptake, i_index)
@@ -366,7 +366,7 @@ program process
         call stats_1d_add(stats_gamma_surf_comp, gamma_surf_comp)
 
         mass_dist_comp = bin_grid_histogram_1d(diam_grid, dry_diameters, &
-             wet_masses_avg * num_concs)
+             dry_masses_avg * num_concs)
         call stats_1d_add(stats_mass_dist_comp, mass_dist_comp)
 
         call stats_1d_add_entry(stats_n2o5_uptake_comp, aero_state_n2o5_uptake, i_index)
