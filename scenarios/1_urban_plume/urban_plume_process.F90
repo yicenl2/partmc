@@ -22,7 +22,8 @@ program process
   type(aero_state_t) :: aero_state, aero_state_averaged
   type(env_state_t) :: env_state
   integer :: ncid, index, repeat, i_index, i_repeat, n_index, n_repeat, i_part
-  real(kind=dp) :: time, del_t, tot_num_conc, tot_num_conc_avg, npart, nwet, &
+  real(kind=dp) :: time, del_t, tot_num_conc, tot_num_conc_avg, &
+                   npart, nwet, npart_avg, nwet_avg, &
                    tot_wetmass_conc, tot_drymass_conc, &
                    tot_wetmass_conc_avg, tot_drymass_conc_avg, &
                    bulk_bc_masses, bulk_bc_masses_avg, & 
@@ -39,7 +40,9 @@ program process
                    bulk_soa_masses, bulk_soa_masses_avg, &
                    tot_surf_area_avg, tot_surf_area_pr
   real(kind=dp) :: d_alpha_comp, d_alpha_pr, d_gamma_comp, d_gamma_pr, &
-                   chi_comp, chi_pr, chi_n2o5_comp, chi_n2o5_pr
+                   chi_comp, chi_pr, chi_h2o_comp, chi_h2o_pr, &
+                   chi_no3_comp, chi_no3_pr, chi_so4_comp, chi_so4_pr, &
+                   chi_org_comp, chi_org_pr, chi_dust_comp, chi_dust_pr
   real(kind=dp) :: aero_state_n2o5_uptake, gamma_pop
   real(kind=dp), allocatable :: gamma_part(:), gamma_core(:), gamma_coat(:)
   integer       :: n2o5_type
@@ -58,9 +61,11 @@ program process
        soa_masses(:), soa_masses_avg(:), &
        wi_pr(:), wi_avg(:), &
        crit_rhs(:), scs(:), &
+       crit_rhs_avg(:), scs_avg(:), &
        num_dist(:), num_dist_avg(:), &
        mass_so4_dist(:), mass_so4_dist_avg(:), mass_no3_dist(:), mass_no3_dist_avg(:), &
-       diam_bc_dist_pr(:,:),diam_bc_dist_avg(:,:), diam_sc_dist(:,:), &
+       diam_bc_dist_pr(:,:),diam_bc_dist_avg(:,:), &
+       diam_sc_dist_pr(:,:), diam_sc_dist_avg(:,:), &
        gamma_surf_pr(:), gamma_surf_avg(:), &
        surf_area_pr(:), surf_area_avg(:), &
        surf_area_dist_pr(:), surf_area_dist_avg(:), &
@@ -78,9 +83,14 @@ program process
        stats_d_alpha_comp, stats_d_alpha_pr, & 
        stats_tot_num_conc, stats_tot_num_conc_avg, &
        stats_d_gamma_comp, stats_d_gamma_pr, & 
-       stats_chi_pr, stats_chi_n2o5_pr, &
-       stats_chi_comp, stats_chi_n2o5_comp, &
+       stats_chi_pr, stats_chi_h2o_pr, &
+       stats_chi_no3_pr, stats_chi_so4_pr, &
+       stats_chi_org_pr, stats_chi_dust_pr, &
+       stats_chi_comp, stats_chi_h2o_comp, &
+       stats_chi_no3_comp, stats_chi_so4_comp, &
+       stats_chi_org_comp, stats_chi_dust_comp, &
        stats_npart, stats_nwet, &
+       stats_npart_avg, stats_nwet_avg, &
        stats_mass_so4_dist, stats_mass_so4_dist_avg, & 
        stats_mass_no3_dist, stats_mass_no3_dist_avg, &
        stats_h2o_masses, stats_h2o_masses_new, stats_h2o_masses_avg, &
@@ -104,7 +114,8 @@ program process
        stats_bulk_co3_masses, stats_bulk_co3_masses_avg, &
        stats_bulk_soa_masses, stats_bulk_soa_masses_avg, &
        stats_tot_surf_area_avg, stats_tot_surf_area_pr
-  type(stats_2d_t) :: stats_diam_bc_dist_pr, stats_diam_bc_dist_avg, stats_diam_sc_dist, &
+  type(stats_2d_t) :: stats_diam_bc_dist_pr, stats_diam_bc_dist_avg, &
+       stats_diam_sc_dist_pr, stats_diam_sc_dist_avg, &
        stats_diam_gamma_dist_avg, stats_diam_gamma_dist_pr, &
        stats_diam_h2o_dist_avg, stats_diam_h2o_dist_pr, &
        stats_diam_no3_dist_pr, stats_diam_no3_dist_avg, stats_diam_so4_dist_pr, &
@@ -115,7 +126,7 @@ program process
        stats_diam_ca_dist_avg, stats_diam_co3_dist_pr, &
        stats_diam_co3_dist_avg, stats_diam_wi_dist_pr, &
        stats_diam_wi_dist_avg, stats_diam_soa_dist_pr, stats_diam_soa_dist_avg
-  logical, allocatable :: has_gamma(:)
+  logical, allocatable :: has_gamma_comp(:), has_gamma(:)
 
   call pmc_mpi_init()
 
@@ -151,7 +162,7 @@ program process
         aero_state_averaged = aero_state
         call aero_state_bin_average_comp(aero_state_averaged, avg_bin_grid, &
             aero_data)
-
+        !write(*,*) 'test 157'
         !!!!**************************************!!!!
         !!!!!!!!!!n2o5_type = N2O5_HYDR_COMP!!!!!!!!!!!
         !!!!**************************************!!!!
@@ -159,14 +170,14 @@ program process
         call aero_n2o5_uptake(aero_state_averaged, aero_data, &
         env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, gamma_pop)
 
-        has_gamma = gamma_part > 0.0
+        has_gamma_comp = gamma_part > 0.0
 
         dry_diameters_avg = aero_state_dry_diameters(aero_state_averaged, aero_data)
         wet_diameters_avg = aero_state_diameters(aero_state_averaged, aero_data)
         num_concs_avg = aero_state_num_concs(aero_state_averaged, aero_data)
         num_dist_avg = bin_grid_histogram_1d(diam_grid, wet_diameters_avg, num_concs_avg)
         call stats_1d_add(stats_num_dist_avg, num_dist_avg)
-
+        
         tot_num_conc_avg = sum(num_concs_avg)
         call stats_1d_add_entry(stats_tot_num_conc_avg, tot_num_conc_avg, i_index)
 
@@ -237,22 +248,48 @@ program process
 
         call stats_1d_add(stats_mass_so4_dist_avg, mass_so4_dist_avg)
         call stats_1d_add(stats_mass_no3_dist_avg, mass_no3_dist_avg)
+        
+        !write(*,*) 'test 244'
+        crit_rhs_avg = aero_state_crit_rel_humids(aero_state_averaged, aero_data, &
+             env_state)
+        scs_avg = crit_rhs_avg - 1d0
+        diam_sc_dist_avg = bin_grid_histogram_2d(diam_grid, wet_diameters_avg, &
+             sc_grid, scs_avg, num_concs_avg)
+        call stats_2d_add(stats_diam_sc_dist_avg, diam_sc_dist_avg)
 
         call aero_state_mixing_state_metrics(aero_state_averaged, aero_data, &
              d_alpha_comp, d_gamma_comp, chi_comp, exclude=(/"H2O"/))
 
         call aero_state_mixing_state_metrics(aero_state_averaged, aero_data, &
-             d_alpha_comp, d_gamma_comp, chi_n2o5_comp, group=(/"H2O"/))
+             d_alpha_comp, d_gamma_comp, chi_h2o_comp, group=(/"H2O"/))
+
+        call aero_state_mixing_state_metrics(aero_state_averaged, aero_data, &
+             d_alpha_comp, d_gamma_comp, chi_no3_comp, group=(/"NO3"/))
+
+        call aero_state_mixing_state_metrics(aero_state_averaged, aero_data, &
+             d_alpha_comp, d_gamma_comp, chi_so4_comp, group=(/"SO4"/))
+
+        call aero_state_mixing_state_metrics(aero_state_averaged, aero_data, &
+             d_alpha_comp, d_gamma_comp, chi_org_comp, group=(/"OC  ","ARO1", &
+             "ARO2","ALK1","OLE1","API1","API2","LIM1","LIM2"/))
+
+        call aero_state_mixing_state_metrics(aero_state_averaged, aero_data, &
+             d_alpha_comp, d_gamma_comp, chi_dust_comp, group=(/"OIN"/))
 
         call stats_1d_add_entry(stats_d_alpha_comp, d_alpha_comp, i_index)
         call stats_1d_add_entry(stats_d_gamma_comp, d_gamma_comp, i_index)
         call stats_1d_add_entry(stats_chi_comp, chi_comp, i_index)
-        call stats_1d_add_entry(stats_chi_n2o5_comp, chi_n2o5_comp, i_index)
+        call stats_1d_add_entry(stats_chi_h2o_comp, chi_h2o_comp, i_index)
+        call stats_1d_add_entry(stats_chi_no3_comp, chi_no3_comp, i_index)
+        call stats_1d_add_entry(stats_chi_so4_comp, chi_so4_comp, i_index)
+        call stats_1d_add_entry(stats_chi_org_comp, chi_org_comp, i_index)
+        call stats_1d_add_entry(stats_chi_dust_comp, chi_dust_comp, i_index)
 
+        !write(*,*) 'test 263'
         !==========1D histogram==========
         surf_area_avg = aero_state_surf_area_concs(aero_state_averaged, aero_data)
 
-        tot_surf_area_avg = sum(pack(surf_area_avg, has_gamma))
+        tot_surf_area_avg = sum(pack(surf_area_avg, has_gamma_comp))
         call stats_1d_add_entry(stats_tot_surf_area_avg, tot_surf_area_avg, i_index)
 
         surf_area_dist_avg  = bin_grid_histogram_1d(diam_grid, wet_diameters_avg, &
@@ -328,7 +365,23 @@ program process
         diam_wi_dist_avg = bin_grid_histogram_2d(diam_grid, wet_diameters_avg, &
              bc_grid, wi_avg, num_concs_avg)
         call stats_2d_add(stats_diam_wi_dist_avg, diam_wi_dist_avg)
+
+        npart_avg = aero_state_n_part(aero_state_averaged)
+        !!!!**************************************!!!!
+        !!!!!!!!!!Remove dry particles!!!!!!!!!!!
+        !!!!**************************************!!!!
+        do i_part = aero_state_n_part(aero_state),1,-1
+           if (h2o_masses_avg(i_part) == 0.0d0) then
+             call aero_state_remove_particle_no_info(aero_state, &
+                  i_part)
+           end if
+        end do
+
+        nwet_avg = aero_state_n_part(aero_state_averaged)
+        call stats_1d_add_entry(stats_npart_avg, npart_avg, i_index)
+        call stats_1d_add_entry(stats_nwet_avg, nwet_avg, i_index)
  
+        !write(*,*) 'test 344'
         !!!!**************************************!!!!
         !!!!!!!!!!n2o5_type = N2O5_HYDR_PR!!!!!!!!!!!
         !!!!**************************************!!!!
@@ -420,27 +473,44 @@ program process
         call stats_1d_add(stats_mass_so4_dist, mass_so4_dist)
         call stats_1d_add(stats_mass_no3_dist, mass_no3_dist)
 
+        !write(*,*) 'test 436'
         crit_rhs = aero_state_crit_rel_humids(aero_state, aero_data, &
              env_state)
         scs = crit_rhs - 1d0
-        diam_sc_dist = bin_grid_histogram_2d(diam_grid, wet_diameters_avg, &
-             sc_grid, scs, num_concs_avg)
-        call stats_2d_add(stats_diam_sc_dist, diam_sc_dist)
+        diam_sc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             sc_grid, scs, num_concs)
+        call stats_2d_add(stats_diam_sc_dist_pr, diam_sc_dist_pr)
 
         call aero_state_mixing_state_metrics(aero_state, aero_data, &
              d_alpha_pr, d_gamma_pr, chi_pr, exclude=(/"H2O"/))
 
         call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha_pr, d_gamma_pr, chi_n2o5_pr, group=(/"H2O"/))
+             d_alpha_pr, d_gamma_pr, chi_h2o_pr, group=(/"H2O"/))
 
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_no3_pr, group=(/"NO3"/))
+        
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_so4_pr, group=(/"SO4"/))
+        
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_org_pr, group=(/"OC  ","ARO1", &
+             "ARO2","ALK1","OLE1","API1","API2","LIM1","LIM2"/))
+        
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_dust_pr, group=(/"OIN"/))
+        
         call stats_1d_add_entry(stats_d_alpha_pr, d_alpha_pr, i_index)
         call stats_1d_add_entry(stats_d_gamma_pr, d_gamma_pr, i_index)
         call stats_1d_add_entry(stats_chi_pr, chi_pr, i_index)
-        call stats_1d_add_entry(stats_chi_n2o5_pr, chi_n2o5_pr, i_index)
+        call stats_1d_add_entry(stats_chi_h2o_pr, chi_h2o_pr, i_index)
+        call stats_1d_add_entry(stats_chi_no3_pr, chi_no3_pr, i_index)
+        call stats_1d_add_entry(stats_chi_so4_pr, chi_so4_pr, i_index)
+        call stats_1d_add_entry(stats_chi_org_pr, chi_org_pr, i_index)
+        call stats_1d_add_entry(stats_chi_dust_pr, chi_dust_pr, i_index)
 
+        !write(*,*) 'test 455'
         !==========1D histogram========== 
-        !write(*,*) "test 225"
-        
         surf_area_pr = aero_state_surf_area_concs(aero_state, aero_data)
 
         tot_surf_area_pr = sum(pack(surf_area_pr,has_gamma))
@@ -465,7 +535,6 @@ program process
 
         call stats_1d_add_entry(stats_gamma_pop_pr, gamma_pop, i_index)
 
-        !write(*,*) "test 298"
         !==========2D histogram========== 
         diam_gamma_dist_pr = bin_grid_histogram_2d(diam_grid, &
              pack(wet_diameters,has_gamma), &
@@ -473,7 +542,7 @@ program process
         call stats_2d_add(stats_diam_gamma_dist_pr, diam_gamma_dist_pr)
 
         diam_h2o_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, h2o_masses/wet_masses, num_concs)
+             bc_grid, h2o_masses_new/wet_masses, num_concs)
         call stats_2d_add(stats_diam_h2o_dist_pr, diam_h2o_dist_pr)
 
         diam_bc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
@@ -702,9 +771,13 @@ program process
           dim_name_1="diam", dim_name_2="soa_frac", unit="m^{-3}")
      call stats_2d_clear(stats_diam_soa_dist_avg)
 
-     call stats_2d_output_netcdf(stats_diam_sc_dist, ncid, "diam_sc_dist", &
+     call stats_2d_output_netcdf(stats_diam_sc_dist_avg, ncid, "diam_sc_dist_avg", &
           dim_name_1="diam", dim_name_2="sc", unit="m^{-3}")
-     call stats_2d_clear(stats_diam_sc_dist)
+     call stats_2d_clear(stats_diam_sc_dist_avg)
+
+     call stats_2d_output_netcdf(stats_diam_sc_dist_pr, ncid, "diam_sc_dist_pr", &
+          dim_name_1="diam", dim_name_2="sc", unit="m^{-3}")
+     call stats_2d_clear(stats_diam_sc_dist_pr)
 
      call stats_2d_output_netcdf(stats_diam_h2o_dist_avg, ncid, &
           "diam_h2o_dist_avg", dim_name_1="diam", dim_name_2="fracs", unit="m^{-3}")
@@ -786,9 +859,25 @@ program process
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_chi_pr, ncid, "chi_pr", &
        dim_name="time", unit="1")
-  call stats_1d_output_netcdf(stats_chi_n2o5_comp, ncid, "chi_n2o5_comp", &
+  call stats_1d_output_netcdf(stats_chi_h2o_comp, ncid, "chi_h2o_comp", &
        dim_name="time", unit="1")
-  call stats_1d_output_netcdf(stats_chi_n2o5_pr, ncid, "chi_n2o5_pr", &
+  call stats_1d_output_netcdf(stats_chi_h2o_pr, ncid, "chi_h2o_pr", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_no3_comp, ncid, "chi_no3_comp", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_no3_pr, ncid, "chi_no3_pr", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_so4_comp, ncid, "chi_so4_comp", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_so4_pr, ncid, "chi_so4_pr", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_org_comp, ncid, "chi_org_comp", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_org_pr, ncid, "chi_org_pr", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_dust_comp, ncid, "chi_dust_comp", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_dust_pr, ncid, "chi_dust_pr", &
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_n2o5_uptake_pr, ncid, "n2o5_uptake_pr", &
        dim_name="time", unit="1")
@@ -800,7 +889,11 @@ program process
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_npart, ncid, "npart", &
        dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_npart_avg, ncid, "npart_avg", &
+       dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_nwet, ncid, "nwet", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_nwet_avg, ncid, "nwet_avg", &
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_tot_surf_area_avg, ncid, "tot_surf_area_avg", &
        dim_name="time", unit="m^{-3}")
