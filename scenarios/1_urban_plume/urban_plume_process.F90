@@ -26,6 +26,8 @@ program process
                    npart, nwet, npart_avg, nwet_avg, &
                    tot_wetmass_conc, tot_drymass_conc, &
                    tot_wetmass_conc_avg, tot_drymass_conc_avg, &
+                   coating_mean, coating_mean_avg, &
+                   coating_std, coating_std_avg, &
                    bulk_bc_masses, bulk_bc_masses_avg, & 
                    bulk_oc_masses, bulk_oc_masses_avg, &
                    bulk_so4_masses, bulk_so4_masses_avg, &
@@ -43,7 +45,7 @@ program process
                    chi_comp, chi_pr, chi_h2o_comp, chi_h2o_pr, &
                    chi_no3_comp, chi_no3_pr, chi_so4_comp, chi_so4_pr, &
                    chi_org_comp, chi_org_pr, chi_dust_comp, chi_dust_pr
-  real(kind=dp) :: aero_state_n2o5_uptake, gamma_pop
+  real(kind=dp) :: aero_state_n2o5_uptake, gamma_pop, gamma_pop_core
   real(kind=dp), allocatable :: gamma_part(:), gamma_core(:), gamma_coat(:)
   integer       :: n2o5_type
   character(len=PMC_UUID_LEN) :: uuid
@@ -63,6 +65,11 @@ program process
        crit_rhs(:), scs(:), &
        crit_rhs_avg(:), scs_avg(:), &
        num_dist(:), num_dist_avg(:), &
+       rad_core(:), rad_part(:), rad_core_avg(:), rad_part_avg(:), &
+       coating_thickness(:), coating_thickness_avg(:), &
+       coating_dist_pr(:,:), coating_dist_avg(:,:), &
+       gamma_coating_surf_pr(:), gamma_coating_surf_avg(:), &
+       coating_surf_pr(:), coating_surf_avg(:), &
        mass_so4_dist(:), mass_so4_dist_avg(:), mass_no3_dist(:), mass_no3_dist_avg(:), &
        diam_bc_dist_pr(:,:),diam_bc_dist_avg(:,:), &
        diam_sc_dist_pr(:,:), diam_sc_dist_avg(:,:), &
@@ -96,11 +103,14 @@ program process
        stats_h2o_masses, stats_h2o_masses_new, stats_h2o_masses_avg, &
        stats_n2o5_uptake_pr, stats_n2o5_uptake_comp, &
        stats_gamma_pop_pr, stats_gamma_pop_comp, &
+       stats_gamma_pop_core_pr, stats_gamma_pop_core_comp, &
        stats_surf_area_dist_pr, stats_surf_area_dist_avg, &
        stats_gamma_surf_pr, stats_gamma_surf_avg, &
        stats_mass_dist_pr, stats_mass_dist_avg, &
        stats_tot_drymass_conc, stats_tot_wetmass_conc, &
        stats_tot_drymass_conc_avg, stats_tot_wetmass_conc_avg, &
+       stats_coating_mean, stats_coating_mean_avg, &
+       stats_coating_std, stats_coating_std_avg, &
        stats_bulk_bc_masses, stats_bulk_bc_masses_avg, &
        stats_bulk_oc_masses, stats_bulk_oc_masses_avg, &
        stats_bulk_so4_masses, stats_bulk_so4_masses_avg, &
@@ -113,7 +123,9 @@ program process
        stats_bulk_ca_masses, stats_bulk_ca_masses_avg, &
        stats_bulk_co3_masses, stats_bulk_co3_masses_avg, &
        stats_bulk_soa_masses, stats_bulk_soa_masses_avg, &
-       stats_tot_surf_area_avg, stats_tot_surf_area_pr
+       stats_tot_surf_area_avg, stats_tot_surf_area_pr, &
+       stats_gamma_coating_surf_pr, stats_gamma_coating_surf_avg, &
+       stats_coating_surf_pr, stats_coating_surf_avg
   type(stats_2d_t) :: stats_diam_bc_dist_pr, stats_diam_bc_dist_avg, &
        stats_diam_sc_dist_pr, stats_diam_sc_dist_avg, &
        stats_diam_gamma_dist_avg, stats_diam_gamma_dist_pr, &
@@ -125,7 +137,9 @@ program process
        stats_diam_na_dist_pr, stats_diam_na_dist_avg, stats_diam_ca_dist_pr, &
        stats_diam_ca_dist_avg, stats_diam_co3_dist_pr, &
        stats_diam_co3_dist_avg, stats_diam_wi_dist_pr, &
-       stats_diam_wi_dist_avg, stats_diam_soa_dist_pr, stats_diam_soa_dist_avg
+       stats_diam_wi_dist_avg, stats_diam_soa_dist_pr, &
+       stats_coating_dist_pr, stats_coating_dist_avg, &
+       stats_diam_soa_dist_avg
   logical, allocatable :: has_gamma_comp(:), has_gamma(:)
 
   call pmc_mpi_init()
@@ -137,7 +151,7 @@ program process
   call bin_grid_make(bc_grid, BIN_GRID_TYPE_LINEAR, 50, 0d0, 1d0)
   call bin_grid_make(sc_grid, BIN_GRID_TYPE_LOG, 50, 1d-4, 1d0)
   call bin_grid_make(gamma_grid, BIN_GRID_TYPE_LOG, 50, 1d-3, 1d-1)
-  call bin_grid_make(coating_grid, BIN_GRID_TYPE_LOG, 50, 1d-9, 1d-5)
+  call bin_grid_make(coating_grid, BIN_GRID_TYPE_LOG, 50, 1d-10, 1d-5)
 
   allocate(times(n_index))
 
@@ -168,7 +182,8 @@ program process
         !!!!**************************************!!!!
         n2o5_type = N2O5_HYDR_COMP
         call aero_n2o5_uptake(aero_state_averaged, aero_data, &
-        env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, gamma_pop)
+        env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, &
+        gamma_pop, gamma_pop_core)
 
         has_gamma_comp = gamma_part > 0.0
 
@@ -307,6 +322,33 @@ program process
         call stats_1d_add_entry(stats_n2o5_uptake_comp, aero_state_n2o5_uptake, i_index)
         
         call stats_1d_add_entry(stats_gamma_pop_comp, gamma_pop, i_index)
+        call stats_1d_add_entry(stats_gamma_pop_core_comp, gamma_pop_core, i_index)
+
+        rad_part_avg = sphere_vol2rad(aero_state_volumes(aero_state_averaged, aero_data))
+        rad_core_avg = sphere_vol2rad(aero_state_volumes(aero_state_averaged, aero_data, &
+            include=(/"SO4", "NO3", "Cl ", "NH4", "CO3", "Na ", "Ca ", "OIN", &
+            "BC ", "H2O"/)))
+        coating_thickness_avg = rad_part_avg - rad_core_avg
+
+        coating_dist_avg = bin_grid_histogram_2d(diam_grid, wet_diameters_avg, &
+              coating_grid, coating_thickness_avg, num_concs_avg)
+        call stats_2d_add(stats_coating_dist_avg, coating_dist_avg)
+
+        coating_mean_avg = sum(coating_thickness_avg * num_concs_avg) &
+              /sum(num_concs_avg)
+        call stats_1d_add_entry(stats_coating_mean_avg, coating_mean_avg, i_index)
+
+        coating_std_avg = sqrt(sum((coating_thickness_avg-coating_mean_avg)**2 * num_concs_avg) &
+                          /(sum(num_concs_avg)-1))
+        call stats_1d_add_entry(stats_coating_std_avg, coating_std_avg, i_index)
+
+        gamma_coating_surf_avg = bin_grid_histogram_1d(coating_grid, coating_thickness_avg, &
+            gamma_part*surf_area_avg)
+        call stats_1d_add(stats_gamma_coating_surf_avg, gamma_coating_surf_avg)
+
+        coating_surf_avg = bin_grid_histogram_1d(coating_grid, coating_thickness_avg, &
+            surf_area_avg)
+        call stats_1d_add(stats_coating_surf_avg, coating_surf_avg)
 
         !==========2D histogram==========
         diam_gamma_dist_avg = bin_grid_histogram_2d(diam_grid, wet_diameters_avg, &
@@ -388,7 +430,8 @@ program process
         !write(*,*) "test 274"
         n2o5_type = N2O5_HYDR_PR
         call aero_n2o5_uptake(aero_state, aero_data, &
-        env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, gamma_pop)
+        env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, &
+        gamma_pop, gamma_pop_core)
 
         has_gamma = gamma_part > 0.0
 
@@ -534,6 +577,33 @@ program process
         call stats_1d_add_entry(stats_n2o5_uptake_pr, aero_state_n2o5_uptake, i_index)
 
         call stats_1d_add_entry(stats_gamma_pop_pr, gamma_pop, i_index)
+        call stats_1d_add_entry(stats_gamma_pop_core_pr, gamma_pop_core, i_index)
+
+        rad_part = sphere_vol2rad(aero_state_volumes(aero_state, aero_data))
+        rad_core = sphere_vol2rad(aero_state_volumes(aero_state, aero_data, &
+            include=(/"SO4", "NO3", "Cl ", "NH4", "CO3", "Na ", "Ca ", "OIN", &
+            "BC ", "H2O"/)))
+        coating_thickness = rad_part - rad_core
+
+        coating_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+              coating_grid, coating_thickness, num_concs)
+        call stats_2d_add(stats_coating_dist_pr, coating_dist_pr)
+
+        coating_mean = sum(coating_thickness * num_concs) &
+              /sum(num_concs)
+        call stats_1d_add_entry(stats_coating_mean, coating_mean, i_index)
+
+        coating_std_avg = sqrt(sum((coating_thickness-coating_mean)**2 * num_concs) &
+                          /(sum(num_concs)-1))
+        call stats_1d_add_entry(stats_coating_std, coating_std, i_index)
+
+        gamma_coating_surf_pr = bin_grid_histogram_1d(coating_grid, coating_thickness, &
+            gamma_part*surf_area_pr)
+        call stats_1d_add(stats_gamma_coating_surf_pr, gamma_coating_surf_pr)
+
+        coating_surf_pr = bin_grid_histogram_1d(coating_grid, coating_thickness, &
+            surf_area_pr)
+        call stats_1d_add(stats_coating_surf_pr, coating_surf_pr)
 
         !==========2D histogram========== 
         diam_gamma_dist_pr = bin_grid_histogram_2d(diam_grid, &
@@ -683,6 +753,30 @@ program process
           dim_name="diam", unit="m^{-3}")
      call stats_1d_clear(stats_mass_dist_avg)
 
+     call stats_2d_output_netcdf(stats_coating_dist_pr, ncid, "coating_dist_pr", &
+          dim_name_1 = "diam", dim_name_2="coating", unit="m^{-3}")
+     call stats_2d_clear(stats_coating_dist_pr)
+
+     call stats_2d_output_netcdf(stats_coating_dist_avg, ncid, "coating_dist_avg", &
+          dim_name_1 = "diam", dim_name_2="coating", unit="m^{-3}")
+     call stats_2d_clear(stats_coating_dist_avg)
+
+     call stats_1d_output_netcdf(stats_gamma_coating_surf_pr, ncid, "gamma_coating_surf_pr", &
+          dim_name="coating", unit="m^{-3}")
+     call stats_1d_clear(stats_gamma_coating_surf_pr)
+
+     call stats_1d_output_netcdf(stats_gamma_coating_surf_avg, ncid, "gamma_coating_surf_avg", &
+          dim_name="coating", unit="m^{-3}")
+     call stats_1d_clear(stats_gamma_coating_surf_avg)
+
+     call stats_1d_output_netcdf(stats_coating_surf_pr, ncid, "coating_surf_pr", &
+          dim_name="coating", unit="m^{-3}")
+     call stats_1d_clear(stats_coating_surf_pr)
+
+     call stats_1d_output_netcdf(stats_coating_surf_avg, ncid, "coating_surf_avg", &
+          dim_name="coating", unit="m^{-3}")
+     call stats_1d_clear(stats_coating_surf_avg)
+
      call stats_2d_output_netcdf(stats_diam_bc_dist_pr, ncid, "diam_bc_dist_pr", &
           dim_name_1="diam", dim_name_2="bc_frac", unit="m^{-3}")
      call stats_2d_clear(stats_diam_bc_dist_pr)
@@ -823,6 +917,14 @@ program process
        dim_name="time", unit="kg m^{-3}")
   call stats_1d_output_netcdf(stats_tot_drymass_conc_avg, ncid, "tot_drymass_conc_avg", &
        dim_name="time", unit="kg m^{-3}")
+  call stats_1d_output_netcdf(stats_coating_mean, ncid, "coating_mean", &
+       dim_name="time", unit="m")
+  call stats_1d_output_netcdf(stats_coating_mean_avg, ncid, "coating_mean_avg", &
+       dim_name="time", unit="m")
+  call stats_1d_output_netcdf(stats_coating_std, ncid, "coating_std", &
+       dim_name="time", unit="m")
+  call stats_1d_output_netcdf(stats_coating_std_avg, ncid, "coating_std_avg", &
+       dim_name="time", unit="m")
   call stats_1d_output_netcdf(stats_bulk_bc_masses, ncid, "bulk_bc_masses", &
        dim_name="time", unit="kg m^{-3}")
   call stats_1d_output_netcdf(stats_bulk_oc_masses, ncid, "bulk_oc_masses", &
@@ -886,6 +988,10 @@ program process
   call stats_1d_output_netcdf(stats_gamma_pop_pr, ncid,"gamma_pop_pr", &
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_gamma_pop_comp, ncid,"gamma_pop_comp", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_gamma_pop_core_pr, ncid,"gamma_pop_core_pr", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_gamma_pop_core_comp, ncid,"gamma_pop_core_comp", &
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_npart, ncid, "npart", &
        dim_name="time", unit="1")
