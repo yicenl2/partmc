@@ -59,6 +59,15 @@ module pmc_aero_state
   !> Type code for composition-averaged N2O5 hydrolysis function.
   integer, parameter :: N2O5_HYDR_COMP     = 3
 
+  !> Type code for an undefined or invalid N2O5 parameterization.
+  integer, parameter :: PARAM_INVALID  = 0
+  !> Type code for Riemer et al. (2009) parameterization.
+  integer, parameter :: PARAM_R09      = 1
+  !> Type code for Bertram and Thorton (2009) parameterization.
+  integer, parameter :: PARAM_BT09     = 2
+  !> Type code for Davis et al. (2008) parameterization.
+  integer, parameter :: PARAM_D08      = 3
+
   !> The current collection of aerosol particles.
   !!
   !! The particles in \c aero_state_t are stored in a single flat
@@ -2962,7 +2971,8 @@ contains
 
   !>
   subroutine aero_n2o5_uptake(aero_state, aero_data, &
-       env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, gamma_pop)
+       env_state, n2o5_type, gamma_param, gamma_part, &
+       aero_state_n2o5_uptake, gamma_pop)
 
     !> Aerosol state.
     type(aero_state_t), intent(in) :: aero_state
@@ -2970,20 +2980,16 @@ contains
     type(aero_data_t), intent(in) :: aero_data
     !> Environment state.
     type(env_state_t), intent(in) :: env_state
-    !> Which type of N2O5 hydrolysis treatment.
-    integer, intent(in) :: n2o5_type
+    integer, intent(in) :: gamma_param
 
     type(aero_state_t) :: aero_state_averaged, aero_state_hyd
     type(bin_grid_t) :: avg_bin_grid
 
     integer :: i_part
-    real(kind=dp) :: w_i
     real(kind=dp), allocatable :: volumes(:), volumes_core(:), so4_masses(:), &
-         no3_masses(:), surf_area_concs(:), h2o_masses(:)
+        no3_masses(:), cl_masses(:), nh4_masses(:), surf_area_concs(:), h2o_masses(:)
     real(kind=dp) :: rad_core, rad_part
     real(kind=dp) :: c_n2o5, gamma_n2o5, gamma_coat, gamma_core
-    real(kind=dp), parameter :: gamma_1 = 0.02d0
-    real(kind=dp), parameter :: gamma_2 = 0.002d0
     real(kind=dp), parameter :: f = 0.03d0
     real(kind=dp), parameter :: H_aq = 49.36d0
     real(kind=dp), parameter :: D_aq = 1d-9
@@ -3011,35 +3017,57 @@ contains
     volumes = aero_state_volumes(aero_state_hyd, aero_data)
     volumes_core = aero_state_volumes(aero_state_hyd, aero_data, include=(/"SO4", &
         "NO3", "Cl ", "NH4", "CO3", "Na ", "Ca ", "OIN", "BC ", "H2O"/))
+    cl_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"Cl"/))
+    nh4_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"NH4"/))
     so4_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"SO4"/))
     no3_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"NO3"/))
     h2o_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"H2O"/))
     c_n2o5 = sqrt((8.0d0 * const%univ_gas_const * env_state%temp) &
          / (const%pi * 108.0 * 1d-3))
-
+   
     gamma_n2o5 = 0d0
     if(allocated(gamma_part)) deallocate(gamma_part)
     allocate(gamma_part(aero_state_n_part(aero_state)))
     gamma_part = 0d0
+   
+    !write(*,*) 'gamma_param', gamma_param 
     do i_part = 1,aero_state_n_part(aero_state_hyd)
-       if ((so4_masses(i_part) + no3_masses(i_part)) > 0.0d0 &
-            .and. h2o_masses(i_part) > 0.0d0) then
-          w_i = so4_masses(i_part) / (so4_masses(i_part) + no3_masses(i_part))
-          gamma_core = w_i * gamma_1 + (1d0 - w_i) * gamma_2
-          rad_part = sphere_vol2rad(volumes(i_part))
-          rad_core = sphere_vol2rad(volumes_core(i_part))
-          gamma_coat = (4d0 * const%univ_gas_const * env_state%temp * H_aq &
-               * D_aq * f  * rad_core) / (c_n2o5 * (rad_part - rad_core) &
-               * rad_part)
-          gamma_part(i_part) = ((1d0 / gamma_core) + (1d0 / gamma_coat))**(-1d0)
-          gamma_n2o5 = gamma_n2o5 + surf_area_concs(i_part) * gamma_part(i_part)
-       end if
+        ! Riemer et al. (2009)
+        if (gamma_param == PARAM_R09) then
+            call n2o5_gamma_core_r09(so4_masses(i_part), &
+                 no3_masses(i_part), h2o_masses(i_part), gamma_core_r09)
+            gamma_core = gamma_core_r09
+            !write(*,*) 'gamma_core', gamma_core 
+        ! Bertram and Thorton (2009)
+        else if (gamma_param == PARAM_BT09) then
+            call n2o5_gamma_core_bt09(so4_masses(i_part), &
+                 no3_masses(i_part), h2o_masses(i_part), cl_masses(i_part), &
+                 gamma_core_bt09)
+            gamma_core = gamma_core_bt09
+        ! Davis et al. (2008)
+        else if (gamma_param == PARAM_D08) then 
+            call n2o5_gamma_core_d08(env_state%rel_humid, env_state%temp, &
+                 so4_masses(i_part), no3_masses(i_part), h2o_masses(i_part), &
+                 nh4_masses(i_part), gamma_core_d08)
+            gamma_core = gamma_core_d08
+        end if
+        if (gamma_core > 0.0d0) then 
+            rad_part = sphere_vol2rad(volumes(i_part))
+            rad_core = sphere_vol2rad(volumes_core(i_part))
+            gamma_coat = (4d0 * const%univ_gas_const * env_state%temp * H_aq &
+                * D_aq * f  * rad_core) / (c_n2o5 * (rad_part - rad_core) &
+                * rad_part)
+            gamma_part(i_part) = ((1d0 / gamma_core) + (1d0 / gamma_coat))**(-1d0)
+            gamma_n2o5 = gamma_n2o5 + surf_area_concs(i_part) * gamma_part(i_part)
+        end if
+        !write(*,*) 'gamma_part', gamma_part(i_part)
     end do
-
+   
     aero_state_n2o5_uptake = 0.25d0 * c_n2o5 * gamma_n2o5
     !is_gamma = gamma_part > 0
     !surf_area_concs_sub = pack(surf_area_concs, is_gamma)
     gamma_pop = gamma_n2o5/sum(pack(surf_area_concs,  gamma_part > 0))
+    !write(*,*) aero_state_n2o5_uptake, gamma_pop
 
   end subroutine aero_n2o5_uptake
 
@@ -3068,6 +3096,148 @@ contains
     end if
 
   end subroutine spec_file_read_n2o5_type
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  subroutine spec_file_read_gamma_param(file, gamma_param)
+
+    !> Spec file.
+    type(spec_file_t), intent(inout) :: file
+    !> Gamma_n2o5 parameterization method.
+    integer, intent(out) :: gamma_param
+
+    character(len=SPEC_LINE_MAX_VAR_LEN) :: gamma_param_name
+
+    call spec_file_read_string(file, 'gamma_param', gamma_param_name)
+
+    if (gamma_param_name == 'R09') then
+       gamma_param = PARAM_R09
+    else if (gamma_param_name == 'BT09') then
+       gamma_param = PARAM_BT09
+    else if (gamma_param_name == 'D08') then
+       gamma_param = PARAM_D08
+    else
+       call spec_file_die_msg(485748352, file, "unknown parameterization: " &
+            // trim(gamma_param_name))
+    end if
+
+  end subroutine spec_file_read_gamma_param
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  subroutine n2o5_gamma_core_r09(so4_masses, no3_masses, &
+        h2o_masses, gamma_core_r09)
+
+    !> Particle composition.
+    real(kind=dp), intent(in) :: so4_masses, no3_masses, h2o_masses
+    !> Computed gamma_n2o5 for inorganic core.
+    real, intent(out) :: gamma_core_r09
+
+    !> Local variables.
+    real(kind=dp) :: gamma_1, gamma_2
+    real(kind=dp) :: w_i
+
+    gamma_core_r09 = 0d0
+    if ((so4_masses + no3_masses) > 0.0d0 &
+            .and. h2o_masses > 0.0d0) then ! check if particles are wet
+        gamma_1 = 0.02d0
+        gamma_2 = 0.002d0
+        w_i = so4_masses / (so4_masses + no3_masses)
+        gamma_core_r09 = w_i * gamma_1 + (1d0 - w_i) * gamma_2
+    end if
+
+  end subroutine n2o5_gamma_core_r09
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  subroutine n2o5_gamma_core_bt09(so4_masses, no3_masses, &
+        h2o_masses, cl_masses, gamma_core_bt09)
+
+    !> Particle composition.
+    real(kind=dp), intent(in) :: so4_masses, no3_masses, h2o_masses, cl_masses
+    !> Computed gamma_n2o5 for inorganic core.
+    real, intent(out) :: gamma_core_bt09
+
+    !> Local variables.
+    real(kind=dp) :: k2f
+    real(kind=dp), parameter :: beta = 1.15d6
+    real(kind=dp), parameter :: delta = 1.3d-1
+    real(kind=dp), parameter :: A = 3.2d-8
+    real(kind=dp), parameter :: k3_k2b = 6.0d-2    
+    real(kind=dp), parameter :: k4_k2b = 29d0
+
+    gamma_core_bt09 = 0d0
+    if (h2o_masses / no3_masses > 0.0d0 &
+            .or. cl_masses / no3_masses > 0.0d0) then
+    k2f = beta - beta * exp(-delta * h2o_masses)
+    gamma_core_bt09 = A * k2f * (1 - 1 / (k3_k2b * &
+        h2o_masses / no3_masses) + 1 + (k4_k2b * &
+        cl_masses / no3_masses))
+    end if
+
+  end subroutine n2o5_gamma_core_bt09
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  subroutine n2o5_gamma_core_d08(rel_humid, temp, so4_masses, no3_masses, &
+        h2o_masses, nh4_masses, gamma_core_d08)
+
+    !> Environmental condition.
+    real(kind=dp), intent(in) :: rel_humid, temp
+    !> Particle composition.
+    real(kind=dp), intent(in) :: so4_masses, no3_masses, h2o_masses, nh4_masses
+    !> Computed gamma_n2o5 for inorganic core.
+    real, intent(out) :: gamma_core_d08
+
+    !> Local variables.
+    real(kind=dp) :: RH_t, T_t, T_td
+    real(kind=dp) :: lambda_1, lambda_2, lambda_3, lambda_d
+    real(kind=dp) :: gamma_1, gamma_2, gamma_3
+    real(kind=dp) :: x_1, x_2, x_3
+    real(kind=dp) :: no3_molec_weight = 62.0049d-3
+    real(kind=dp) :: so4_molec_weight = 96.06d-3
+    real(kind=dp) :: nh4_molec_weight = 18.04d-3
+    real(kind=dp), parameter :: beta_10 = -2.67270
+    real(kind=dp), parameter :: beta_20 = -0.97579
+    real(kind=dp), parameter :: beta_11 = 0.09553
+    real(kind=dp), parameter :: beta_12 = -0.20427
+    real(kind=dp), parameter :: beta_30 = -8.10774
+    real(kind=dp), parameter :: beta_31 = 0.04902
+    real(kind=dp), parameter :: beta_d0 = -6.13376
+    real(kind=dp), parameter :: beta_d1 = 0.03592
+    real(kind=dp), parameter :: beta_d2 = -0.19688
+
+    gamma_core_d08 = 0d0
+    if ((so4_masses + no3_masses) > 0.0d0 &
+            .and. h2o_masses > 0.0d0) then ! for wet particles
+        RH_t = min((rel_humid * 100.d0 - 46.d0), 0.0d0) ! threshold RH
+        T_t = max((temp - 291.d0), 0.0d0) ! threshold temp
+        lambda_1 = beta_10 + beta_11 * RH_t + beta_12 * T_t ! AB
+        gamma_1 = min((1/(1+exp(-lambda_1))), 0.08585)
+        lambda_2 = (beta_10 + beta_20) + beta_11 * RH_t ! AS
+        gamma_2 = min((1/(1+exp(-lambda_2))), 0.053)
+        lambda_3 = beta_30 + beta_31 * (rel_humid * 100.d0) !AN
+        gamma_3 = min((1/(1+exp(-lambda_3))), 0.0154)
+        x_3 = (no3_masses / no3_molec_weight) &
+            / ((no3_masses / no3_molec_weight) &
+            + (so4_masses / so4_molec_weight))
+        x_2 = max(0.0d0, min((1 - x_3), ((nh4_masses &
+            / nh4_molec_weight) / ((no3_masses &
+            /no3_molec_weight) + (so4_masses &
+            /so4_molec_weight)) - 1)))
+        x_1 = 1 - (x_2 + x_3)
+        gamma_core_d08 = x_1 * gamma_1 + x_2 * gamma_2 &
+            + x_3 * gamma_3
+    end if
+    if (so4_masses > 0.0d0 &
+            .and. h2o_masses == 0.0d0) then! for dry particles
+        T_td = max((temp - 293), 0.0d0) ! threshold temp for dry
+        lambda_d = beta_d0 + beta_d1 * (rel_humid * 100.d0) &
+            + beta_d2 * T_td
+        gamma_core_d08 = min((1/(1+exp(-lambda_d))), 0.0124)
+    end if
+
+  end subroutine n2o5_gamma_core_d08
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

@@ -70,6 +70,8 @@ module pmc_run_part
      logical :: do_n2o5_hydrolysis
      !> Type of n2o5 hydrolysis
      integer :: n2o5_type
+     !> Type of n2o5 parameterization
+     integer :: gamma_param
      !> Whether to compute optical properties.
      logical :: do_optical
      !> Whether to have explicitly selected weighting.
@@ -166,11 +168,12 @@ contains
 
     if (run_part_opt%do_mosaic) then
        call mosaic_init(env_state, aero_data, run_part_opt%del_t, &
-            run_part_opt%do_n2o5_hydrolysis, run_part_opt%n2o5_type, run_part_opt%do_optical)
+            run_part_opt%do_n2o5_hydrolysis, run_part_opt%n2o5_type, &
+            run_part_opt%do_optical)
        if (run_part_opt%do_optical) then
           call mosaic_aero_optical_init(env_state, aero_data, &
                aero_state, gas_data, gas_state, run_part_opt%do_n2o5_hydrolysis, &
-               run_part_opt%n2o5_type)
+               run_part_opt%n2o5_type, run_part_opt%gamma_param)
        end if
     end if
 
@@ -266,7 +269,7 @@ contains
        if (run_part_opt%do_mosaic) then
           call mosaic_timestep(env_state, aero_data, aero_state, gas_data, &
                gas_state, run_part_opt%do_n2o5_hydrolysis, run_part_opt%n2o5_type, &
-               run_part_opt%do_optical)
+               run_part_opt%gamma_param, run_part_opt%do_optical)
        end if
 
        if (run_part_opt%mix_timescale > 0d0) then

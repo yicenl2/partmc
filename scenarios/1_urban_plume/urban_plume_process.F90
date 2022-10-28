@@ -45,9 +45,9 @@ program process
                    chi_comp, chi_pr, chi_h2o_comp, chi_h2o_pr, &
                    chi_no3_comp, chi_no3_pr, chi_so4_comp, chi_so4_pr, &
                    chi_org_comp, chi_org_pr, chi_dust_comp, chi_dust_pr
-  real(kind=dp) :: aero_state_n2o5_uptake, gamma_pop, gamma_pop_core
+  real(kind=dp) :: aero_state_n2o5_uptake, gamma_pop
   real(kind=dp), allocatable :: gamma_part(:), gamma_core(:), gamma_coat(:)
-  integer       :: n2o5_type
+  integer       :: n2o5_type, gamma_param
   character(len=PMC_UUID_LEN) :: uuid
   real(kind=dp), allocatable :: times(:), dry_diameters(:), dry_diameters_avg(:), &
        num_concs(:), num_concs_avg(:), &
@@ -103,7 +103,6 @@ program process
        stats_h2o_masses, stats_h2o_masses_new, stats_h2o_masses_avg, &
        stats_n2o5_uptake_pr, stats_n2o5_uptake_comp, &
        stats_gamma_pop_pr, stats_gamma_pop_comp, &
-       stats_gamma_pop_core_pr, stats_gamma_pop_core_comp, &
        stats_surf_area_dist_pr, stats_surf_area_dist_avg, &
        stats_gamma_surf_pr, stats_gamma_surf_avg, &
        stats_mass_dist_pr, stats_mass_dist_avg, &
@@ -150,7 +149,7 @@ program process
   call bin_grid_make(avg_bin_grid, BIN_GRID_TYPE_LOG, 1, 1d-30, 1d10)
   call bin_grid_make(bc_grid, BIN_GRID_TYPE_LINEAR, 50, 0d0, 1d0)
   call bin_grid_make(sc_grid, BIN_GRID_TYPE_LOG, 50, 1d-4, 1d0)
-  call bin_grid_make(gamma_grid, BIN_GRID_TYPE_LOG, 50, 1d-3, 1d-1)
+  call bin_grid_make(gamma_grid, BIN_GRID_TYPE_LINEAR, 50, 1d-3, 1d-1)
   call bin_grid_make(coating_grid, BIN_GRID_TYPE_LOG, 50, 1d-10, 1d-5)
 
   allocate(times(n_index))
@@ -176,14 +175,287 @@ program process
         aero_state_averaged = aero_state
         call aero_state_bin_average_comp(aero_state_averaged, avg_bin_grid, &
             aero_data)
+
+        !!!!**************************************!!!!
+        !!!!!!!!!!n2o5_type = N2O5_HYDR_PR!!!!!!!!!!!
+        !!!!**************************************!!!!
+        !write(*,*) "test 274"
+        n2o5_type = N2O5_HYDR_PR
+        gamma_param = PARAM_R09
+        write(*,*) gamma_param
+        call aero_n2o5_uptake(aero_state, aero_data, &
+             env_state, n2o5_type, gamma_param, gamma_part, &
+             aero_state_n2o5_uptake, gamma_pop)
+
+        has_gamma = gamma_part > 0.0
+
+        dry_diameters = aero_state_dry_diameters(aero_state, aero_data)
+        wet_diameters = aero_state_diameters(aero_state, aero_data)
+        num_concs = aero_state_num_concs(aero_state, aero_data)
+        num_dist = bin_grid_histogram_1d(diam_grid, wet_diameters, num_concs)
+        call stats_1d_add(stats_num_dist, num_dist)
+
+        tot_num_conc = sum(num_concs)
+        call stats_1d_add_entry(stats_tot_num_conc, tot_num_conc, i_index)
+
+        wet_masses = aero_state_masses(aero_state, aero_data)
+        dry_masses = aero_state_masses(aero_state, aero_data, &
+             exclude=(/"H2O"/))
+        tot_wetmass_conc = sum(wet_masses * num_concs)
+        tot_drymass_conc = sum(dry_masses * num_concs)
+        call stats_1d_add_entry(stats_tot_wetmass_conc, tot_wetmass_conc, i_index)
+        call stats_1d_add_entry(stats_tot_drymass_conc, tot_drymass_conc, i_index)
+
+        !==========Masses of different species==========
+        bc_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"BC"/))
+        oc_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"OC"/))
+        so4_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"SO4"/))
+        no3_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"NO3"/))
+        nh4_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"NH4"/))
+        cl_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"Cl"/))
+        oin_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"OIN"/))
+        na_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"Na"/))
+        ca_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"Ca"/))
+        co3_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"CO3"/))
+        soa_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"ARO1", "ARO2", "ALK1", "OLE1", "API1", "API2", "LIM1", "LIM2"/))
+        h2o_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"H2O"/))
+
+        !==========Bulk masses==========
+        bulk_bc_masses = sum(bc_masses * num_concs)
+        bulk_oc_masses = sum(oc_masses * num_concs)
+        bulk_so4_masses = sum(so4_masses * num_concs)
+        bulk_no3_masses = sum(no3_masses * num_concs)
+        bulk_nh4_masses = sum(nh4_masses * num_concs)
+        bulk_cl_masses = sum(cl_masses * num_concs)
+        bulk_h2o_masses = sum(h2o_masses * num_concs)
+        bulk_oin_masses = sum(oin_masses * num_concs)
+        bulk_na_masses = sum(na_masses * num_concs)
+        bulk_ca_masses = sum(ca_masses * num_concs)
+        bulk_co3_masses = sum(co3_masses * num_concs)
+        bulk_soa_masses = sum(soa_masses * num_concs)
+
+        call stats_1d_add_entry(stats_bulk_bc_masses, bulk_bc_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_oc_masses, bulk_oc_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_so4_masses, bulk_so4_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_no3_masses, bulk_no3_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_nh4_masses, bulk_nh4_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_cl_masses, bulk_cl_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_h2o_masses, bulk_h2o_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_oin_masses, bulk_oin_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_na_masses, bulk_na_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_ca_masses, bulk_ca_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_co3_masses, bulk_co3_masses,i_index)
+        call stats_1d_add_entry(stats_bulk_soa_masses, bulk_soa_masses,i_index)
+
+        ! Make distribution for different species
+        mass_so4_dist = bin_grid_histogram_1d(diam_grid, &
+             pack(wet_diameters,has_gamma), &
+             pack(so4_masses * num_concs,has_gamma))
+        mass_no3_dist = bin_grid_histogram_1d(diam_grid, &
+             pack(wet_diameters,has_gamma), &
+             pack(no3_masses * num_concs,has_gamma))
+
+        call stats_1d_add(stats_mass_so4_dist, mass_so4_dist)
+        call stats_1d_add(stats_mass_no3_dist, mass_no3_dist)
+
+        !write(*,*) 'test 436'
+        crit_rhs = aero_state_crit_rel_humids(aero_state, aero_data, &
+             env_state)
+        scs = crit_rhs - 1d0
+        diam_sc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             sc_grid, scs, num_concs)
+        call stats_2d_add(stats_diam_sc_dist_pr, diam_sc_dist_pr)
+
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_pr, exclude=(/"H2O"/))
+
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_h2o_pr, group=(/"H2O"/))
+
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_no3_pr, group=(/"NO3"/))
+
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_so4_pr, group=(/"SO4"/))
+
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_org_pr, group=(/"OC  ","ARO1", &
+             "ARO2","ALK1","OLE1","API1","API2","LIM1","LIM2"/))
+
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha_pr, d_gamma_pr, chi_dust_pr, group=(/"OIN"/))
+
+        call stats_1d_add_entry(stats_d_alpha_pr, d_alpha_pr, i_index)
+        call stats_1d_add_entry(stats_d_gamma_pr, d_gamma_pr, i_index)
+        call stats_1d_add_entry(stats_chi_pr, chi_pr, i_index)
+        call stats_1d_add_entry(stats_chi_h2o_pr, chi_h2o_pr, i_index)
+        call stats_1d_add_entry(stats_chi_no3_pr, chi_no3_pr, i_index)
+        call stats_1d_add_entry(stats_chi_so4_pr, chi_so4_pr, i_index)
+        call stats_1d_add_entry(stats_chi_org_pr, chi_org_pr, i_index)
+        call stats_1d_add_entry(stats_chi_dust_pr, chi_dust_pr, i_index)
+
+        !write(*,*) 'test 455'
+        !==========1D histogram==========
+        surf_area_pr = aero_state_surf_area_concs(aero_state, aero_data)
+
+        tot_surf_area_pr = sum(pack(surf_area_pr,has_gamma))
+        call stats_1d_add_entry(stats_tot_surf_area_pr, tot_surf_area_pr, i_index)
+
+        surf_area_dist_pr = bin_grid_histogram_1d(diam_grid, &
+             pack(wet_diameters,has_gamma), &
+             pack(surf_area_pr,has_gamma))
+        call stats_1d_add(stats_surf_area_dist_pr,  surf_area_dist_pr)
+
+        gamma_surf_pr = bin_grid_histogram_1d(diam_grid, &
+              pack(wet_diameters,has_gamma), &
+              pack(gamma_part * surf_area_pr,has_gamma))
+        call stats_1d_add(stats_gamma_surf_pr, gamma_surf_pr)
+
+        mass_dist_pr = bin_grid_histogram_1d(diam_grid, &
+             pack(wet_diameters, has_gamma), &
+             pack(wet_masses * num_concs, has_gamma))
+        call stats_1d_add(stats_mass_dist_pr, mass_dist_pr)
+
+        call stats_1d_add_entry(stats_n2o5_uptake_pr, aero_state_n2o5_uptake, i_index)
+
+        call stats_1d_add_entry(stats_gamma_pop_pr, gamma_pop, i_index)
+
+        rad_part = sphere_vol2rad(aero_state_volumes(aero_state, aero_data))
+        rad_core = sphere_vol2rad(aero_state_volumes(aero_state, aero_data, &
+            include=(/"SO4", "NO3", "Cl ", "NH4", "CO3", "Na ", "Ca ", "OIN", &
+            "BC ", "H2O"/)))
+        coating_thickness = rad_part - rad_core
+
+        coating_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+              coating_grid, coating_thickness, num_concs)
+        call stats_2d_add(stats_coating_dist_pr, coating_dist_pr)
+
+        coating_mean = sum(coating_thickness * num_concs) &
+              /sum(num_concs)
+        call stats_1d_add_entry(stats_coating_mean, coating_mean, i_index)
+
+        coating_std = sqrt(sum((coating_thickness-coating_mean)**2 * num_concs) &
+                          /(sum(num_concs)-1))
+        call stats_1d_add_entry(stats_coating_std, coating_std, i_index)
+
+        gamma_coating_surf_pr = bin_grid_histogram_1d(coating_grid, &
+            coating_thickness, gamma_part*surf_area_pr)
+        call stats_1d_add(stats_gamma_coating_surf_pr, gamma_coating_surf_pr)
+
+        coating_surf_pr = bin_grid_histogram_1d(coating_grid, coating_thickness, &
+            surf_area_pr)
+        call stats_1d_add(stats_coating_surf_pr, coating_surf_pr)
+
+        !==========2D histogram==========
+        diam_gamma_dist_pr = bin_grid_histogram_2d(diam_grid, &
+             pack(wet_diameters,has_gamma), &
+             gamma_grid, pack(gamma_part,has_gamma), pack(num_concs,has_gamma))
+        call stats_2d_add(stats_diam_gamma_dist_pr, diam_gamma_dist_pr)
+
+        diam_h2o_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, h2o_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_h2o_dist_pr, diam_h2o_dist_pr)
+
+        diam_bc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, bc_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_bc_dist_pr, diam_bc_dist_pr)
+
+        diam_oc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, oc_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_oc_dist_pr, diam_oc_dist_pr)
+
+        diam_no3_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, no3_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_no3_dist_pr, diam_no3_dist_pr)
+
+        diam_so4_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, so4_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_so4_dist_pr, diam_so4_dist_pr)
+
+        diam_nh4_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, nh4_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_nh4_dist_pr, diam_nh4_dist_pr)
+
+        diam_cl_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, cl_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_cl_dist_pr, diam_cl_dist_pr)
+
+        diam_oin_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, oin_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_oin_dist_pr, diam_oin_dist_pr)
+
+        diam_ca_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, ca_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_ca_dist_pr, diam_ca_dist_pr)
+
+        diam_na_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, na_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_na_dist_pr, diam_na_dist_pr)
+
+        diam_co3_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, co3_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_co3_dist_pr, diam_co3_dist_pr)
+
+        diam_soa_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, soa_masses/wet_masses, num_concs)
+        call stats_2d_add(stats_diam_soa_dist_pr, diam_soa_dist_pr)
+
+        wi_pr = so4_masses/(so4_masses + no3_masses)
+        diam_wi_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
+             bc_grid, wi_pr, num_concs)
+        call stats_2d_add(stats_diam_wi_dist_pr, diam_wi_dist_pr)
+
+        npart = aero_state_n_part(aero_state)
+
+        !!!!**************************************!!!!
+        !!!!!!!!!!Remove dry particles!!!!!!!!!!!
+        !!!!**************************************!!!!
+        h2o_masses_new = aero_state_masses(aero_state, aero_data, &
+             include=(/"H2O"/))
+        do i_part = aero_state_n_part(aero_state),1,-1
+           if (h2o_masses_new(i_part) == 0.0d0) then
+             call aero_state_remove_particle_no_info(aero_state, &
+                  i_part)
+           end if
+        end do
+
+        nwet = aero_state_n_part(aero_state)
+        call stats_1d_add_entry(stats_npart, npart, i_index)
+        call stats_1d_add_entry(stats_nwet, nwet, i_index)
+
+        ! Output per-particle informationi
+        !if (i_index .eq. 39) then
+        !  open(i_index,status = 'unknown', position = 'append')
+        !     do i = 1,aero_state_n_part(aero_state)
+        !       write(i_index,*) time, surf_area_pr(i), &
+        !         (so4_masses(i)+no3_masses(i))*num_concs(i), &
+        !         gamma_part(i)
+        !     end do
+        !  close(i_index)
+        !end if
+
         !write(*,*) 'test 157'
         !!!!**************************************!!!!
         !!!!!!!!!!n2o5_type = N2O5_HYDR_COMP!!!!!!!!!!!
         !!!!**************************************!!!!
         n2o5_type = N2O5_HYDR_COMP
+        gamma_param = PARAM_R09
+        write(*,*) gamma_param
         call aero_n2o5_uptake(aero_state_averaged, aero_data, &
-        env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, &
-        gamma_pop, gamma_pop_core)
+             env_state, n2o5_type, gamma_param, gamma_part, &
+             aero_state_n2o5_uptake, gamma_pop)
 
         has_gamma_comp = gamma_part > 0.0
 
@@ -258,8 +530,10 @@ program process
         call stats_1d_add_entry(stats_bulk_h2o_masses_avg, bulk_h2o_masses_avg,i_index)
 
         ! Make distribution for different species
-        mass_so4_dist_avg = bin_grid_histogram_1d(diam_grid, wet_diameters_avg, so4_masses_avg * num_concs_avg)
-        mass_no3_dist_avg = bin_grid_histogram_1d(diam_grid, wet_diameters_avg, no3_masses_avg * num_concs_avg)
+        mass_so4_dist_avg = bin_grid_histogram_1d(diam_grid, wet_diameters_avg, &
+            so4_masses_avg * num_concs_avg)
+        mass_no3_dist_avg = bin_grid_histogram_1d(diam_grid, wet_diameters_avg, &
+            no3_masses_avg * num_concs_avg)
 
         call stats_1d_add(stats_mass_so4_dist_avg, mass_so4_dist_avg)
         call stats_1d_add(stats_mass_no3_dist_avg, mass_no3_dist_avg)
@@ -322,7 +596,6 @@ program process
         call stats_1d_add_entry(stats_n2o5_uptake_comp, aero_state_n2o5_uptake, i_index)
         
         call stats_1d_add_entry(stats_gamma_pop_comp, gamma_pop, i_index)
-        call stats_1d_add_entry(stats_gamma_pop_core_comp, gamma_pop_core, i_index)
 
         rad_part_avg = sphere_vol2rad(aero_state_volumes(aero_state_averaged, aero_data))
         rad_core_avg = sphere_vol2rad(aero_state_volumes(aero_state_averaged, aero_data, &
@@ -409,12 +682,13 @@ program process
         call stats_2d_add(stats_diam_wi_dist_avg, diam_wi_dist_avg)
 
         npart_avg = aero_state_n_part(aero_state_averaged)
+
         !!!!**************************************!!!!
         !!!!!!!!!!Remove dry particles!!!!!!!!!!!
         !!!!**************************************!!!!
-        do i_part = aero_state_n_part(aero_state),1,-1
+        do i_part = aero_state_n_part(aero_state_averaged),1,-1
            if (h2o_masses_avg(i_part) == 0.0d0) then
-             call aero_state_remove_particle_no_info(aero_state, &
+             call aero_state_remove_particle_no_info(aero_state_averaged, &
                   i_part)
            end if
         end do
@@ -422,265 +696,6 @@ program process
         nwet_avg = aero_state_n_part(aero_state_averaged)
         call stats_1d_add_entry(stats_npart_avg, npart_avg, i_index)
         call stats_1d_add_entry(stats_nwet_avg, nwet_avg, i_index)
- 
-        !write(*,*) 'test 344'
-        !!!!**************************************!!!!
-        !!!!!!!!!!n2o5_type = N2O5_HYDR_PR!!!!!!!!!!!
-        !!!!**************************************!!!!
-        !write(*,*) "test 274"
-        n2o5_type = N2O5_HYDR_PR
-        call aero_n2o5_uptake(aero_state, aero_data, &
-        env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, &
-        gamma_pop, gamma_pop_core)
-
-        has_gamma = gamma_part > 0.0
-
-        dry_diameters = aero_state_dry_diameters(aero_state, aero_data)
-        wet_diameters = aero_state_diameters(aero_state, aero_data)
-        num_concs = aero_state_num_concs(aero_state, aero_data)
-        num_dist = bin_grid_histogram_1d(diam_grid, wet_diameters, num_concs)
-        call stats_1d_add(stats_num_dist, num_dist)
-
-        tot_num_conc = sum(num_concs)
-        call stats_1d_add_entry(stats_tot_num_conc, tot_num_conc, i_index)
-
-        wet_masses = aero_state_masses(aero_state, aero_data)
-        dry_masses = aero_state_masses(aero_state, aero_data, &
-             exclude=(/"H2O"/))
-        tot_wetmass_conc = sum(wet_masses * num_concs)
-        tot_drymass_conc = sum(dry_masses * num_concs)
-        call stats_1d_add_entry(stats_tot_wetmass_conc, tot_wetmass_conc, i_index)
-        call stats_1d_add_entry(stats_tot_drymass_conc, tot_drymass_conc, i_index)
-
-        !==========Masses of different species==========
-        bc_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"BC"/))
-        oc_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"OC"/))
-        so4_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"SO4"/))
-        no3_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"NO3"/))
-        nh4_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"NH4"/))
-        cl_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"Cl"/))
-        oin_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"OIN"/))
-        na_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"Na"/))
-        ca_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"Ca"/))
-        co3_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"CO3"/))
-        soa_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"ARO1", "ARO2", "ALK1", "OLE1", "API1", "API2", "LIM1", "LIM2"/))
-        h2o_masses_new = aero_state_masses(aero_state, aero_data, &
-             include=(/"H2O"/))
-
-        !==========Bulk masses========== 
-        bulk_bc_masses = sum(bc_masses * num_concs)
-        bulk_oc_masses = sum(oc_masses * num_concs)
-        bulk_so4_masses = sum(so4_masses * num_concs)
-        bulk_no3_masses = sum(no3_masses * num_concs)
-        bulk_nh4_masses = sum(nh4_masses * num_concs)
-        bulk_cl_masses = sum(cl_masses * num_concs)
-        bulk_h2o_masses = sum(h2o_masses_new * num_concs)
-        bulk_oin_masses = sum(oin_masses * num_concs)
-        bulk_na_masses = sum(na_masses * num_concs)
-        bulk_ca_masses = sum(ca_masses * num_concs)
-        bulk_co3_masses = sum(co3_masses * num_concs)
-        bulk_soa_masses = sum(soa_masses * num_concs)
-
-        call stats_1d_add_entry(stats_bulk_bc_masses, bulk_bc_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_oc_masses, bulk_oc_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_so4_masses, bulk_so4_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_no3_masses, bulk_no3_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_nh4_masses, bulk_nh4_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_cl_masses, bulk_cl_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_h2o_masses, bulk_h2o_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_oin_masses, bulk_oin_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_na_masses, bulk_na_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_ca_masses, bulk_ca_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_co3_masses, bulk_co3_masses,i_index)
-        call stats_1d_add_entry(stats_bulk_soa_masses, bulk_soa_masses,i_index)        
-
-        ! Make distribution for different species
-        mass_so4_dist = bin_grid_histogram_1d(diam_grid, &
-             pack(wet_diameters,has_gamma), &
-             pack(so4_masses * num_concs,has_gamma))
-        mass_no3_dist = bin_grid_histogram_1d(diam_grid, &
-             pack(wet_diameters,has_gamma), &
-             pack(no3_masses * num_concs,has_gamma))
-
-        call stats_1d_add(stats_mass_so4_dist, mass_so4_dist)
-        call stats_1d_add(stats_mass_no3_dist, mass_no3_dist)
-
-        !write(*,*) 'test 436'
-        crit_rhs = aero_state_crit_rel_humids(aero_state, aero_data, &
-             env_state)
-        scs = crit_rhs - 1d0
-        diam_sc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             sc_grid, scs, num_concs)
-        call stats_2d_add(stats_diam_sc_dist_pr, diam_sc_dist_pr)
-
-        call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha_pr, d_gamma_pr, chi_pr, exclude=(/"H2O"/))
-
-        call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha_pr, d_gamma_pr, chi_h2o_pr, group=(/"H2O"/))
-
-        call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha_pr, d_gamma_pr, chi_no3_pr, group=(/"NO3"/))
-        
-        call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha_pr, d_gamma_pr, chi_so4_pr, group=(/"SO4"/))
-        
-        call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha_pr, d_gamma_pr, chi_org_pr, group=(/"OC  ","ARO1", &
-             "ARO2","ALK1","OLE1","API1","API2","LIM1","LIM2"/))
-        
-        call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha_pr, d_gamma_pr, chi_dust_pr, group=(/"OIN"/))
-        
-        call stats_1d_add_entry(stats_d_alpha_pr, d_alpha_pr, i_index)
-        call stats_1d_add_entry(stats_d_gamma_pr, d_gamma_pr, i_index)
-        call stats_1d_add_entry(stats_chi_pr, chi_pr, i_index)
-        call stats_1d_add_entry(stats_chi_h2o_pr, chi_h2o_pr, i_index)
-        call stats_1d_add_entry(stats_chi_no3_pr, chi_no3_pr, i_index)
-        call stats_1d_add_entry(stats_chi_so4_pr, chi_so4_pr, i_index)
-        call stats_1d_add_entry(stats_chi_org_pr, chi_org_pr, i_index)
-        call stats_1d_add_entry(stats_chi_dust_pr, chi_dust_pr, i_index)
-
-        !write(*,*) 'test 455'
-        !==========1D histogram========== 
-        surf_area_pr = aero_state_surf_area_concs(aero_state, aero_data)
-
-        tot_surf_area_pr = sum(pack(surf_area_pr,has_gamma))
-        call stats_1d_add_entry(stats_tot_surf_area_pr, tot_surf_area_pr, i_index)
-
-        surf_area_dist_pr = bin_grid_histogram_1d(diam_grid, &
-             pack(wet_diameters,has_gamma), &
-             pack(surf_area_pr,has_gamma))
-        call stats_1d_add(stats_surf_area_dist_pr,  surf_area_dist_pr)
-
-        gamma_surf_pr = bin_grid_histogram_1d(diam_grid, &
-              pack(wet_diameters,has_gamma), &
-              pack(gamma_part * surf_area_pr,has_gamma))
-        call stats_1d_add(stats_gamma_surf_pr, gamma_surf_pr)
-
-        mass_dist_pr = bin_grid_histogram_1d(diam_grid, &
-             pack(wet_diameters,has_gamma), &
-             pack(wet_masses * num_concs,has_gamma))
-        call stats_1d_add(stats_mass_dist_pr, mass_dist_pr)
-
-        call stats_1d_add_entry(stats_n2o5_uptake_pr, aero_state_n2o5_uptake, i_index)
-
-        call stats_1d_add_entry(stats_gamma_pop_pr, gamma_pop, i_index)
-        call stats_1d_add_entry(stats_gamma_pop_core_pr, gamma_pop_core, i_index)
-
-        rad_part = sphere_vol2rad(aero_state_volumes(aero_state, aero_data))
-        rad_core = sphere_vol2rad(aero_state_volumes(aero_state, aero_data, &
-            include=(/"SO4", "NO3", "Cl ", "NH4", "CO3", "Na ", "Ca ", "OIN", &
-            "BC ", "H2O"/)))
-        coating_thickness = rad_part - rad_core
-
-        coating_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-              coating_grid, coating_thickness, num_concs)
-        call stats_2d_add(stats_coating_dist_pr, coating_dist_pr)
-
-        coating_mean = sum(coating_thickness * num_concs) &
-              /sum(num_concs)
-        call stats_1d_add_entry(stats_coating_mean, coating_mean, i_index)
-
-        coating_std_avg = sqrt(sum((coating_thickness-coating_mean)**2 * num_concs) &
-                          /(sum(num_concs)-1))
-        call stats_1d_add_entry(stats_coating_std, coating_std, i_index)
-
-        gamma_coating_surf_pr = bin_grid_histogram_1d(coating_grid, coating_thickness, &
-            gamma_part*surf_area_pr)
-        call stats_1d_add(stats_gamma_coating_surf_pr, gamma_coating_surf_pr)
-
-        coating_surf_pr = bin_grid_histogram_1d(coating_grid, coating_thickness, &
-            surf_area_pr)
-        call stats_1d_add(stats_coating_surf_pr, coating_surf_pr)
-
-        !==========2D histogram========== 
-        diam_gamma_dist_pr = bin_grid_histogram_2d(diam_grid, &
-             pack(wet_diameters,has_gamma), &
-             gamma_grid, pack(gamma_part,has_gamma), pack(num_concs,has_gamma))
-        call stats_2d_add(stats_diam_gamma_dist_pr, diam_gamma_dist_pr)
-
-        diam_h2o_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, h2o_masses_new/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_h2o_dist_pr, diam_h2o_dist_pr)
-
-        diam_bc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, bc_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_bc_dist_pr, diam_bc_dist_pr)
-        
-        diam_oc_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, oc_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_oc_dist_pr, diam_oc_dist_pr)
-
-        diam_no3_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, no3_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_no3_dist_pr, diam_no3_dist_pr)
-
-        diam_so4_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, so4_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_so4_dist_pr, diam_so4_dist_pr)
-
-        diam_nh4_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, nh4_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_nh4_dist_pr, diam_nh4_dist_pr)
-
-        diam_cl_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, cl_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_cl_dist_pr, diam_cl_dist_pr)
-
-        diam_oin_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, oin_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_oin_dist_pr, diam_oin_dist_pr)
-
-        diam_ca_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, ca_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_ca_dist_pr, diam_ca_dist_pr)
-        
-        diam_na_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, na_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_na_dist_pr, diam_na_dist_pr)
-
-        diam_co3_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, co3_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_co3_dist_pr, diam_co3_dist_pr)
-      
-        diam_soa_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, soa_masses/wet_masses, num_concs)
-        call stats_2d_add(stats_diam_soa_dist_pr, diam_soa_dist_pr)
- 
-        wi_pr = so4_masses/(so4_masses + no3_masses)
-        diam_wi_dist_pr = bin_grid_histogram_2d(diam_grid, wet_diameters, &
-             bc_grid, wi_pr, num_concs)
-        call stats_2d_add(stats_diam_wi_dist_pr, diam_wi_dist_pr)        
-       
-        npart = aero_state_n_part(aero_state)
-       
-        !!!!**************************************!!!!
-        !!!!!!!!!!Remove dry particles!!!!!!!!!!!
-        !!!!**************************************!!!!
-        h2o_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"H2O"/))
-        do i_part = aero_state_n_part(aero_state),1,-1
-           if (h2o_masses(i_part) == 0.0d0) then
-             call aero_state_remove_particle_no_info(aero_state, &
-                  i_part)
-           end if
-        end do
- 
-        nwet = aero_state_n_part(aero_state)
-        call stats_1d_add_entry(stats_npart, npart, i_index)
-        call stats_1d_add_entry(stats_nwet, nwet, i_index)
 
      end do
 
@@ -988,10 +1003,6 @@ program process
   call stats_1d_output_netcdf(stats_gamma_pop_pr, ncid,"gamma_pop_pr", &
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_gamma_pop_comp, ncid,"gamma_pop_comp", &
-       dim_name="time", unit="1")
-  call stats_1d_output_netcdf(stats_gamma_pop_core_pr, ncid,"gamma_pop_core_pr", &
-       dim_name="time", unit="1")
-  call stats_1d_output_netcdf(stats_gamma_pop_core_comp, ncid,"gamma_pop_core_comp", &
        dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_npart, ncid, "npart", &
        dim_name="time", unit="1")

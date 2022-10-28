@@ -34,7 +34,8 @@ contains
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   !> Initialize all MOSAIC data-structures.
-  subroutine mosaic_init(env_state, aero_data, del_t, do_n2o5_hydrolysis, n2o5_type, do_optical)
+  subroutine mosaic_init(env_state, aero_data, del_t, do_n2o5_hydrolysis, &
+        n2o5_type, do_optical)
 
 #ifdef PMC_USE_MOSAIC
     use module_data_mosaic_aero, only: alpha_ASTEM, rtol_eqb_ASTEM, &
@@ -54,7 +55,7 @@ contains
     real(kind=dp), intent(in) :: del_t
     !> Whether to do n2o5 hydrolysis
     logical, intent(in) :: do_n2o5_hydrolysis
-    !> Type of n2o5 hydrolysis
+    !> Type of n2o5 hydrolysis.
     integer, intent(in) :: n2o5_type
     !> Whether to compute optical properties.
     logical, intent(in) :: do_optical
@@ -148,7 +149,8 @@ contains
 
   !> Map all data PartMC -> MOSAIC.
   subroutine mosaic_from_partmc(env_state, aero_data, &
-       aero_state, gas_data, gas_state, do_n2o5_hydrolysis, n2o5_type)
+       aero_state, gas_data, gas_state, do_n2o5_hydrolysis, &
+       n2o5_type, gamma_param)
 
 #ifdef PMC_USE_MOSAIC
     use module_data_mosaic_aero, only: nbin_a, aer, num_a, jhyst_leg, &
@@ -173,8 +175,9 @@ contains
     type(gas_state_t), intent(in) :: gas_state
     !> Whether to do n2o5 hydrolysis.
     logical, intent(in) :: do_n2o5_hydrolysis
-    !> Which n2o5 hydrolysis treatment.
+    !> Which n2o5 hydrolysis treatment and parameterization.
     integer, intent(in) :: n2o5_type
+    integer, intent(in) :: gamma_param
 
 #ifdef PMC_USE_MOSAIC
     ! local variables
@@ -269,7 +272,8 @@ contains
     rk_het = 0.0d0
     if ((do_n2o5_hydrolysis) .and. (n2o5_type /= N2O5_HYDR_NONE)) then
        call aero_n2o5_uptake(aero_state, aero_data, &
-       env_state, n2o5_type, gamma_part, aero_state_n2o5_uptake, gamma_pop)
+       env_state, n2o5_type, gamma_param, gamma_part, &
+       aero_state_n2o5_uptake, gamma_pop)
        rk_het(in2o5) = aero_state_n2o5_uptake
     end if
 
@@ -384,7 +388,7 @@ contains
   !! really matters, however. Because of this mosaic_aero_optical() is
   !! currently disabled.
   subroutine mosaic_timestep(env_state, aero_data, aero_state, gas_data, &
-       gas_state, do_n2o5_hydrolysis, n2o5_type, do_optical)
+       gas_state, do_n2o5_hydrolysis, n2o5_type, gamma_param, do_optical)
 
 #ifdef PMC_USE_MOSAIC
     use module_data_mosaic_main, only: msolar
@@ -402,8 +406,9 @@ contains
     type(gas_state_t), intent(inout) :: gas_state
     !> Whether to compute n2o5 hydrolysis.
     logical, intent(in) :: do_n2o5_hydrolysis
-    !> Which type of n2o5 hydrolysis treatment.
+    !> Which type of n2o5 hydrolysis treatment and parameterization.
     integer, intent(in) :: n2o5_type
+    integer, intent(in) :: gamma_param
     !> Whether to compute optical properties.
     logical, intent(in) :: do_optical
 
@@ -420,7 +425,7 @@ contains
 
     ! map PartMC -> MOSAIC
     call mosaic_from_partmc(env_state, aero_data, aero_state, gas_data, &
-         gas_state, do_n2o5_hydrolysis, n2o5_type)
+         gas_state, do_n2o5_hydrolysis, n2o5_type, gamma_param)
 
     if (msolar == 1) then
       call SolarZenithAngle
@@ -510,7 +515,8 @@ contains
   !> Compute the optical properties of each aerosol particle for initial
   !> timestep.
   subroutine mosaic_aero_optical_init(env_state, aero_data, &
-       aero_state, gas_data, gas_state, do_n2o5_hydrolysis, n2o5_type)
+       aero_state, gas_data, gas_state, do_n2o5_hydrolysis, &
+       n2o5_type, gamma_param)
 
 #ifdef PMC_USE_MOSAIC
     use module_data_mosaic_aero, only: ri_shell_a, ri_core_a, &
@@ -529,8 +535,9 @@ contains
     type(gas_state_t), intent(in) :: gas_state
     !> Whether to do n2o5 hydrolysis.
     logical, intent(in) :: do_n2o5_hydrolysis
-    !> Type of n2o5 reaction.
+    !> Type of n2o5 reaction and parameterization.
     integer, intent(in) :: n2o5_type
+    integer, intent(in) :: gamma_param
 
 #ifdef PMC_USE_MOSAIC
     ! MOSAIC function interfaces
@@ -545,7 +552,8 @@ contains
 
     ! map PartMC -> MOSAIC
     call mosaic_from_partmc(env_state, aero_data, aero_state, &
-         gas_data, gas_state, do_n2o5_hydrolysis, n2o5_type)
+         gas_data, gas_state, do_n2o5_hydrolysis, n2o5_type, &
+         gamma_param)
 
     call aerosol_optical
 

@@ -498,6 +498,7 @@ contains
                run_part_opt%do_n2o5_hydrolysis)
           if (run_part_opt%do_n2o5_hydrolysis) then
              call spec_file_read_n2o5_type(file, run_part_opt%n2o5_type)
+             call spec_file_read_gamma_param(file, run_part_opt%gamma_param)
           endif
        else
           run_part_opt%do_n2o5_hydrolysis = .false.
