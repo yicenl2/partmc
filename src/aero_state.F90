@@ -2986,8 +2986,9 @@ contains
     type(bin_grid_t) :: avg_bin_grid
 
     integer :: i_part
-    real(kind=dp), allocatable :: volumes(:), volumes_core(:), so4_masses(:), &
-        no3_masses(:), cl_masses(:), nh4_masses(:), surf_area_concs(:), h2o_masses(:)
+    real(kind=dp), allocatable :: volumes(:), volumes_core(:), volumes_h2o(:), &
+        so4_masses(:), no3_masses(:), cl_masses(:), nh4_masses(:), &
+        surf_area_concs(:), h2o_masses(:)
     real(kind=dp) :: rad_core, rad_part
     real(kind=dp) :: c_n2o5, gamma_n2o5, gamma_coat, gamma_core
     real(kind=dp), parameter :: f = 0.03d0
@@ -3017,6 +3018,7 @@ contains
     volumes = aero_state_volumes(aero_state_hyd, aero_data)
     volumes_core = aero_state_volumes(aero_state_hyd, aero_data, include=(/"SO4", &
         "NO3", "Cl ", "NH4", "CO3", "Na ", "Ca ", "OIN", "BC ", "H2O"/))
+    volumes_h2o = aero_state_volumes(aero_state_hyd, aero_data, include=(/"H2O"/))
     cl_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"Cl"/))
     nh4_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"NH4"/))
     so4_masses = aero_state_masses(aero_state_hyd, aero_data, include=(/"SO4"/))
@@ -3042,7 +3044,7 @@ contains
         else if (gamma_param == PARAM_BT09) then
             call n2o5_gamma_core_bt09(so4_masses(i_part), &
                  no3_masses(i_part), h2o_masses(i_part), cl_masses(i_part), &
-                 gamma_core_bt09)
+                 volumes_h2o(i_part), gamma_core_bt09)
             gamma_core = gamma_core_bt09
         ! Davis et al. (2008)
         else if (gamma_param == PARAM_D08) then 
@@ -3151,15 +3153,19 @@ contains
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   subroutine n2o5_gamma_core_bt09(so4_masses, no3_masses, &
-        h2o_masses, cl_masses, gamma_core_bt09)
+        h2o_masses, cl_masses, volumes_h2o, gamma_core_bt09)
 
     !> Particle composition.
     real(kind=dp), intent(in) :: so4_masses, no3_masses, h2o_masses, cl_masses
+    real(kind=dp), intent(in) :: volumes_h2o
     !> Computed gamma_n2o5 for inorganic core.
     real, intent(out) :: gamma_core_bt09
 
     !> Local variables.
     real(kind=dp) :: k2f
+    real(kind=dp) :: no3_molec_weight = 62.0049d-3
+    real(kind=dp) :: cl_molec_weight = 35.453d-3
+    real(kind=dp) :: h2o_molec_weight = 18.01528d-3
     real(kind=dp), parameter :: beta = 1.15d6
     real(kind=dp), parameter :: delta = 1.3d-1
     real(kind=dp), parameter :: A = 3.2d-8
@@ -3167,12 +3173,13 @@ contains
     real(kind=dp), parameter :: k4_k2b = 29d0
 
     gamma_core_bt09 = 0d0
-    if (h2o_masses / no3_masses > 0.0d0 &
-            .or. cl_masses / no3_masses > 0.0d0) then
-    k2f = beta - beta * exp(-delta * h2o_masses)
-    gamma_core_bt09 = A * k2f * (1 - 1 / (k3_k2b * &
-        h2o_masses / no3_masses) + 1 + (k4_k2b * &
-        cl_masses / no3_masses))
+    if (h2o_masses > 0.0d0) then
+    k2f = beta - beta * exp(-delta * h2o_masses / h2o_molec_weight &
+        / volumes_h2o * 1.0d-3)
+    gamma_core_bt09 = A * k2f * (1 - 1 / ((k3_k2b * &
+        (h2o_masses / h2o_molec_weight * 1.0d-3) / &
+        (no3_masses / no3_molec_weight * 1.0d-3)) + 1 + (k4_k2b * &
+        (cl_masses / cl_molec_weight* 1.0d-3) / (no3_masses / no3_molec_weight * 1.0d-3))))
     end if
 
   end subroutine n2o5_gamma_core_bt09
