@@ -109,38 +109,7 @@
           "A" : 2.9592e-15,
           "B" : 0.0E+00,
           "C" : 640.0
-				},
-				{
-          "type" : "SIMPOL_PHASE_TRANSFER",
-          "gas-phase species" : "ISOP-P2",
-          "aerosol phase" : "organic_matter",
-          "aerosol-phase species" : "ISOP-P2_aero",
-          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
-        },
-        {
-          "type" : "SIMPOL_PHASE_TRANSFER",
-          "gas-phase species" : "SOAseed_COV",
-          "aerosol phase" : "organic_matter",
-          "aerosol-phase species" : "SOA",
-					"growth_adjustment_factor" : 1.1,
-          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
-        },
-        {
-          "type" : "SIMPOL_PHASE_TRANSFER",
-          "gas-phase species" : "dryAS_COV",
-          "aerosol phase" : "inorganics_dry",
-          "aerosol-phase species" : "AS",
-					"growth_adjustment_factor" : 2.1,
-          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
-        },
-        {
-          "type" : "SIMPOL_PHASE_TRANSFER",
-          "gas-phase species" : "wetAS_COV",
-          "aerosol phase" : "inorganics_wet",
-          "aerosol-phase species" : "AS",
-					"growth_adjustment_factor" : 3.6,
-          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
-        }
+				}
       ]
     }
   ]
