@@ -1,0 +1,147 @@
+{
+  "notes" : [
+    "2-product SOA scheme from MONARCH model. Based on Tsigaridis and Kanakidou (2007).",
+    "Details in Spada et al. (2013) in prep for Geosci. Model Dev.",
+    "Gas-phase rate constants taken from CB05 reactions with same reactants",
+    "TODO the CB05 reactions should be updated/removed to avoid competition with SOA scheme",
+    "Clausius clapyron parameters (C* and -dH/R) converted to SIMPOL.1 paramaters",
+    "Growth factors taken from Higgins et al. (2022)",
+		"1.1 for SOA seed, 2.1 for dry AS seed, 3.6 for wet AS seed"
+  ],
+  "camp-data" : [
+    {
+      "name" : "MONARCH mod37",
+      "type" : "MECHANISM",
+      "reactions" : [
+        {
+          "type" : "CONDENSED_PHASE_ARRHENIUS",
+          "aerosol phase" : "black_carbon",
+          "units" : "mol m-3",
+          "reactants" : {
+            "O3" : {},
+            "APIN" : {}
+          },
+          "products" : {
+            "FORM" : { "yield" : 0.27 } ,
+            "ISPD" : { "yield" : 0.22 } ,
+            "H2O2" : { "yield" : 0.22 } ,
+            "CO" : { "yield" : 0.17 } ,
+            "OH" : { "yield" : 0.77 } ,
+            "HO2" : { "yield" : 0.17 } ,
+            "XO2" : { "yield" : 0.33 } ,
+            "XO2N" : { "yield" : 0.07 } ,
+            "OPO3" : { "yield" : 0.27 } ,
+            "RO2" : { "yield" : 0.4 } 
+          },
+          "A" : 8.22E-16,
+          "B" : 0.0E+00,
+          "C" : 640.0
+				},
+        {
+          "type" : "CONDENSED_PHASE_ARRHENIUS",
+          "aerosol phase" : "organic_matter",
+          "units" : "mol m-3",
+          "reactants" : {
+            "O3" : {},
+            "APIN" : {}
+          },
+          "products" : {
+            "FORM" : { "yield" : 0.27 } ,
+            "ISPD" : { "yield" : 0.22 } ,
+            "H2O2" : { "yield" : 0.22 } ,
+            "CO" : { "yield" : 0.17 } ,
+            "OH" : { "yield" : 0.77 } ,
+            "HO2" : { "yield" : 0.17 } ,
+            "XO2" : { "yield" : 0.33 } ,
+            "XO2N" : { "yield" : 0.07 } ,
+            "OPO3" : { "yield" : 0.27 } ,
+            "RO2" : { "yield" : 0.4 } 
+          },
+          "A" : 9.042E-16,
+          "B" : 0.0E+00,
+          "C" : 640.0
+				},
+        {
+          "type" : "CONDENSED_PHASE_ARRHENIUS",
+          "aerosol phase" : "inorganics_dry",
+          "units" : "mol m-3",
+          "reactants" : {
+            "O3" : {},
+            "APIN" : {}
+          },
+          "products" : {
+            "FORM" : { "yield" : 0.27 } ,
+            "ISPD" : { "yield" : 0.22 } ,
+            "H2O2" : { "yield" : 0.22 } ,
+            "CO" : { "yield" : 0.17 } ,
+            "OH" : { "yield" : 0.77 } ,
+            "HO2" : { "yield" : 0.17 } ,
+            "XO2" : { "yield" : 0.33 } ,
+            "XO2N" : { "yield" : 0.07 } ,
+            "OPO3" : { "yield" : 0.27 } ,
+            "RO2" : { "yield" : 0.4 } 
+          },
+          "A" : 1.7262E-15,
+          "B" : 0.0E+00,
+          "C" : 640.0
+				},
+        {
+          "type" : "CONDENSED_PHASE_ARRHENIUS",
+          "aerosol phase" : "inorganics_wet",
+          "aerosol-phase water" : "H2O_aq",
+          "units" : "M",
+          "reactants" : {
+            "O3" : {},
+            "APIN" : {}
+          },
+          "products" : {
+            "FORM" : { "yield" : 0.27 } ,
+            "ISPD" : { "yield" : 0.22 } ,
+            "H2O2" : { "yield" : 0.22 } ,
+            "CO" : { "yield" : 0.17 } ,
+            "OH" : { "yield" : 0.77 } ,
+            "HO2" : { "yield" : 0.17 } ,
+            "XO2" : { "yield" : 0.33 } ,
+            "XO2N" : { "yield" : 0.07 } ,
+            "OPO3" : { "yield" : 0.27 } ,
+            "RO2" : { "yield" : 0.4 } 
+          },
+          "A" : 2.9592e-15,
+          "B" : 0.0E+00,
+          "C" : 640.0
+				},
+				{
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "ISOP-P2",
+          "aerosol phase" : "organic_matter",
+          "aerosol-phase species" : "ISOP-P2_aero",
+          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
+        },
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "SOAseed_COV",
+          "aerosol phase" : "organic_matter",
+          "aerosol-phase species" : "SOA",
+					"growth_adjustment_factor" : 1.1,
+          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
+        },
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "dryAS_COV",
+          "aerosol phase" : "inorganics_dry",
+          "aerosol-phase species" : "AS",
+					"growth_adjustment_factor" : 2.1,
+          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
+        },
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "wetAS_COV",
+          "aerosol phase" : "inorganics_wet",
+          "aerosol-phase species" : "AS",
+					"growth_adjustment_factor" : 3.6,
+          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
+        }
+      ]
+    }
+  ]
+}
