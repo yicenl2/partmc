@@ -1,4 +1,4 @@
-{ "pmc-data" : [
+{ "camp-data" : [
   {
     "name" : "MONARCH mod37",
     "type" : "MECHANISM",
@@ -216,7 +216,7 @@
           "O" : {}
         },
         "orig params" : "TUV_J(6, THETA)",
-        "scaling" : 0.89,
+        "scaling factor" : 0.89,
         "base rate" : 1.31e-1,
         "Fast-J id" : "NO3_X",
         "type" : "PHOTOLYSIS"
@@ -230,7 +230,7 @@
           "NO" : {}
         },
         "orig params" : "TUV_J(5, THETA)",
-        "scaling" : 0.11,
+        "scaling factor" : 0.11,
         "base rate" : 1.31e-1,
         "Fast-J id" : "NO3_L",
         "type" : "PHOTOLYSIS"
@@ -2484,7 +2484,7 @@
           "XO2" : { "yield" : 0.700 },
           "C2O3" : { "yield" : 0.967 }
         },
-	"scaling factor" : 0.0036,
+				"scaling factor" : 0.0036,
         "orig params" : "0.0036 * TUV_J(89, THETA)",
         "base rate" : 5.50e-7,
         "Fast-J id" : "ISPD",

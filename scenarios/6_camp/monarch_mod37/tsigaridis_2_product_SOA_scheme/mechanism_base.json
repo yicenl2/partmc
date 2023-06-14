@@ -1,0 +1,82 @@
+{
+  "notes" : [
+    "2-product SOA scheme from MONARCH model. Based on Tsigaridis and Kanakidou (2007).",
+    "Details in Spada et al. (2013) in prep for Geosci. Model Dev.",
+    "Gas-phase rate constants taken from CB05 reactions with same reactants",
+    "TODO the CB05 reactions should be updated/removed to avoid competition with SOA scheme",
+    "Clausius clapyron parameters (C* and -dH/R) converted to SIMPOL.1 paramaters",
+    "Growth factors taken from Higgins et al. (2022)",
+		"1.1 for SOA seed, 2.1 for dry AS seed, 3.6 for wet AS seed"
+  ],
+  "camp-data" : [
+    {
+      "name" : "MONARCH mod37",
+      "type" : "MECHANISM",
+      "reactions" : [
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "COV",
+          "aerosol phase" : "organic_matter",
+          "aerosol-phase species" : "COV_aero",
+          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+        },
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "COV",
+          "aerosol phase" : "inorganics_dry",
+          "aerosol-phase species" : "COV_aero",
+          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+        },
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "COV",
+          "aerosol phase" : "inorganics_wet",
+          "aerosol-phase species" : "COV_aero",
+          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+        },
+        {
+          "type" : "CONDENSED_PHASE_ARRHENIUS",
+          "aerosol phase" : "organic_matter",
+          "units" : "mol m-3",
+          "reactants" : {
+            "COV_aero" : {}
+          },
+          "products" : {
+            "COV-PROD_aero" : {}
+          },
+          "A" : 0.0E+00,
+          "B" : 0.0E+00,
+          "C" : -1912.0
+				},
+        {
+          "type" : "CONDENSED_PHASE_ARRHENIUS",
+          "aerosol phase" : "inorganics_dry",
+          "units" : "mol m-3",
+          "reactants" : {
+            "COV_aero" : {}
+          },
+          "products" : {
+            "COV-PROD_aero" : {}
+          },
+          "A" : 0.0E+00,
+          "B" : 0.0E+00,
+          "C" : -1912.0
+				},
+        {
+          "type" : "CONDENSED_PHASE_ARRHENIUS",
+          "aerosol phase" : "inorganics_wet",
+          "units" : "mol m-3",
+          "reactants" : {
+            "COV_aero" : {}
+          },
+          "products" : {
+            "COV-PROD_aero" : {}
+          },
+          "A" : 0.0E+00,
+          "B" : 0.0E+00,
+          "C" : -1912.0
+				}
+      ]
+    }
+  ]
+}

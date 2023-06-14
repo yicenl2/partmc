@@ -6,13 +6,15 @@
 !> The process program.
 
 !> Read NetCDF output files and process them.
+!===============================================
+! TODO: calculate mass fraction 2d distribution
 program process
 
   use pmc_output
   use pmc_stats
 
   character(len=PMC_MAX_FILENAME_LEN), parameter :: prefix &
-       = "out/urban_plume"
+       = "out/camp"
 
   character(len=PMC_MAX_FILENAME_LEN) :: in_filename, out_filename
   type(bin_grid_t) :: diam_grid, bc_grid, sc_grid
@@ -23,32 +25,20 @@ program process
   real(kind=dp) :: time, del_t, tot_num_conc, tot_mass_conc
   real(kind=dp) :: d_alpha, d_gamma, chi
   character(len=PMC_UUID_LEN) :: uuid
-  real(kind=dp), allocatable :: times(:), dry_diameters(:), num_concs(:), &
-       dry_masses(:), masses(:), bc_masses(:), bc_fracs(:), &
-       crit_rhs(:), scs(:), num_dist(:), &
-       diam_bc_dist(:,:), diam_sc_dist(:,:)
+  real(kind=dp), allocatable :: times(:), dry_diameters(:), diameters(:), &
+       num_concs(:), &
+       dry_masses(:), masses(:), &
+       num_dist(:)
   type(stats_1d_t) :: stats_num_dist, stats_d_alpha, stats_tot_num_conc, &
        stats_tot_mass_conc, stats_d_gamma, stats_chi
-  type(stats_2d_t) :: stats_diam_bc_dist, stats_diam_sc_dist
-  character(len=AERO_NAME_LEN), allocatable :: mixing_state_groups(:,:)
 
   call pmc_mpi_init()
 
   call input_n_files(prefix, n_repeat, n_index)
 
   call bin_grid_make(diam_grid, BIN_GRID_TYPE_LOG, 180, 1d-9, 1d-3)
-  call bin_grid_make(bc_grid, BIN_GRID_TYPE_LINEAR, 50, 0d0, 1d0)
-  call bin_grid_make(sc_grid, BIN_GRID_TYPE_LOG, 50, 1d-4, 1d0)
 
   allocate(times(n_index))
-
-  allocate(mixing_state_groups(3, 4)) ! 3 groups, max 4 species per group
-  mixing_state_groups(1,:) = ["OC    ", "BC    ", "      ", "      "]
-  mixing_state_groups(2,:) = ["API1  ", "API2  ", "LIM1  ", "LIM2  "]
-  mixing_state_groups(3,:) = ["SO4   ", "NO3   ", "NH4   ", "      "]
-
-  scs = [ real(kind=dp) :: ] ! silence compiler warnings
-  bc_fracs = [ real(kind=dp) :: ]
 
   do i_index = 1,n_index
      do i_repeat = 1,n_repeat
@@ -59,13 +49,20 @@ program process
         call input_state(in_filename, index, time, del_t, repeat, &
              uuid, aero_data=aero_data, aero_state=aero_state, &
              env_state=env_state)
-
+        
         times(i_index) = time
 
         dry_diameters = aero_state_dry_diameters(aero_state, aero_data)
+        diameters = aero_state_diameters(aero_state, aero_data)
         num_concs = aero_state_num_concs(aero_state, aero_data)
-        num_dist = bin_grid_histogram_1d(diam_grid, dry_diameters, num_concs)
+        num_dist = bin_grid_histogram_1d(diam_grid, diameters, num_concs)
         call stats_1d_add(stats_num_dist, num_dist)
+
+        open(1, status = 'unknown', action='write',position='append')
+           do i = 1,aero_state_n_part(aero_state)
+             write(1,*) time, diameters(i)
+           end do
+        close(1)
 
         tot_num_conc = sum(num_concs)
         call stats_1d_add_entry(stats_tot_num_conc, tot_num_conc, i_index)
@@ -73,26 +70,7 @@ program process
         masses = aero_state_masses(aero_state, aero_data)
         tot_mass_conc = sum(masses * num_concs)
         call stats_1d_add_entry(stats_tot_mass_conc, tot_mass_conc, i_index)
-
-        dry_masses = aero_state_masses(aero_state, aero_data, &
-             exclude=(/"H2O"/))
-        bc_masses = aero_state_masses(aero_state, aero_data, &
-             include=(/"BC"/))
-        bc_fracs = bc_masses / dry_masses
-        diam_bc_dist = bin_grid_histogram_2d(diam_grid, dry_diameters, &
-             bc_grid, bc_fracs, num_concs)
-        call stats_2d_add(stats_diam_bc_dist, diam_bc_dist)
-
-        crit_rhs = aero_state_crit_rel_humids(aero_state, aero_data, &
-             env_state)
-        scs = crit_rhs - 1d0
-        diam_sc_dist = bin_grid_histogram_2d(diam_grid, dry_diameters, &
-             sc_grid, scs, num_concs)
-        call stats_2d_add(stats_diam_sc_dist, diam_sc_dist)
-
-        call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha, d_gamma, chi, groups=mixing_state_groups)
-
+        
         call stats_1d_add_entry(stats_d_alpha, d_alpha, i_index)
         call stats_1d_add_entry(stats_d_gamma, d_gamma, i_index)
         call stats_1d_add_entry(stats_chi, chi, i_index)
@@ -104,20 +82,10 @@ program process
      call pmc_nc_open_write(out_filename, ncid)
      call pmc_nc_write_info(ncid, uuid, "1_urban_plume process")
      call bin_grid_output_netcdf(diam_grid, ncid, "diam", unit="m")
-     call bin_grid_output_netcdf(bc_grid, ncid, "bc_frac", unit="1")
-     call bin_grid_output_netcdf(sc_grid, ncid, "sc", unit="1")
 
      call stats_1d_output_netcdf(stats_num_dist, ncid, "num_dist", &
           dim_name="diam", unit="m^{-3}")
      call stats_1d_clear(stats_num_dist)
-
-     call stats_2d_output_netcdf(stats_diam_bc_dist, ncid, "diam_bc_dist", &
-          dim_name_1="diam", dim_name_2="bc_frac", unit="m^{-3}")
-     call stats_2d_clear(stats_diam_bc_dist)
-
-     call stats_2d_output_netcdf(stats_diam_sc_dist, ncid, "diam_sc_dist", &
-          dim_name_1="diam", dim_name_2="sc", unit="m^{-3}")
-     call stats_2d_clear(stats_diam_sc_dist)
 
      call pmc_nc_close(ncid)
   end do

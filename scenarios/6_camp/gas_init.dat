@@ -25,7 +25,9 @@ PAN          0.8E+00
 AACD         0.2E+00
 ROOH         2.5E-02
 ISOP         5.0E+00
+TERP         0.0E+00
 O2           2.095E+08
 N2           7.8E+08
 H2           5.6E+02
 M            1.0E+09
+COV          5.0E+01

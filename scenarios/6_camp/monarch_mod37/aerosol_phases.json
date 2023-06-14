@@ -20,12 +20,22 @@
     {
       "name" : "organic_matter",
       "type" : "AERO_PHASE",
-      "species" : [ "POA", "ISOP-P1_aero", "ISOP-P2_aero", "TERP-P1_aero", "TERP-P2_aero" ]
+      "species" : [ "POA", "SOA", "COV_aero", "COV-PROD_aero" ]
     },
     {
       "name" : "black_carbon",
       "type" : "AERO_PHASE",
       "species" : [ "BC_phob", "BC_phil" ]
+    },
+		{
+      "name" : "inorganics_dry",
+      "type" : "AERO_PHASE",
+      "species" : [ "AS", "COV_aero", "COV-PROD_aero" ]
+    },
+		{
+      "name" : "inorganics_wet",
+      "type" : "AERO_PHASE",
+      "species" : [ "AS", "H2O_aq", "COV_aero", "COV-PROD_aero" ]
     },
     {
       "name" : "other_PM",

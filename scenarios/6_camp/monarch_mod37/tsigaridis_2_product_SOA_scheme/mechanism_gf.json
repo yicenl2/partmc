@@ -14,101 +14,67 @@
       "type" : "MECHANISM",
       "reactions" : [
         {
-          "type" : "CONDENSED_PHASE_ARRHENIUS",
-          "aerosol phase" : "black_carbon",
-          "units" : "mol m-3",
-          "reactants" : {
-            "O3" : {},
-            "APIN" : {}
-          },
-          "products" : {
-            "FORM" : { "yield" : 0.27 } ,
-            "ISPD" : { "yield" : 0.22 } ,
-            "H2O2" : { "yield" : 0.22 } ,
-            "CO" : { "yield" : 0.17 } ,
-            "OH" : { "yield" : 0.77 } ,
-            "HO2" : { "yield" : 0.17 } ,
-            "XO2" : { "yield" : 0.33 } ,
-            "XO2N" : { "yield" : 0.07 } ,
-            "OPO3" : { "yield" : 0.27 } ,
-            "RO2" : { "yield" : 0.4 } 
-          },
-          "A" : 8.22E-16,
-          "B" : 0.0E+00,
-          "C" : 640.0
-				},
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "COV",
+          "aerosol phase" : "organic_matter",
+          "aerosol-phase species" : "COV_aero",
+          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+        },
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "COV",
+          "aerosol phase" : "inorganics_dry",
+          "aerosol-phase species" : "COV_aero",
+          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+        },
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "COV",
+          "aerosol phase" : "inorganics_wet",
+          "aerosol-phase species" : "COV_aero",
+          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+        },
         {
           "type" : "CONDENSED_PHASE_ARRHENIUS",
           "aerosol phase" : "organic_matter",
           "units" : "mol m-3",
           "reactants" : {
-            "O3" : {},
-            "APIN" : {}
+            "COV_aero" : {}
           },
           "products" : {
-            "FORM" : { "yield" : 0.27 } ,
-            "ISPD" : { "yield" : 0.22 } ,
-            "H2O2" : { "yield" : 0.22 } ,
-            "CO" : { "yield" : 0.17 } ,
-            "OH" : { "yield" : 0.77 } ,
-            "HO2" : { "yield" : 0.17 } ,
-            "XO2" : { "yield" : 0.33 } ,
-            "XO2N" : { "yield" : 0.07 } ,
-            "OPO3" : { "yield" : 0.27 } ,
-            "RO2" : { "yield" : 0.4 } 
+            "COV-PROD_aero" : {}
           },
-          "A" : 9.042E-16,
+          "A" : 8.646e-15,
           "B" : 0.0E+00,
-          "C" : 640.0
+          "C" : -1912.0
 				},
         {
           "type" : "CONDENSED_PHASE_ARRHENIUS",
           "aerosol phase" : "inorganics_dry",
           "units" : "mol m-3",
           "reactants" : {
-            "O3" : {},
-            "APIN" : {}
+            "COV_aero" : {}
           },
           "products" : {
-            "FORM" : { "yield" : 0.27 } ,
-            "ISPD" : { "yield" : 0.22 } ,
-            "H2O2" : { "yield" : 0.22 } ,
-            "CO" : { "yield" : 0.17 } ,
-            "OH" : { "yield" : 0.77 } ,
-            "HO2" : { "yield" : 0.17 } ,
-            "XO2" : { "yield" : 0.33 } ,
-            "XO2N" : { "yield" : 0.07 } ,
-            "OPO3" : { "yield" : 0.27 } ,
-            "RO2" : { "yield" : 0.4 } 
+            "COV-PROD_aero" : {}
           },
-          "A" : 1.7262E-15,
+          "A" : 1.6506e-14,
           "B" : 0.0E+00,
-          "C" : 640.0
+          "C" : -1912.0
 				},
         {
           "type" : "CONDENSED_PHASE_ARRHENIUS",
           "aerosol phase" : "inorganics_wet",
-          "aerosol-phase water" : "H2O_aq",
-          "units" : "M",
+          "units" : "mol m-3",
           "reactants" : {
-            "O3" : {},
-            "APIN" : {}
+            "COV_aero" : {}
           },
           "products" : {
-            "FORM" : { "yield" : 0.27 } ,
-            "ISPD" : { "yield" : 0.22 } ,
-            "H2O2" : { "yield" : 0.22 } ,
-            "CO" : { "yield" : 0.17 } ,
-            "OH" : { "yield" : 0.77 } ,
-            "HO2" : { "yield" : 0.17 } ,
-            "XO2" : { "yield" : 0.33 } ,
-            "XO2N" : { "yield" : 0.07 } ,
-            "OPO3" : { "yield" : 0.27 } ,
-            "RO2" : { "yield" : 0.4 } 
+            "COV-PROD_aero" : {}
           },
-          "A" : 2.9592e-15,
+          "A" : 2.8296e-14,
           "B" : 0.0E+00,
-          "C" : 640.0
+          "C" : -1912.0
 				}
       ]
     }

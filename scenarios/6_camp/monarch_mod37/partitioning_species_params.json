@@ -396,6 +396,15 @@
       "dry dep notes" : "changed diff coeff from 0.0 to match ISOP-P2"
     },
     {
+      "name" : "COV",
+      "type" : "CHEM_SPEC",
+      "HLC(298K) [M Pa-1]" :9.721E+01,
+      "HLC exp factor [K]" :5.716E+03,
+      "dry dep reactivity factor [unitless]" :0.000E+00,
+      "diffusion coeff [m2 s-1]" :1.530E-05,
+      "dry dep notes" : "used data from ISOP-P2"
+    },
+    {
       "name" : "DMS",
       "type" : "CHEM_SPEC",
       "HLC(298K) [M Pa-1]" : 5.59585E-06,

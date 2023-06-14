@@ -1,0 +1,4093 @@
+{ "pmc-data" : [
+  {
+    "name" : "MONARCH mod37",
+    "type" : "MECHANISM",
+    "reactions" : [
+      {
+        "rxn id" : "R1",
+        "reactants" : {
+          "NO2" : {}
+        },
+        "products" : {
+          "NO" : {} ,
+          "O" : {}
+        },
+        "orig params" : "TUV_J(4, THETA)",
+        "base rate" : 4.77e-3,
+        "Fast-J id" : "NO2",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R2",
+        "reactants" : {
+          "O2" : {} ,
+          "O" : {} ,
+          "M" : {}
+        },
+        "products" : {
+          "O3" : {} ,
+          "M" : {}
+        },
+        "orig params" : "O2 * M * CMAQ_1to4(6.0E-34, -2.6, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 6.0E-34,
+        "B" : -2.6,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R3",
+        "reactants" : {
+          "NO" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.07E-12, 0.0E+00, 1400.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.07E-12,
+        "B" : 0.0E+00,
+        "C" : -1400.0
+      },
+      {
+        "rxn id" : "R4",
+        "reactants" : {
+          "NO" : {} ,
+          "O" : {}
+        },
+        "products" : {
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_10(1.00E-31, -1.6, 0.0E+00, 5.00E-11, -0.3, 0.0E+00, 0.85, 0.84)",
+        "type" : "TROE",
+        "k0_A" : 1.00E-31,
+        "k0_B" : -1.6,
+        "k0_C" : -0.0E+00,
+				"kinf_A" : 5.00E-11,
+				"kinf_B" : -0.3,
+				"kinf_C" : -0.0E+00,
+				"Fc" : 0.85,
+				"N" : 0.84
+      },
+			{
+        "rxn id" : "R5",
+        "reactants" : {
+          "NO2" : {} ,
+          "O" : {}
+        },
+        "products" : {
+          "NO" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.10E-12, 0.0E+00, -198.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.10E-12,
+        "B" : 0.0E+00,
+        "C" : 198.0
+      },
+      {
+        "rxn id" : "R6",
+        "reactants" : {
+          "NO2" : {} ,
+          "O" : {}
+        },
+        "products" : {
+          "NO3" : {}
+        },
+        "orig params" : "CMAQ_10(1.30E-31, -1.5, 0.0E+00, 2.30E-11, 0.24, 0.0E+00, 0.6, 1.03)",
+        "type" : "TROE",
+        "k0_A" : 1.30E-31,
+        "k0_B" : -1.5,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 2.30E-11,
+        "kinf_B" : 0.24,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.6,
+        "N" : 1.03
+      },
+      {
+        "rxn id" : "R7",
+        "reactants" : {
+          "O3" : {}
+        },
+        "products" : {
+          "O" : {}
+        },
+        "orig params" : "CMAQ_1to4(8.00E-12, 0.0E+00, 2060)",
+        "type" : "ARRHENIUS",
+        "A" : 8.00E-12,
+        "B" : 0.0E+00,
+        "C" : -2060
+      },
+      {
+        "rxn id" : "R8",
+        "reactants" : {
+          "O3" : {}
+        },
+        "products" : {
+          "O" : {}
+        },
+        "orig params" : "TUV_J(2, THETA)",
+        "base rate" : 2.26e-6,
+        "Fast-J id" : "O3_1d",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R9",
+        "reactants" : {
+          "O3" : {}
+        },
+        "products" : {
+          "O1D" : {}
+        },
+        "orig params" : "TUV_J(2, THETA)",
+        "base rate" : 2.26e-6,
+        "Fast-J id" : "O3_1d",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R10",
+        "reactants" : {
+          "O1D" : {} ,
+          "M" : {}
+        },
+        "products" : {
+          "O" : {} ,
+          "M" : {}
+        },
+        "orig params" : "M * CMAQ_1to4(2.23E-11, 0.0E+00, -115.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.23E-11,
+        "B" : 0.0E+00,
+        "C" : 115.0
+      },
+      {
+        "rxn id" : "R11",
+        "reactants" : {
+          "O1D" : {} ,
+          "H2O" : {}
+        },
+        "products" : {
+          "OH" : { "yield" : 2.000 }
+        },
+        "orig params" : "H2O * CMAQ_1to4(2.14E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.14E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R12",
+        "reactants" : {
+          "O3" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.7E-12, 0.0E+00, 940.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.7E-12,
+        "B" : 0.0E+00,
+        "C" : -940.0
+      },
+      {
+        "rxn id" : "R13",
+        "reactants" : {
+          "O3" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "OH" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.03E-16, 4.57, -693.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.03E-16,
+        "B" : 4.57,
+        "C" : -693.0
+      },
+      {
+        "rxn id" : "R14",
+        "reactants" : {
+          "OH" : {} ,
+          "O" : {}
+        },
+        "products" : {
+          "HO2" : {}
+        },
+        "orig params" : "OH * CMAQ_1to4(2.40E-11, 0.0E+00, -110.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.40E-11,
+        "B" : 0.0E+00,
+        "C" : 110.0
+      },
+      {
+        "rxn id" : "R15",
+        "reactants" : {
+          "HO2" : {} ,
+          "O" : {}
+        },
+        "products" : {
+          "OH" : {}
+        },
+        "orig params" : "HO2 * CMAQ_1to4(3.00E-11, 0.0E+00, -200.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.00E-11,
+        "B" : 0.0E+00,
+        "C" : 200.0
+      },
+      {
+        "rxn id" : "R16",
+        "reactants" : {
+          "OH" : { "qty" : 2 }
+        },
+        "products" : {
+          "O" : {}
+        },
+        "orig params" : "CMAQ_1to4(6.2E-14, 2.6, -945.0) {at 298K}",
+        "type" : "ARRHENIUS",
+        "A" : 6.2E-14,
+        "B" : 2.6,
+        "C" : 945.0
+      },
+      {
+        "rxn id" : "R17",
+        "reactants" : {
+          "OH" : { "qty" : 2 }
+        },
+        "products" : {
+          "H2O2" : {}
+        },
+        "orig params" : "CMAQ_10(9.0E-31, -3.2, 0.0E+00, 3.9E-11, -0.47, 0.0E+00, 0.42, 1.23)",
+        "type" : "TROE",
+        "k0_A" : 9.0E-31,
+        "k0_B" : -3.2,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 3.9E-11,
+        "kinf_B" : -0.47,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.42,
+        "N" : 1.23
+      },
+      {
+        "rxn id" : "R18",
+        "reactants" : {
+          "OH" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "DUMMY" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.8E-11, 0.0E+00, -250.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.8E-11,
+        "B" : 0.0E+00,
+        "C" : 250.0
+      },
+      {
+        "rxn id" : "R19",
+        "reactants" : {
+          "HO2" : { "qty" : 2 }
+        },
+        "products" : {
+          "H2O2" : {} ,
+          "DUMMY" : {}
+        },
+        "orig params" : "CMAQ_9(2.2E-13, -6.0E+02, 1.9E-33, -9.8E+02)",
+        "type" : "CMAQ_H2O2",
+        "k1_A" : 2.2E-13,
+        "k1_C" : 6.0E+02,
+        "k2_A" : 1.9E-33,
+        "k2_C" : 9.8E+02
+      },
+      {
+        "rxn id" : "R20",
+        "reactan ts" : {
+          "HO2" : { "qty" : 2 } ,
+          "H2O" : {}
+        },
+        "products" : {
+          "H2O2" : {}
+        },
+        "orig params" : "H2O * CMAQ_9(3.08E-34, -2.8E+03, 2.66E-54, -3.18E+3)",
+        "type" : "CMAQ_H2O2",
+        "k1_A" : 3.08E-34,
+        "k1_C" : 2.8E+03,
+        "k2_A" : 2.66E-54,
+        "k2_C" : 3.18E+3
+      },
+      {
+        "rxn id" : "R21",
+        "reactants" : {
+          "H2O2" : {}
+        },
+        "products" : {
+          "OH" : { "yield" : 2.000 }
+        },
+        "orig params" : "TUV_J(11, THETA)",
+        "base rate" : 2.59e-6,
+        "Fast-J id" : "H2O2",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R22",
+        "reactants" : {
+          "H2O2" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.8E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.8E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R23",
+        "reactants" : {
+          "H2O2" : {} ,
+          "O" : {}
+        },
+        "products" : {
+          "OH" : {} ,
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.4E-12, 0.0E+00, 2000.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.4E-12,
+        "B" : 0.0E+00,
+        "C" : -2000.0
+      },
+      {
+        "rxn id" : "R24",
+        "reactants" : {
+          "NO" : { "qty" : 2 } ,
+          "O2" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 2.000 }
+        },
+        "orig params" : "O2 * CMAQ_1to4(4.25E-39, 0.0E+00, -664.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.25E-39,
+        "B" : 0.0E+00,
+        "C" : 664.0
+      },
+      {
+        "rxn id" : "R25",
+        "reactants" : {
+          "NO" : {} ,
+          "HO2" : {} 
+        },
+        "products" : {
+          "OH" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(3.45E-12, 0.0E+00, -270.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.45E-12,
+        "B" : 0.0E+00,
+        "C" : 270.0
+      },
+      {
+        "rxn id" : "R26",
+        "reactants" : {
+          "NO2" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "NO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.4E-13, 0.0E+00, 2470.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.4E-13,
+        "B" : 0.0E+00,
+        "C" : -2470.0
+      },
+      {
+        "rxn id" : "R27",
+        "reactants" : {
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : {} ,
+          "O" : {}
+        },
+        "orig params" : "TUV_J(6, THETA)",
+        "scaling" : 0.89,
+        "base rate" : 1.31e-1,
+        "Fast-J id" : "NO3_X",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R28",
+        "reactants" : {
+          "NO3" : {}
+        },
+        "products" : {
+          "NO" : {}
+        },
+        "orig params" : "TUV_J(5, THETA)",
+        "scaling" : 0.11,
+        "base rate" : 1.31e-1,
+        "Fast-J id" : "NO3_L",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R29",
+        "reactants" : {
+          "NO3" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 2.000 }
+        },
+        "orig params" : "CMAQ_1to4(1.8E-11, 0.0E+00, -110.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.8E-11,
+        "B" : 0.0E+00,
+        "C" : 110.0
+      },
+      {
+        "rxn id" : "R30",
+        "reactants" : {
+          "NO3" : {} ,
+          "NO2" : {}
+        },
+        "products" : {
+          "NO" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.5E-14, 0.0E+00, 1260.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.5E-14,
+        "B" : 0.0E+00,
+        "C" : -1260.0
+      },
+      {
+        "rxn id" : "R31",
+        "reactants" : {
+          "NO3" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HO2" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.2E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.2E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R32",
+        "reactants" : {
+          "NO3" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "OH" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.0E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 4.0E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R33",
+        "reactants" : {
+          "NO3" : { "qty" : 2 }
+        },
+        "products" : {
+          "NO2" : { "yield" : 2.000 }
+        },
+        "orig params" : "CMAQ_1to4(8.5E-13, 0.0E+00, 2450.0)",
+        "type" : "ARRHENIUS",
+        "A" : 8.5E-13,
+        "B" : 0.0E+00,
+        "C" : -2450.0
+      },
+      {
+        "rxn id" : "R34",
+        "reactants" : {
+          "NO3" : {} ,
+          "NO2" : {}
+        },
+        "products" : {
+          "N2O5" : {}
+        },
+        "orig params" : "CMAQ_10(3.6E-30, -4.1, 0.0E+00, 1.9E-12, 0.2, 0.0E+00, 0.35, 1.33)",
+        "type" : "TROE",
+        "k0_A" : 3.6E-30,
+        "k0_B" : -4.1,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 1.9E-12,
+        "kinf_B" : 0.2,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.35,
+        "N" : 1.33
+      },
+      {
+        "rxn id" : "R35",
+        "reactants" : {
+          "N2O5" : {}
+        },
+        "products" : {
+          "NO3" : {} ,
+          "NO2" : {} ,
+          "DUMMY" : {}
+        },
+        "orig params" : "CMAQ_10(1.3E-03, -3.5, 11000.0, 9.7E+14, 0.1, 11080.0, 0.35, 1.33)",
+        "type" : "TROE",
+        "k0_A" : 1.3E-03,
+        "k0_B" : -3.5,
+        "k0_C" : -11000.0,
+        "kinf_A" : 9.7E+14,
+        "kinf_B" : 0.1,
+        "kinf_C" : -11080.0,
+        "Fc" : 0.35,
+        "N" : 1.33
+      },
+      {
+        "rxn id" : "R36",
+        "reactants" : {
+          "N2O5" : {}
+        },
+        "products" : {
+          "NO2" : {} ,
+          "NO3" : {}
+        },
+        "orig params" : "TUV_J(8, THETA)",
+        "base rate" : 0.00e+1,
+        "Fast-J id" : "N2O5",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R37",
+        "reactants" : {
+          "N2O5" : {} ,
+          "H2O" : {}
+        },
+        "products" : {
+          "HNO3" : { "yield" : 2.000 } ,
+          "DUMMY" : {}
+        },
+        "orig params" : "H2O * CMAQ_1to4(1.0E-22, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E-22,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R38",
+        "reactants" : {
+          "NO" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HONO" : {}
+        },
+        "orig params" : "CMAQ_10(7.4E-31, -2.4, 0.0E+00, 3.3E-11, -0.3, 0.0E+00, 0.81, 0.87)",
+        "type" : "TROE",
+        "k0_A" : 7.4E-31,
+        "k0_B" : -2.4,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 3.3E-11,
+        "kinf_B" : -0.3,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.81,
+        "N" : 0.87
+      },
+      {
+        "rxn id" : "R39",
+        "reactants" : {
+          "HONO" : {}
+        },
+        "products" : {
+          "NO" : {} ,
+          "OH" : {}
+        },
+        "orig params" : "TUV_J(12, THETA)",
+        "base rate" : 9.18e-4,
+        "Fast-J id" : "HONO",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R40",
+        "reactants" : {
+          "HONO" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.5E-12, 0.0E+00, -260.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.5E-12,
+        "B" : 0.0E+00,
+        "C" : 260.0
+      },
+      {
+        "rxn id" : "R41",
+        "reactants" : {
+          "NO2" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_10(1.8E-30, -3.0, 0.0E+00, 2.8E-11, 0.0E+00, 0.0E+00, 0.6, 1.0)",
+        "type" : "TROE",
+        "k0_A" : 1.8E-30,
+        "k0_B" : -3.0,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 2.8E-11,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.6,
+        "N" : 1.0
+      },
+      {
+        "rxn id" : "R42",
+        "reactants" : {
+          "NO2" : {} ,
+          "OH" : {} ,
+          "H2O" : {}
+        },
+        "products" : {
+          "HNO3" : {} ,
+          "H2O" : {}
+        },
+        "orig params" : "H2O * CMAQ_1to4(1.1E-30, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.1E-30,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R43",
+        "reactants" : {
+          "HNO3" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "NO3" : {}
+        },
+        "orig params" : "CMAQ_8(2.4E-14, -460.0, 2.7E-17, -2199.0, 6.5E-34, -1335.0)",
+        "type" : "CMAQ_OH_HNO3",
+        "k0_A" : 2.4E-14,
+        "k0_C" : 460.0,
+        "k2_A" : 2.7E-17,
+        "k2_C" : 2199.0,
+        "k3_A" : 6.5E-34,
+        "k3_C" : 1335.0
+      },
+      {
+        "rxn id" : "R44",
+        "reactants" : {
+          "HNO3" : {}
+        },
+        "products" : {
+          "OH" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "TUV_J(13, THETA)",
+        "base rate" : 8.61e-8,
+        "Fast-J id" : "HONO2",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R45",
+        "reactants" : {
+          "NO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "PNA" : {}
+        },
+        "orig params" : "CMAQ_10(1.4E-31, -3.1, 0.0E+00, 4.0E-12, 0.0E+00, 0.0E+00, 0.4, 1.26)",
+        "type" : "TROE",
+        "k0_A" : 1.4E-31,
+        "k0_B" : -3.1,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 4.0E-12,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.4,
+        "N" : 1.26
+      },
+      {
+        "rxn id" : "R46",
+        "reactants" : {
+          "PNA" : {}
+        },
+        "products" : {
+          "HO2" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_10(4.1E-5, 0.0E+00, 10650.0, 6.0E15, 0.0E+00, 11170.0, 0.4, 1.26)",
+        "type" : "TROE",
+        "k0_A" : 4.1E-5,
+        "k0_B" : 0.0E+00,
+        "k0_C" : -10650.0,
+        "kinf_A" : 6.0E15,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -11170.0,
+        "Fc" : 0.4,
+        "N" : 1.26
+      },
+      {
+        "rxn id" : "R47",
+        "reactants" : {
+          "PNA" : {}
+        },
+        "products" : {
+          "HO2" : { "yield" : 0.590 } ,
+          "NO2" : { "yield" : 0.590 } ,
+          "OH" : { "yield" : 0.410 } ,
+          "NO3" : { "yield" : 0.410 }
+        },
+        "orig params" : "TUV_J(14, THETA)",
+        "base rate" : 1.89e-6,
+        "Fast-J id" : "HO2NO2",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R48",
+        "reactants" : {
+          "PNA" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(3.2E-13, 0.0E+00, -690.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.2E-13,
+        "B" : 0.0E+00,
+        "C" : 690.0
+      },
+      {
+        "rxn id" : "R49",
+        "reactants" : {
+          "H2" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HO2" : {}
+        },
+        "orig params" : "H2 * CMAQ_1to4(7.7E-12, 0.0E+00, 2100.0)",
+        "type" : "ARRHENIUS",
+        "A" : 7.7E-12,
+        "B" : 0.0E+00,
+        "C" : -2100.0
+      },
+      {
+        "rxn id" : "R50",
+        "reactants" : {
+          "CO" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_9(1.44E-13, 0.0E+00, 3.43E-33, 0.0E+00)",
+        "type" : "CMAQ_H2O2",
+        "k1_A" : 1.44E-13,
+        "k1_C" : 0.0E+00,
+        "k2_A" : 3.43E-33,
+        "k2_C" : 0.0E+00
+      },
+      {
+        "rxn id" : "R51",
+        "reactants" : {
+          "SO2" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "SULF" : {} ,
+          "HO2" : {} ,
+          "SULRXN" : {}
+        },
+        "orig params" : "CMAQ_10(2.8E-31, -2.6, 0.0E+00, 2.0E-12, 0.0E+00, 0.0E+00, 0.53, 1.1)",
+        "type" : "TROE",
+        "k0_A" : 2.8E-31,
+        "k0_B" : -2.6,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 2.0E-12,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.53,
+        "N" : 1.1
+      },
+      {
+        "rxn id" : "R52",
+        "reactants" : {
+          "SO2" : {}
+        },
+        "products" : {
+          "SULF" : {} ,
+          "SULRXN" : {}
+        },
+        "orig params" : "CMAQ_10(0.0E+00, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 0.0E+00,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R53",
+        "reactants" : {
+          "DMS" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "SO2" : {} ,
+          "FORM" : {} ,
+          "MEO2" : {}
+        },
+        "orig params" : "CMAQ_10(1.12E-11, 0.0E+00, 250)",
+        "type" : "ARRHENIUS",
+        "A" : 1.12E-11,
+        "B" : 0.0E+00,
+        "C" : -250
+      },
+      {
+        "rxn id" : "R54",
+        "reactants" : {
+          "DMS" : {} ,
+          "OH" : {} ,
+          "O2" : {}
+        },
+        "products" : {
+          "SULF" : {} ,
+          "MEO2" : {}
+        },
+        "orig params" : "CMAQ_10(1.28E-37, 0.0E+00, -4480)",
+        "type" : "ARRHENIUS",
+        "A" : 1.28E-37,
+        "B" : 0.0E+00,
+        "C" : 4480
+      },
+      {
+        "rxn id" : "55",
+        "reactants" : {
+          "DMS" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "SO2" : {} ,
+          "FORM" : {} ,
+          "MEO2" : {} ,
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_10(1.9E-13, 0.0E+00, -520)",
+        "type" : "ARRHENIUS",
+        "A" : 1.9E-13,
+        "B" : 0.0E+00,
+        "C" : 520
+      },
+      {
+        "rxn id" : "R56",
+        "reactants" : {
+          "C2O3" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO2" : {} ,
+          "MEO2" : {} ,
+          "RO2": {}
+        },
+        "orig params" : "CMAQ_1to4(7.5E-12, 0.0E+00, -290.0)",
+        "type" : "ARRHENIUS",
+        "A" : 7.5E-12,
+        "B" : 0.0E+00,
+        "C" : 290.0
+      },
+      {
+        "rxn id" : "R57",
+        "reactants" : {
+          "C2O3" : {} ,
+          "NO2" : {}
+        },
+        "products" : {
+          "PAN" : {}
+        },
+        "orig params" : "CMAQ_10(3.61E-28, -6.87, 0.0E+00, 1.24E-11, -1.105, 0.0E+00, 0.3, 1.41)",
+        "type" : "TROE",
+        "k0_A" : 3.61E-28,
+        "k0_B" : -6.87,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 1.24E-11,
+        "kinf_B" : -1.105,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.3,
+        "N" : 1.41
+      },
+      {
+        "rxn id" : "R58",
+        "reactants" : {
+          "PAN" : {}
+        },
+        "products" : {
+          "NO2" : {} ,
+          "C2O3" : {} ,
+          "DUMMY" : {}
+        },
+        "orig params" : "CMAQ_10(1.1E-5, 0.0E+00, 10100.0, 1.9E17, 0.0E+00, 14100.0, 0.3, 1.41)",
+        "type" : "TROE",
+        "k0_A" : 1.1E-5,
+        "k0_B" : 0.0E+00,
+        "k0_C" : -10100.0,
+        "kinf_A" : 1.9E17,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -14100.0,
+        "Fc" : 0.3,
+        "N" : 1.41
+      },
+      {
+        "rxn id" : "R59",
+        "reactants" : {
+          "PAN" : {}
+        },
+        "products" : {
+          "NO2" : { "qty": 0.600 } ,
+          "C2O3" : { "qty": 0.600 } ,
+          "NO3" : { "qty": 0.400 } ,
+          "MEO2" : { "qty": 0.400 } ,
+          "RO2" : { "qty": 0.400 }
+        },
+        "orig params" : "TUV_J(28, THETA)",
+        "base rate" : 0.00e+1,
+        "Fast-J id" : "PAN",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R60",
+        "reactants" : {
+          "C2O3" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "PACD" : { "yield" : 0.370 } ,
+          "AACD" : { "yield" : 0.130 } ,
+          "O3" : { "yield" : 0.130 } ,
+          "OH" : { "yield" : 0.500 } ,
+          "MEO2" : { "yield" : 0.500 } ,
+          "RO2" : { "yield" : 0.500 }
+        },
+        "orig params" : "CMAQ_1to4(3.14E-12, 0.0E+00, -580.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.14E-12,
+        "B" : 0.0E+00,
+        "C" : 580.0
+      },
+      {
+        "rxn id" : "R61",
+        "reactants" : {
+          "C2O3" : {} ,
+          "RO2" : {}
+        },
+        "products" : {
+          "AACD" : { "yield" : 0.300 } ,
+          "MEO2" : { "yield" : 0.700 } ,
+          "RO2" : { "yield" : 1.700 }
+        },
+        "orig params" : "CMAQ_1to4(4.4E-13, 0.0E+00, -1070)",
+        "type" : "ARRHENIUS",
+        "A" : 4.4E-13,
+        "B" : 0.0E+00,
+        "C" : 1070
+      },
+      {
+        "rxn id" : "R62",
+        "reactants" : {
+          "C2O3" : {}
+        },
+        "products" : {
+          "MEO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.9E-12, 0.0E+00, -500)",
+        "type" : "ARRHENIUS",
+        "A" : 2.9E-12,
+        "B" : 0.0E+00,
+        "C" : 500
+      },
+      {
+        "rxn id" : "R63",
+        "reactants" : {
+          "CXO3" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 1.000 } ,
+          "ALD2" : { "yield" : 0.500 } ,
+          "XO2H" : { "yield" : 1.000 } ,
+          "RO2" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(6.7E-12, 0.0E+00, -340.0)",
+        "type" : "ARRHENIUS",
+        "A" : 6.7E-12,
+        "B" : 0.0E+00,
+        "C" : 340.0
+      },
+      {
+        "rxn id" : "R64",
+        "reactants" : {
+          "CXO3" : {} ,
+          "NO2" : {}
+        },
+        "products" : {
+          "PANX" : {}
+        },
+        "orig params" : "CMAQ_10(2.7E-28, -7.1, 0.0E+00, 1.2E-11, -0.9, 0.0E+00, 0.3, 1.0)",
+        "type" : "TROE",
+        "k0_A" : 2.7E-28,
+        "k0_B" : -7.1,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 1.2E-11,
+        "kinf_B" : -0.9,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.3,
+        "N" : 1.0
+      },
+      {
+        "rxn id" : "R65",
+        "reactants" : {
+          "PANX" : {}
+        },
+        "products" : {
+          "NO2" : {} ,
+          "CXO3" : {} ,
+          "DUMMY" : {}
+        },
+        "orig params" : "CMAQ_10(4.9E-3, 0.0E+00, 12100.0, 5.4E16, 0.0E+00, 13830.0, 0.3, 1.0)",
+        "type" : "TROE",
+        "k0_A" : 4.9E-3,
+        "k0_B" : 0.0E+00,
+        "k0_C" : -12100.0,
+        "kinf_A" : 5.4E16,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -13830.0,
+        "Fc" : 0.3,
+        "N" : 1.0
+      },
+      {
+        "rxn id" : "R66",
+        "reactants" : {
+          "PANX" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "ALD2" : { "yield" : 0.500 } ,
+          "NO2" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(3.0E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.0E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R67",
+        "reactants" : {
+          "CXO3" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "PACD" : { "yield" : 0.190 } ,
+          "AACD" : { "yield" : 0.060 } ,
+          "ALD2" : { "yield" : 0.250 } ,
+          "O3" : { "yield" : 0.060 } ,
+          "OH" : { "yield" : 0.250 } ,
+          "HO2" : { "yield" : 0.250 }
+        },
+        "orig params" : "CMAQ_1to4(4.3E-13, 0.0E+00, -1040.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.3E-13,
+        "B" : 0.0E+00,
+        "C" : 1040.0
+      },
+      {
+        "rxn id" : "R68",
+        "reactants" : {
+          "CXO3" : {} ,
+          "RO2" : {}
+        },
+        "products" : {
+          "ALD2" : { "yield" : 0.350 } ,
+          "AACD" : { "yield" : 0.150 } ,
+          "HO2" : { "yield" : 0.350 } ,
+          "RO2" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(4.3E-13, 0.0E+00, -1040.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.3E-13,
+        "B" : 0.0E+00,
+        "C" : 1040.0
+      },
+      {
+        "rxn id" : "R69",
+        "reactants" : {
+          "OPO3" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 1.000 } ,
+          "GLY" : { "yield" : 0.500 } ,
+          "CO" : { "yield" : 0.500 } ,
+          "HO2" : { "yield" : 0.800 } ,
+          "CXO3" : { "yield" : 0.200 }
+        },
+        "orig params" : "CMAQ_1to4(4.3E-13, 0.0E+00, -1040.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.3E-13,
+        "B" : 0.0E+00,
+        "C" : 1040.0
+      },
+      {
+        "rxn id" : "R70",
+        "reactants" : {
+          "OPO3" : {} ,
+          "NO2" : {}
+        },
+        "products" : {
+          "OPAN" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.3E-13, 0.0E+00, -1040.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.3E-13,
+        "B" : 0.0E+00,
+        "C" : 1040.0
+      },
+      {
+        "rxn id" : "R71",
+        "reactants" : {
+          "OPAN" : {}
+        },
+        "products" : {
+          "OPO3" : {} ,
+          "NO2" : {} 
+        },
+        "orig params" : "CMAQ_1to4(4.3E-13, 0.0E+00, -1040.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.3E-13,
+        "B" : 0.0E+00,
+        "C" : 1040.0
+      },
+      {
+        "rxn id" : "R72",
+        "reactants" : {
+          "OPAN" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.500 } ,
+          "NTR2" : { "yield" : 0.500} ,
+          "GLY" : { "yield" : 0.500} ,
+          "CO" : { "yield" : 1.000}
+        },
+        "orig params" : "CMAQ_1to4(3.6E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.6E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R73",
+        "reactants" : {
+          "OPO3" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "PACD" : { "yield" : 0.370 } ,
+          "AACD" : { "yield" : 0.130} ,
+          "O3" : { "yield" : 0.130} ,
+          "OH" : { "yield" : 0.500} ,
+          "MEO2" : { "yield" : 0.500} ,
+          "RO2" : { "yield" : 0.500}
+        },
+        "orig params" : "CMAQ_1to4(3.6E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.6E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R74",
+        "reactants" : {
+          "OPO3" : {} ,
+          "RO2" : {}
+        },
+        "products" : {
+          "ALDX" : { "yield" : 0.700 } ,
+          "AACD" : { "yield" : 0.300 } ,
+          "XO2H" : { "yield" : 0.700 } ,
+          "RO2" : { "yield" : 1.700 } 
+        },
+        "orig params" : "CMAQ_1to4(3.6E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.6E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R78",
+        "reactants" : {
+          "MEO2" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "FORM" : {} ,
+          "HO2" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.3E-12, 0.0E+00, -360.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.3E-12,
+        "B" : 0.0E+00,
+        "C" : 360.0
+      },
+      {
+        "rxn id" : "R79",
+        "reactants" : {
+          "MEO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "MEPX" : { "yield" : 0.900 } ,
+          "FORM" : { "yield" : 0.100 }
+        },
+        "orig params" : "CMAQ_1to4(3.8E-13, 0.0E+00, -780.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.8E-13,
+        "B" : 0.0E+00,
+        "C" : 780.0
+      },
+      {
+        "rxn id" : "R80",
+        "reactants" : {
+          "MEO2" : {} ,
+          "C2O3" : {}
+        },
+        "products" : {
+          "FORM" : {} ,
+          "HO2" : { "yield" : 0.900 } ,
+          "MEO2" : { "yield" : 0.900 } ,
+          "AACD" : { "yield" : 0.100 } ,
+          "RO2" : { "yield" : 0.900 }
+        },
+        "orig params" : "CMAQ_1to4(2.0E-12, 0.0E+00, -500.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.0E-12,
+        "B" : 0.0E+00,
+        "C" : 500.0
+      },
+      {
+        "rxn id" : "R82",
+        "reactants" : {
+          "MEPX" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "MEO2" : { "yield" : 0.600 } ,
+          "RO2" : { "yield" : 0.600 } ,
+          "FORM" : { "yield" : 0.400 } ,
+          "OH" : { "yield" : 0.400 }
+        },
+        "orig params" : "CMAQ_1to4(5.3E-12, 0.0E+00, -190.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.3E-12,
+        "B" : 0.0E+00,
+        "C" : 190.0
+      },
+      {
+        "rxn id" : "R83",
+        "reactants" : {
+          "MEPX" : {}
+        },
+        "products" : {
+          "MEO2" : {},
+          "RO2" : {},
+          "OH" : {}
+        },
+        "orig params" : "TUV_J(26, THETA)",
+        "base rate" : 1.81e-6,
+        "Fast-J id" : "MeOOH",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R85",
+        "reactants" : {
+          "XO2H" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "ROOH" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.12E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.12E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R93",
+        "reactants" : {
+          "ROOH" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "XO2H" : { "yield" : 0.560 } ,
+          "XO2N" : { "yield" : 0.040 } ,
+          "RO2" : { "yield" : 0.600 } ,
+          "OH" : { "yield" : 0.400}
+        },
+        "orig params" : "CMAQ_1to4(5.30E-12, 0.0E+00, -190.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.30E-12,
+        "B" : 0.0E+00,
+        "C" : 190.0
+      },
+      {
+        "rxn id" : "R94",
+        "reactants" : {
+          "ROOH" : {}
+        },
+        "products" : {
+          "HO2" : {} ,
+          "OH" : {}
+        },
+        "orig params" : "TUV_J(26, THETA)",
+        "base rate" : 1.81e-6,
+        "Fast-J id" : "MeOOH",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R95",
+        "reactants" : {
+          "NTR1" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.0E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.0E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R96",
+        "reactants" : {
+          "NTR1" : {}
+        },
+        "products" : {
+          "NO2" : {}
+        },
+        "orig params" : "TUV_J(91, THETA)",
+        "base rate" : 4.77e-7,
+        "Fast-J id" : "NTR",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R97",
+        "reactants" : {
+          "NTR2" : {}
+        },
+        "products" : {
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.3E-5, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.30E-5,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R98",
+        "reactants" : {
+          "MEOH" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "FORM" : {} ,
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.85E-12, 0.0E+00, 345.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.85E-12,
+        "B" : 0.0E+00,
+        "C" : -345.0
+      },
+      {
+        "rxn id" : "R99",
+        "reactants" : {
+          "ETOH" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "ALD2" : { "yield" : 0.950 } ,
+          "HO2" : { "yield" : 0.900 } ,
+          "XO2H" : { "yield" : 0.100 } ,
+          "RO2" : { "yield" : 0.100 } ,
+          "FORM" : { "yield" : 0.078 } ,
+          "GLYD" : { "yield" : 0.011 }
+        },
+        "orig params" : "CMAQ_1to4(3.0E-12, 0.0E+00, -20.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.0E-12,
+        "B" : 0.0E+00,
+        "C" : 20.0
+      },
+      {
+        "rxn id" : "R100",
+        "reactants" : {
+          "FORM" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HO2" : {} ,
+          "CO" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.4E-12, 0.0E+00, -135.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.4E-12,
+        "B" : 0.0E+00,
+        "C" : 135.0
+      },
+      {
+        "rxn id" : "R101",
+        "reactants" : {
+          "FORM" : {}
+        },
+        "products" : {
+          "HO2" : { "yield" : 2.000 } ,
+          "CO" : {}
+        },
+        "orig params" : "TUV_J(15, THETA)",
+        "base rate" : 7.93e-6,
+        "Fast-J id" : "HCHO_a",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R102",
+        "reactants" : {
+          "FORM" : {}
+        },
+        "products" : {
+          "CO" : {} ,
+          "H2" : {}
+        },
+        "orig params" : "TUV_J(16, THETA)",
+        "base rate" : 2.20e-5,
+        "Fast-J id" : "HCHO_b",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R103",
+        "reactants" : {
+          "FORM" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "HNO3" : {} ,
+          "HO2" : {} ,
+          "CO" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.5E-16, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 5.5E-16,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R104",
+        "reactants" : {
+          "ALD2" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "C2O3" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.7E-12, 0.0E+00, -345.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.7E-12,
+        "B" : 0.0E+00,
+        "C" : 345.0
+      },
+      {
+        "rxn id" : "R105",
+        "reactants" : {
+          "ALD2" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "C2O3" : {} ,
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.4E-12, 0.0E+00, 1860.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.4E-12,
+        "B" : 0.0E+00,
+        "C" : -1860.0
+      },
+      {
+        "rxn id" : "R106",
+        "reactants" : {
+          "ALD2" : {}
+        },
+        "products" : {
+          "MEO2" : {} ,
+          "RO2" : {} ,
+          "CO" : {} ,
+          "HO2" : {}
+        },
+        "orig params" : "TUV_J(17, THETA)+TUV_J(19, THETA)",
+        "base rate" : 2.20e-6,
+        "Fast-J id" : "ALD2",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R107",
+        "reactants" : {
+          "ALDX" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "CXO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.9E-12, 0.0E+00, -405.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.9E-12,
+        "B" : 0.0E+00,
+        "C" : 405.0
+      },
+      {
+        "rxn id" : "R108",
+        "reactants" : {
+          "ALDX" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "CXO3" : {} ,
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(6.3E-15, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 6.3E-15,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R109",
+        "reactants" : {
+          "ALDX" : {}
+        },
+        "products" : {
+          "ALD2" : {} ,
+          "XO2H" : {} ,
+          "RO2" : {} ,
+          "CO" : {} ,
+          "HO2" : {}
+        },
+        "orig params" : "TUV_J(20, THETA)",
+        "base rate" : 2.20e-6,
+        "Fast-J id" : "ALDX",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R110",
+        "reactants" : {
+          "GLYD" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "GLY" : { "yield": 0.200 } ,
+          "HO2" : { "yield": 0.200 } ,
+          "C2O3" : { "yield": 0.800 }
+        },
+        "orig params" : "CMAQ_1to4(8.0E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 8.0E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R111",
+        "reactants" : {
+          "GLYD" : {}
+        },
+        "products" : {
+          "FORM" : { "yield": 0.740 } ,
+          "CO" : { "yield": 0.890 } ,
+          "HO2" : { "yield": 1.400 } ,
+          "MEOH" : { "yield": 0.150 } ,
+          "OH" : { "yield": 0.190 } ,
+          "GLY" : { "yield": 0.110 } ,
+          "XO2H" : { "yield": 0.110 } ,
+          "RO2" : { "yield": 0.110 }
+        },
+        "orig params" : "TUV_J(24, THETA)",
+        "base rate" : 7.64e-5,
+        "Fast-J id" : "MGLY",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R113",
+        "reactants" : {
+          "GLY" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "CO" : { "yield": 1.800 } ,
+          "XO2" : { "yield": 0.200 } ,
+          "RO2" : { "yield": 0.200 } ,
+          "HO2" : { "yield": 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(3.1E-12, 0.0E+00, -340)",
+        "type" : "ARRHENIUS",
+        "A" : 3.1E-12,
+        "B" : 0.0E+00,
+        "C" : 340
+      },
+      {
+        "rxn id" : "R114",
+        "reactants" : {
+          "GLY" : {}
+        },
+        "products" : {
+          "HO2" : { "yield": 2.000 } ,
+          "CO" : { "yield": 2.000 }
+        },
+        "orig params" : "TUV_J(24, THETA)",
+        "base rate" : 7.64e-5,
+        "Fast-J id" : "MGLY",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R115",
+        "reactants" : {
+          "GLY" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "HNO3" : { "yield": 1.000 } ,
+          "CO" : { "yield": 1.500 } ,
+          "XO2" : { "yield": 0.500 } ,
+          "RO2" : { "yield": 0.500 } ,
+          "HO2" : { "yield": 1.000}
+        },
+        "orig params" : "CMAQ_1to4(4.0E-16, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 4.0E-16,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R116",
+        "reactants" : {
+          "MGLY" : {}
+        },
+        "products" : {
+          "C2O3" : {} ,
+          "HO2" : {} ,
+          "CO" : {}
+        },
+        "orig params" : "TUV_J(24, THETA)",
+        "base rate" : 7.64e-5,
+        "Fast-J id" : "MGLY",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R117",
+        "reactants" : {
+          "MGLY" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "HNO3" : {} ,
+          "C2O3" : {} ,
+          "XO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.0E-16, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 5.0E-16,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R118",
+        "reactants" : {
+          "MGLY" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "C2O3" : {} ,
+          "CO" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.9E-12, 0.0E+00, -575)",
+        "type" : "ARRHENIUS",
+        "A" : 1.9E-12,
+        "B" : 0.0E+00,
+        "C" : 575
+      },
+      {
+        "rxn id" : "R119",
+        "reactants" : {
+          "ACET" : {}
+        },
+        "products" : {
+          "CO" : { "yield": 0.380 } ,
+          "MEO2" : { "yield": 1.380 } ,
+          "RO2" : { "yield": 1.380 } ,
+          "C2O3" : { "yield": 0.620 }
+        },
+        "orig params" : "TUV_J(24, THETA)",
+        "base rate" : 7.64e-5,
+        "Fast-J id" : "MGLY",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R120",
+        "reactants" : {
+          "ACET" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "FORM" : {} ,
+          "C2O3" : {} ,
+          "XO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.41E-12, 0.0E+00, 620.6)",
+        "type" : "ARRHENIUS",
+        "A" : 1.41E-12,
+        "B" : 0.0E+00,
+        "C" : -620.6
+      },
+      {
+        "rxn id" : "R121",
+        "reactants" : {
+          "KET" : {}
+        },
+        "products" : {
+          "FORM" : { "yield": 0.150 } ,
+          "ALD2" : { "yield": 0.580 } ,
+          "ALDX" : { "yield": 0.340 } ,
+          "HO2" : { "yield": 0.960 } ,
+          "C2O3" : { "yield": 0.700 } ,
+          "CXO3" : { "yield": 0.300 } ,
+          "XO2" : { "yield": 1.300 } ,
+          "XO2N" : { "yield": 0.030 } ,
+          "RO2" : { "yield": 1.330 } ,
+          "PAR" : { "yield": -3.00 }
+        },
+        "orig params" : "TUV_J(24, THETA)",
+        "base rate" : 7.64e-5,
+        "Fast-J id" : "MGLY",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R122",
+        "reactants" : {
+          "KET" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "KET" : { "yield": 0.060 } ,
+          "FORM" : { "yield": 0.150 } ,
+          "ALD2" : { "yield": 0.290 } ,
+          "ALDX" : { "yield": 0.460 } ,
+          "HO2" : { "yield": 0.610 } ,
+          "C2O3" : { "yield": 0.270 } ,
+          "CXO3" : { "yield": 0.060 } ,
+          "XO2" : { "yield": 0.720 } ,
+          "XO2N" : { "yield": 0.040 } ,
+          "RO2" : { "yield": 0.760 } ,
+          "PAR" : { "yield": -1.38 }
+        },
+        "orig params" : "CMAQ_1to4(1.0E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R123",
+        "reactants" : {
+          "HACT" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "MGLY" : {} ,
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.0E-12, 0.0E+00, 320)",
+        "type" : "ARRHENIUS",
+        "A" : 2.0E-12,
+        "B" : 0.0E+00,
+        "C" : -320
+      },
+      {
+        "rxn id" : "R124",
+        "reactants" : {
+          "FACD" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.5E-13, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 4.5E-13,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R125",
+        "reactants" : {
+          "AACD" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "MEO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.0E-14, 0.0E+00, -850.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.0E-14,
+        "B" : 0.0E+00,
+        "C" : 850.0
+      },
+      {
+        "rxn id" : "R126",
+        "reactants" : {
+          "PACD" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "C2O3" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.3E-12, 0.0E+00, -190.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.3E-12,
+        "B" : 0.0E+00,
+        "C" : 190.0
+      },
+      {
+        "rxn id" : "R127",
+        "reactants" : {
+          "CH4" : {},
+          "OH" : {} 
+        },
+        "products" : {
+          "MEO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.85E-12, 0.0E+00, 1690.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.85E-12,
+        "B" : 0.0E+00,
+        "C" : -1690.0
+      },
+      {
+        "rxn id" : "R128",
+        "reactants" : {
+          "ECH4" : {},
+          "OH" : {} 
+        },
+        "products" : {
+          "MEO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.85E-12, 0.0E+00, 1690.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.85E-12,
+        "B" : 0.0E+00,
+        "C" : -1690.0
+      },
+      {
+        "rxn id" : "R129",
+        "reactants" : {
+          "ETHA" : {} ,
+          "OH" : {} 
+        },
+        "products" : {
+          "ALD2" : { "yield" : 0.991 } ,
+          "XO2H" : { "yield" : 0.991 } ,
+          "XO2N" : { "yield" : 0.009 } ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(6.9E-12, 0.0E+00, 1000.0)",
+        "type" : "ARRHENIUS",
+        "A" : 6.9E-12,
+        "B" : 0.0E+00,
+        "C" : -1000.0
+      },
+      {
+        "rxn id" : "R130",
+        "reactants" : {
+          "PRPA" : {} ,
+          "OH" : {} 
+        },
+        "products" : {
+          "XPRP" : {}
+        },
+        "orig params" : "CMAQ_1to4(7.6E-12, 0.0E+00, 585.0)",
+        "type" : "ARRHENIUS",
+        "A" : 7.6E-12,
+        "B" : 0.0E+00,
+        "C" : -585.0
+      },
+      {
+        "rxn id" : "R131",
+        "reactants" : {
+          "XPRP" : {}
+        },
+        "products" : {
+          "XO2N" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_10(2.37E-21, 0.0E+00, 0.0E+00, 4.3E-1, -8.0, 0.0E+00, 0.41, 1.00)",
+        "type" : "TROE",
+        "k0_A" : 2.37E-21,
+        "k0_B" : 0.0E+00,
+        "k0_C" : -0.0E+00,
+				"kinf_A" : 4.3E-1,
+				"kinf_B" : -8.0,
+				"kinf_C" : -0.0E+00,
+				"Fc" : 0.41,
+				"N" : 1.00
+      },
+      {
+        "rxn id" : "R132",
+        "reactants" : {
+          "XPRP" : {}
+        },
+        "products" : {
+          "ACET" : { "yield" : 0.732 } ,
+          "ALDX" : { "yield" : 0.268 } ,
+          "PAR" : { "yield" : 0.268 } ,
+          "XO2H" : { "yield" : 1.000 } ,
+          "RO2" : { "yield" : 1.000 }
+
+        },
+        "orig params" : "CMAQ_1to4(1.0E+00, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E+00,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R133",
+        "reactants" : {
+          "PAR" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "XPAR" : {}
+
+        },
+        "orig params" : "CMAQ_1to4(3.09E-13, 2.0, -300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.09E-13,
+        "B" : 2.0,
+        "C" : 300.0
+      },
+      {
+        "rxn id" : "R134",
+        "reactants" : {
+          "XPAR" : {}
+        },
+        "products" : {
+          "XO2N" : { "yield" : 1.000 } ,
+          "RO2" : { "yield" : 1.000 } ,
+          "PAR" : { "yield" : -3.00 }
+        },
+        "orig params" : "CMAQ_10(4.81E-20, 0.0E+00, 0.0E+00, 4.3E-1, -8.0, 0.0E+00, 0.41, 1.00)",
+        "type" : "TROE",
+        "k0_A" : 4.81E-20,
+        "k0_B" : 0.0E+00,
+        "k0_C" : -0.0E+00,
+				"kinf_A" : 4.3E-1,
+				"kinf_B" : -8.0,
+				"kinf_C" : -0.0E+00,
+				"Fc" : 0.41,
+				"N" : 1.00
+      },
+      {
+        "rxn id" : "R135",
+        "reactants" : {
+          "XPAR" : {}
+        },
+        "products" : {
+          "ROR" : { "yield" : 0.870 } ,
+          "ALDX" : { "yield" : 0.130 } ,
+          "XO2H" : { "yield" : 0.130 } ,
+          "RO2" : { "yield" : 0.130 } ,
+          "PAR" : { "yield" : -0.13 }
+
+        },
+        "orig params" : "CMAQ_1to4(1.0E+00, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E+00,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R136",
+        "reactants" : {
+          "ROR" : {}
+        },
+        "products" : {
+          "ACET" : { "yield" : 0.320 } ,
+          "KET" : { "yield" : 0.300 } ,
+          "FORM" : { "yield" : 0.040 } ,
+          "ALD2" : { "yield" : 0.460 } ,
+          "ALDX" : { "yield" : 0.100 } ,
+          "HO2" : { "yield" : 0.620 } ,
+          "MEO2" : { "yield" : 0.110 } ,
+          "XO2" : { "yield" : 1.750 } ,
+          "XO2H" : { "yield" : 0.250 } ,
+          "XO2N" : { "yield" : 0.020 } ,
+          "RO2" : { "yield" : 2.130 } ,
+          "PAR" : { "yield" : -1.63 }
+        },
+        "orig params" : "CMAQ_1to4(1.0E+15, 0.0E+00, 8000.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E+15,
+        "B" : 0.0E+00,
+        "C" : -8000.0
+      },
+      {
+        "rxn id" : "R137",
+        "reactants" : {
+          "ROR" : {} ,
+          "O2" : {}
+        },
+        "products" : {
+          "ACET" : { "yield" : 0.150 } ,
+          "KET" : { "yield" : 0.850 } ,
+          "HO2" : { "yield" : 1.000 } ,
+          "PAR" : { "yield" : -0.300 }
+        },
+        "orig params" : "CMAQ_1to4(2.0E-14, 0.0E+00, 250.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.0E-14,
+        "B" : 0.0E+00,
+        "C" : -250.0
+      },
+      {
+        "rxn id" : "R138",
+        "reactants" : {
+          "ETHY" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "GLY" : { "yield" : 0.700 } ,
+          "OH" : { "yield" : 0.700 } ,
+          "FACD" : { "yield" : 0.300 } ,
+          "CO" : { "yield" : 0.300 } ,
+          "HO2" : { "yield" : 0.300 }
+        },
+        "orig params" : "CMAQ_10(5.0E-30, -1.5, 0.0E+00, 1.0E-12, 0.0E+00, 0.0E+00, 0.37, 1.3)",
+        "type" : "TROE",
+        "k0_A" : 5.0E-30,
+        "k0_B" : -1.5,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 1.0E-12,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.37,
+        "N" : 1.3
+      },
+      {
+        "rxn id" : "R139",
+        "reactants" : {
+          "ETH" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "XO2H" : { "yield" : 1.000 } ,
+          "RO2" : { "yield" : 1.000 } ,
+          "FORM" : { "yield" : 1.560 } ,
+          "GLYD" : { "yield" : 0.220 }
+        },
+        "orig params" : "CMAQ_10(8.6E-29, -3.1, 0.0E+00, 9.0E-12, -0.85, 0.0E+00, 0.48, 1.15)",
+        "type" : "TROE",
+        "k0_A" : 8.6E-29,
+        "k0_B" : -3.1,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 9.0E-12,
+        "kinf_B" : -0.85,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.48,
+        "N" : 1.15
+      },
+      {
+        "rxn id" : "R140",
+        "reactants" : {
+          "ETH" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "FORM" : {} ,
+          "CO" : { "yield" : 0.350 } ,
+          "HO2" : { "yield" : 0.270 } ,
+          "OH" : { "yield" : 0.170 } ,
+          "FACD" : { "yield" : 0.420 }
+        },
+        "orig params" : "CMAQ_1to4(6.82E-15, 0.0E+00, 2500.0)",
+        "type" : "ARRHENIUS",
+        "A" : 6.82E-15,
+        "B" : 0.0E+00,
+        "C" : -2500.0
+      },
+      {
+        "rxn id" : "R141",
+        "reactants" : {
+          "ETH" : {} ,
+          "NO3" : {} 
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.500 } ,
+          "NTR1" : { "yield" : 0.500 } ,
+          "XO2H": {"yield" : 0.500 } ,
+          "XO2": {"yield" : 0.500 } ,
+          "RO2": {"yield" : 1.000 } ,
+          "FORM" : { "yield" : 1.125 }
+        },
+        "orig params" : "CMAQ_1to4(3.3E-12, 0.0E+00, 2880.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.3E-12,
+        "B" : 0.0E+00,
+        "C" : -2880.0
+      },
+      {
+        "rxn id" : "R142",
+        "reactants" : {
+          "OLE" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "FORM" : { "yield" : 0.781 } ,
+          "ALD2" : { "yield" : 0.488 } ,
+          "ALDX" : { "yield" : 0.488 } ,
+          "XO2H" : { "yield" : 0.976 } ,
+          "XO2" : { "yield" : 0.195 } ,
+          "XO2N" : { "yield" : 0.024 } ,
+          "RO2" : { "yield" : 1.195 } ,
+          "PAR" : { "yield" : -0.73 }
+        },
+        "orig params" : "CMAQ_10(8.0E-27, -3.5, 0.0E+00, 3.0E-11, -1.00, 0.0E+00, 0.5, 1.13)",
+        "type" : "TROE",
+        "k0_A" : 8.0E-27,
+        "k0_B" : -3.5,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 3.0E-11,
+        "kinf_B" : -1.00,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.5,
+        "N" : 1.13
+      },
+      {
+        "rxn id" : "R143",
+        "reactants" : {
+          "OLE" : {} ,
+          "O3" : {} 
+        },
+        "products" : {
+          "ALD2" : { "yield" : 0.295 } ,
+          "FORM" : { "yield" : 0.555 } ,
+          "ALDX" : { "yield" : 0.270 } ,
+          "XO2H" : { "yield" : 0.150 } ,
+          "RO2" : { "yield" : 0.150 } ,
+          "OH" : { "yield" : 0.334 } ,
+          "HO2" : { "yield" : 0.080 } ,
+          "CO" : { "yield" : 0.378 } ,
+          "GLY" : { "yield" : 0.075 } ,
+          "MGLY" : { "yield" : 0.075 } ,
+          "FACD" : { "yield" : 0.090 } ,
+          "AACD" : { "yield" : 0.130 } ,
+          "H2O2" : { "yield" : 0.040 } ,
+          "PAR" : { "yield" : -0.79 }
+        },
+        "orig params" : "CMAQ_1to4(5.5E-15, 0.0E+00, 1880.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.5E-15,
+        "B" : 0.0E+00,
+        "C" : -1880.0
+      },
+      {
+        "rxn id" : "R144",
+        "reactants" : {
+          "OLE" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.500 } ,
+          "NTR1" : { "yield" : 0.500 } ,
+          "XO2" : { "yield" : 0.480 } ,
+          "XO2H" : { "yield" : 0.480 } ,
+          "XO2N" : { "yield" : 0.040 } ,
+          "RO2" : {} ,
+          "FORM" : { "yield" : 0.500 } ,
+          "ALD2" : { "yield" : 0.250 } ,
+          "ALDX" : { "yield" : 0.375 } ,
+          "PAR" : { "yield" : -1.000 }
+        },
+        "orig params" : "CMAQ_1to4(4.6E-13, 0.0E+00, -1155.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.6E-13,
+        "B" : 0.0E+00,
+        "C" : 1155.0
+      },
+      {
+        "rxn id" : "R145",
+        "reactants" : {
+          "IOLE" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "ALD2" : { "yield" : 1.300 } ,
+          "ALDX" : { "yield" : 0.700 } ,
+          "XO2H" : {},
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.05E-11, 0.0E+00, -519.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.05E-11,
+        "B" : 0.0E+00,
+        "C" : 519.0
+      },
+      {
+        "rxn id" : "R146",
+        "reactants" : {
+          "IOLE" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "ALD2" : { "yield" : 0.732 } ,
+          "ALDX" : { "yield" : 0.442 } ,
+          "FORM" : { "yield" : 0.128 } ,
+          "CO" : { "yield" : 0.245 } ,
+          "OH" : { "yield" : 0.500 } ,
+          "XO2H" : { "yield" : 0.300 } ,
+          "RO2" : { "yield" : 0.300 } ,
+          "GLY" : { "yield" : 0.240 } ,
+          "MGLY" : { "yield" : 0.060 } ,
+          "PAR" : { "yield" : 0.290 } ,
+          "AACD" : { "yield" : 0.080 } ,
+          "H2O2" : { "yield" : 0.080 }
+        },
+        "orig params" : "CMAQ_1to4(4.7E-15, 0.0E+00, 1013.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.7E-15,
+        "B" : 0.0E+00,
+        "C" : -1013.0
+      },
+      {
+        "rxn id" : "R147",
+        "reactants" : {
+          "IOLE" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.500 } ,
+          "NTR1" : { "yield" : 0.500 } ,
+          "XO2" : { "yield" : 0.480 } ,
+          "XO2H" : { "yield" : 0.480 } ,
+          "XO2N" : { "yield" : 0.040 } ,
+          "RO2" : {} ,
+          "ALD2" : { "yield" : 0.500 } ,
+          "ALDX" : { "yield" : 0.625 } ,
+          "PAR" : {}
+        },
+        "orig params" : "CMAQ_1to4(3.7E-13, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.7E-13,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R148",
+        "reactants" : {
+          "BENZ" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "CRES" : { "yield" : 0.530 } ,
+          "BZO2" : { "yield" : 0.352 } ,
+          "RO2" : { "yield" : 0.352 } ,
+          "OPEN" : { "yield" : 0.118 } ,
+          "OH" : { "yield" : 0.118 } ,
+          "HO2" : { "yield" : 0.530 }
+        },
+        "orig params" : "CMAQ_1to4(2.3E-12, 0.0E+00, 190.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.3E-12,
+        "B" : 0.0E+00,
+        "C" : -190.0
+      },
+      {
+        "rxn id" : "R152",
+        "reactants" : {
+          "TOL" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "CRES" : { "yield" : 0.180 } ,
+          "TO2" : { "yield" : 0.650 } ,
+          "RO2" : { "yield" : 0.720 } ,
+          "OPEN" : { "yield" : 0.100 } ,
+          "OH" : { "yield" : 0.100 } ,
+          "XO2H" : { "yield" : 0.070 } ,
+          "HO2" : { "yield" : 0.180 }
+        },
+        "orig params" : "CMAQ_1to4(1.8E-12, 0.0E+00, -340.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.8E-12,
+        "B" : 0.0E+00,
+        "C" : 340.0
+      },
+      {
+        "rxn id" : "R153",
+        "reactants" : {
+          "TO2" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.860 } ,
+          "NTR2" : { "yield" : 0.140 } ,
+          "GLY" : { "yield" : 0.417 } ,
+          "MGLY" : { "yield" : 0.443 } ,
+          "OPEN" : { "yield" : 0.660 } ,
+          "XOPN" : { "yield" : 0.200 } ,
+          "HO2" : { "yield" : 0.860 }
+        },
+        "orig params" : "CMAQ_1to4(8.1E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 8.1E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R154",
+        "reactants" : {
+          "TO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "ARPX" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.39E-13, 0.0E+00, -1300)",
+        "type" : "ARRHENIUS",
+        "A" : 2.39E-13,
+        "B" : 0.0E+00,
+        "C" : 1300
+      },
+      {
+        "rxn id" : "R155",
+        "reactants" : {
+          "TO2" : {} ,
+          "RO2" : {}
+        },
+        "products" : {
+          "GLY" : { "yield" : 0.480 } ,
+          "MGLY" : { "yield" : 0.520 } ,
+          "OPEN" : { "yield" : 0.770 } ,
+          "XOPN" : { "yield" : 0.230 } ,
+          "HO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.39E-13, 0.0E+00, -1300)",
+        "type" : "ARRHENIUS",
+        "A" : 2.39E-13,
+        "B" : 0.0E+00,
+        "C" : 1300
+      },
+      {
+        "rxn id" : "R156",
+        "reactants" : {
+          "XYL" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "CRES" : { "yield" : 0.155 } ,
+          "XLO2" : { "yield" : 0.544 } ,
+          "RO2" : { "yield" : 0.602 } ,
+          "XOPN" : { "yield" : 0.244 } ,
+          "OH" : { "yield" : 0.244 } ,
+          "XO2H" : { "yield" : 0.058 } ,
+          "HO2" : { "yield" : 0.155 }
+        },
+        "orig params" : "CMAQ_1to4(1.85E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.85E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R158",
+        "reactants" : {
+          "XYL2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "ARPX" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.5E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.5E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R160",
+        "reactants" : {
+          "OPEN" : {}
+        },
+        "products" : {
+          "OPO3" : {} ,
+          "HO2" : {} ,
+          "CO" : {}
+        },
+	      "scaling factor" : 9.0,
+        "orig params" : "9.0 * TUV_J(15, THETA)",
+        "base rate" : 7.17e-5,
+        "Fast-J id" : "HCHO_a",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R161",
+        "reactants" : {
+          "OPEN" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "OPO3" : { "yield" : 0.600 } ,
+          "XO2H" : { "yield" : 0.400 } ,
+          "RO2" : { "yield" : 0.400 } ,
+          "GLY" : { "yield" : 0.400 }
+        },
+        "orig params" : "CMAQ_1to4(4.4E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 4.4E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R162",
+        "reactants" : {
+          "OPEN" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "GLY" : { "yield" : 1.400 } ,
+          "MGLY" : { "yield" : 0.240 } ,
+          "OH" : { "yield" : 0.500 } ,
+          "C2O3" : { "yield" : 0.120 } ,
+          "FORM" : { "yield" : 0.080 } ,
+          "ALD2" : { "yield" : 0.020 } ,
+          "CO" : { "yield" : 1.980 } ,
+          "HO2" : { "yield" : 0.560 }
+        },
+        "orig params" : "CMAQ_1to4(5.4E-17, 0.0E+00, 500.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.4E-17,
+        "B" : 0.0E+00,
+        "C" : -500.0
+      },
+      {
+        "rxn id" : "R163",
+        "reactants" : {
+          "OPEN" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "OPO3" : {} ,
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(3.8E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.8E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R164",
+        "reactants" : {
+          "XOPN" : {}
+        },
+        "products" : {
+          "GLY" : { "yield" : 0.400 } ,
+          "XO2H" : {} ,
+          "HO2" : { "yield" : 0.700 } ,
+          "CO" : { "yield" : 0.700 } ,
+          "C2O3": { "yield" : 0.300 }
+        },
+	      "scaling factor" : 9.0,
+        "orig params" : "9.0 * TUV_J(15, THETA)",
+        "base rate" : 7.17e-5,
+        "Fast-J id" : "HCHO_a",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R165",
+        "reactants" : {
+          "XOPN" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "MGLY" : {} ,
+          "GLY" : { "yield" : 0.400 } ,
+          "XO2H" : { "yield" : 2.000 } ,
+          "RO2" : { "yield" : 2.000 }
+        },
+        "orig params" : "CMAQ_1to4(9.0E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 9.0E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R166",
+        "reactants" : {
+          "XOPN" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "MGLY" : { "yield" : 1.200 } ,
+          "OH" : { "yield" : 0.500 } ,
+          "C2O3" : { "yield" : 0.600 } ,
+          "ALD2" : { "yield" : 0.100 } ,
+          "CO" : { "yield" : 0.500 } ,
+          "XO2H" : { "yield" : 0.300 } ,
+          "RO2" : { "yield" : 0.300 }
+        },
+        "orig params" : "CMAQ_1to4(1.08E-16, 0.0E+00, 500.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.08E-16,
+        "B" : 0.0E+00,
+        "C" : -500.0
+      },
+      {
+        "rxn id" : "R167",
+        "reactants" : {
+          "XOPN" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.500 } ,
+          "NTR2" : { "yield" : 0.500 } ,
+          "XO2H" : { "yield" : 0.450 } ,
+          "XO2" : { "yield" : 0.450 } ,
+          "XO2N" : { "yield" : 0.100 } ,
+          "RO2" : {} ,
+          "OPEN" : { "yield" : 0.250 } ,
+          "MGLY" : { "yield" : 0.250 }
+        },
+        "orig params" : "CMAQ_1to4(3.0E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.0E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R168",
+        "reactants" : {
+          "CRES" : {} ,
+          "OH" : {} 
+        },
+        "products" : {
+          "GLY" : { "yield" : 0.025 } ,
+          "OPEN" : { "yield" : 0.025 } ,
+          "HO2" : {} ,
+          "CRO" : { "yield" : 0.200 } ,
+          "CATI" : { "yield" : 0.732 } ,
+          "XO2N" : { "yield" : 0.020 } ,
+          "RO2" : { "yield" : 0.020 }
+        },
+        "orig params" : "CMAQ_1to4(1.7E-12, 0.0E+00, -950.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.1E-11,
+        "B" : 0.0E+00,
+        "C" : 950.0
+      },
+      {
+        "rxn id" : "R169",
+        "reactants" : {
+          "CRES" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "CRO" : { "yield" : 0.300 } ,
+          "HNO3" : {} ,
+          "XO2" : { "yield" : 0.480 } ,
+          "XO2H" : { "yield" : 0.120 } ,
+          "GLY" : { "yield" : 0.240 } ,
+          "MGLY" : { "yield" : 0.240 } ,
+          "OPO3" : { "yield" : 0.480 } ,
+          "XO2N" : { "yield" : 0.100 } ,
+          "RO2" : { "yield" : 0.700 }
+        },
+        "orig params" : "CMAQ_1to4(1.4E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.4E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R170",
+        "reactants" : {
+          "CRO" : {} ,
+          "NO2" : {}
+        },
+        "products" : {
+          "CRON" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.1E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.1E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R171",
+        "reactants" : {
+          "CRO" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "CRES" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.5E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 5.5E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R172",
+        "reactants" : {
+          "CRON" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "NTR2" : {} ,
+          "CRO" : { "yield": 0.500 } 
+        },
+        "orig params" : "CMAQ_1to4(1.53E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.53E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R173",
+        "reactants" : {
+          "CRON" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NTR2" : {} ,
+          "CRO" : { "yield": 0.500 } ,
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(3.8E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.8E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R174",
+        "reactants" : {
+          "CRON" : {}
+        },
+        "products" : {
+          "HONO" : {} ,
+          "HO2" : {} ,
+          "FORM" : {} ,
+          "OPEN": {}
+        },
+	      "scaling factor" : 9.0,
+        "orig params" : "9.0 * TUV_J(15, THETA)",
+        "base rate" : 7.17e-5,
+        "Fast-J id" : "HCHO_a",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R175",
+        "reactants" : {
+          "CAT1" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "FORM" : {} ,
+          "HO2" : { "yield": 0.500 } ,
+          "CRO" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.0E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 5.0E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R176",
+        "reactants" : {
+          "CAT1" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "CRO" : {} ,
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.7E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.7E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R177",
+        "reactants" : {
+          "ARPX" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "OH" : { "yield": 0.500 } ,
+          "BENZRO2" : { "yield": 0.200 } ,
+          "TO2" : { "yield": 0.150 } ,
+          "XLO2" : { "yield": 0.150 } ,
+          "RO2" : { "yield": 0.500 }
+        },
+        "orig params" : "CMAQ_1to4(8.0E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 8.0E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R178",
+        "reactants" : {
+          "ISOP" : {} ,
+          "OH" : {} 
+        },
+        "products" : {
+          "ISO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.7E-11, 0.0E+00, -390.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.7E-11,
+        "B" : 0.0E+00,
+        "C" : 390.0
+      },
+      {
+        "rxn id" : "R180",
+        "reactants" : {
+          "ISO2" : {} ,
+          "HO2" : {} 
+        },
+        "products" : {
+          "ISPX" : { "yield": 0.940 } ,
+          "FORM" : { "yield": 0.060 } ,
+          "ISPD" : { "yield": 0.060 } ,
+          "OH" : { "yield": 0.060 } ,
+          "HO2" : { "yield": 0.060 }
+        },
+        "orig params" : "CMAQ_1to4(2.12E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.12E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R182",
+        "reactants" : {
+          "ISO2" : {} 
+        },
+        "products" : {
+          "HPLD" : { "yield": 0.400 } ,
+          "ISPD" : { "yield": 0.100 } ,
+          "GLY" : { "yield": 0.100 } ,
+          "GLYD" : { "yield": 0.100 } ,
+          "CO" : {} ,
+          "OH" : { "yield": 1.700 } ,
+          "HO2" : { "yield": 0.350 }
+        },
+        "orig params" : "CMAQ_1to4(3.3E9, 0.0E+00, 8300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.3E9,
+        "B" : 0.0E+00,
+        "C" : -8300.0
+      },
+      {
+        "rxn id" : "R183",
+        "reactants" : {
+          "ISOP" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "FORM" : { "yield" : 0.800 } ,
+          "ISPD" : { "yield" : 0.500 } ,
+          "FACD" : { "yield" : 0.580 } ,
+          "CO" : { "yield" : 0.500 } ,
+          "OH" : { "yield" : 0.280 } ,
+          "HO2" : { "yield" : 0.500 } ,
+          "MEO2" : { "yield" : 0.400 } ,
+          "RO2" : { "yield" : 0.400 }
+        },
+        "orig params" : "CMAQ_1to4(1.03E-14, 0.0E+00, -1995.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.03E-14,
+        "B" : 0.0E+00,
+        "C" : 1995.0
+      },
+      {
+        "rxn id" : "R184",
+        "reactants" : {
+          "ISOP" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.250 } ,
+          "NTR2" : { "yield" : 0.750 } ,
+          "FORM" : { "yield" : 0.250 } ,
+          "ISPD" : { "yield" : 0.250 } ,
+          "OH" : { "yield" : 0.250 } ,
+          "XO2" : { "yield" : 0.250 } ,
+          "RO2" : { "yield" : 0.250 }
+        },
+        "orig params" : "CMAQ_1to4(2.95E-12, 0.0E+00, 450.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.95E-12,
+        "B" : 0.0E+00,
+        "C" : -450.0
+      },
+      {
+        "rxn id" : "R185",
+        "reactants" : {
+          "ISPD" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "MGLY" : { "yield" : 0.400 } ,
+          "GLYD" : { "yield" : 0.200 } ,
+          "FORM" : { "yield" : 0.100 } ,
+          "CO" : {} ,
+          "OH" : { "yield" : 0.100 } ,
+          "HO2" : { "yield" : 0.100 } ,
+          "OPO3" : { "yield" : 0.100 } ,
+          "C2O3" : { "yield" : 0.400 }
+        },
+        "orig params" : "CMAQ_1to4(7.0E-12, 0.0E+00, -430.0)",
+        "type" : "ARRHENIUS",
+        "A" : 7.0E-12,
+        "B" : 0.0E+00,
+        "C" : 430.0
+      },
+      {
+        "rxn id" : "R186",
+        "reactants" : {
+          "ISPD" : {} ,
+          "NO3" : {} 
+        },
+        "products" : {
+          "NTR2" : { "yield" : 0.900 } ,
+          "HNO3" : { "yield" : 0.100 } ,
+          "CO" : { "yield" : 0.100 } ,
+          "C2O3" : { "yield" : 0.100 }
+        },
+        "orig params" : "CMAQ_1to4(3.94E-14, 0.0E+00, -475.0)",
+        "type" : "ARRHENIUS",
+        "A" : 3.94E-14,
+        "B" : 0.0E+00,
+        "C" : 475.0
+      },
+      {
+        "rxn id" : "R187",
+        "reactants" : {
+          "ISPD" : {}
+        },
+        "products" : {
+          "ISPD" : { "yield" : 0.800 } ,
+          "MGLY" : { "yield" : 0.150 },
+          "GLYD" : { "yield" : 0.100 } ,
+          "FORM" : { "yield" : 0.100 },
+          "OH" : { "yield" : 0.200 }
+        },
+	      "scaling factor" : 0.0036,
+        "orig params" : "0.0036 * TUV_J(89, THETA)",
+        "base rate" : 5.50e-7,
+        "Fast-J id" : "ISPD",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R188",
+        "reactants" : {
+          "ISPX" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "EPOX" : { "yield" : 0.600 } ,
+          "MGLY" : { "yield" : 0.200 } ,
+          "FORM" : { "yield" : 0.200 } ,
+          "ROOH" : { "yield" : 0.200 } ,
+          "OH" : {} ,
+          "HO2" : { "yield" : 0.500 }
+        },
+        "orig params" : "CMAQ_1to4(2.8E-11, 0.0E+00, -370.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.8E-11,
+        "B" : 0.0E+00,
+        "C" : 370.0
+      },
+      {
+        "rxn id" : "R189",
+        "reactants" : {
+          "HPLD" : {}
+        },
+        "products" : {
+          "HPLD" : { "yield" : 0.600 } ,
+          "ISPD" : { "yield" : 0.300 },
+          "OH" : { "yield" : 1.650 } ,
+          "HO2" : { "yield" : 0.200 },
+          "CO" : { "yield" : 0.800 }
+        },
+	      "scaling factor" : 0.0036,
+        "orig params" : "0.0036 * TUV_J(89, THETA)",
+        "base rate" : 5.50e-7,
+        "Fast-J id" : "ISPD",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R190",
+        "reactants" : {
+          "HPLD" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "ISPD" : {} ,
+          "HCHO" : { "yield" : 0.200 } ,
+          "CO" : { "yield" : 0.500 } ,
+          "OH" : { "yield" : 1.100 }
+        },
+        "orig params" : "CMAQ_1to4(1.17E-11, 0.0E+00, -450.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.17E-11,
+        "B" : 0.0E+00,
+        "C" : 450.0
+      },
+      {
+        "rxn id" : "R191",
+        "reactants" : {
+          "EPOX" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "ISPD" : { "yield" : 0.200 } ,
+          "HO2" : { "yield" : 0.200 } ,
+          "EPX2" : { "yield" : 0.800 } ,
+          "RO2" : { "yield" : 0.800 }
+        },
+        "orig params" : "CMAQ_1to4(5.43E-11, 0.0E+00, 450.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.43E-11,
+        "B" : 0.0E+00,
+        "C" : -450.0
+      },
+      {
+        "rxn id" : "R193",
+        "reactants" : {
+          "EPX2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "ISPD" : { "yield" : 0.300 } ,
+          "MGLY" : { "yield" : 0.300 } ,
+          "GLY" : { "yield" : 0.100 } ,
+          "GLYD" : { "yield" : 0.200 } ,
+          "FORM" : { "yield" : 1.500 } ,
+          "ROOH" : {} ,
+          "CO" : { "yield" : 0.200 } ,
+          "OH" : { "yield" : 1.700 } ,
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.38E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.38E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R194",
+        "reactants" : {
+          "EPX2" : {} ,
+          "RO2" : {}
+        },
+        "products" : {
+          "MGLY" : { "yield" : 0.600 } ,
+          "GLY" : { "yield" : 0.500 } ,
+          "FORM" : { "yield" : 0.500 } ,
+          "GLYD" : { "yield" : 0.300 } ,
+          "ISPD" : { "yield" : 0.100 } ,
+          "CO" : { "yield" : 0.200 } ,
+          "OH" : { "yield" : 0.850 } ,
+          "HO2" : {} ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.38E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.38E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R195",
+        "reactants" : {
+          "INTR" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.500 } ,
+          "NTR2" : { "yield" : 0.400 } ,
+          "INTR" : { "yield" : 0.100 } ,
+          "ISPD" : { "yield" : 0.400 } ,
+          "EPOX" : { "yield" : 0.100 }
+        },
+        "orig params" : "CMAQ_1to4(1.34E-11, 0.0E+00, -410.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.34E-11,
+        "B" : 0.0E+00,
+        "C" : 410.0
+      },
+      {
+        "rxn id" : "R196",
+        "reactants" : {
+          "APIN" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "APO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.0E-11, 0.0E+00, -300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E-11,
+        "B" : 0.0E+00,
+        "C" : 300.0
+      },
+      {
+        "rxn id" : "R198",
+        "reactants" : {
+          "APO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "FORM" : { "yield" : 0.080 } ,
+          "ACET" : { "yield" : 0.060 } ,
+          "ISPD" : { "yield" : 0.350 } ,
+          "HO2" : { "yield" : 0.480 } ,
+          "OH" : { "yield" : 0.350 } ,
+          "ROOH" : { "yield" : 0.650 }
+        },
+        "orig params" : "CMAQ_1to4(2.6E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.6E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R198",
+        "reactants" : {
+          "APO2" : {} ,
+          "RO2" : {}
+        },
+        "products" : {
+          "ACET" : { "yield" : 0.060 } ,
+          "ISPD" : { "yield" : 0.870 } ,
+          "HO2" : { "yield" : 0.500 } ,
+          "ROOH" : { "yield" : 0.130 } ,
+          "RO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.6E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.6E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R200",
+        "reactants" : {
+          "APIN" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "FORM" : { "yield" : 0.270 } ,
+          "ISPD" : { "yield" : 0.220 } ,
+          "H2O2" : { "yield" : 0.220 } ,
+          "CO" : { "yield" : 0.170 } ,
+          "OH" : { "yield" : 0.770 } ,
+          "HO2" : { "yield" : 0.170 } ,
+          "XO2" : { "yield" : 0.330 } ,
+          "XO2N" : { "yield" : 0.070 } ,
+          "OPO3" : { "yield" : 0.270 } ,
+          "RO2" : { "yield" : 0.400 }
+        },
+        "orig params" : "CMAQ_1to4(8.22E-16, 0.0E+00, 640.0)",
+        "type" : "ARRHENIUS",
+        "A" : 8.22E-16,
+        "B" : 0.0E+00,
+        "C" : -640.0
+      },
+      {
+        "rxn id" : "R201",
+        "reactants" : {
+          "APIN" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.270 } ,
+          "NTR2" : { "yield" : 0.220 } ,
+          "ISPD" : { "yield" : 0.220 } ,
+          "OH" : { "yield" : 0.770 } ,
+          "HO2" : { "yield" : 0.170 }
+        },
+        "orig params" : "CMAQ_1to4(1.2E-12, 0.0E+00, -490.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.2E-12,
+        "B" : 0.0E+00,
+        "C" : 490.0
+      },
+      {
+        "rxn id" : "R202",
+        "reactants" : {
+          "TERP" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "TOP2" : {}
+        },
+        "orig params" : "CMAQ_1to4(4.07E-11, 0.0E+00, -350.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.07E-11,
+        "B" : 0.0E+00,
+        "C" : 350.0
+      },
+      {
+        "rxn id" : "R204",
+        "reactants" : {
+          "TPO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "FORM" : { "yield" : 0.040 } ,
+          "ACET" : { "yield" : 0.010 } ,
+          "ISPD" : { "yield" : 0.070 } ,
+          "HO2" : { "yield" : 0.070 } ,
+          "OH" : { "yield" : 0.070 } ,
+          "ROOH" : { "yield" : 0.940 }
+        },
+        "orig params" : "CMAQ_1to4(2.6E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.6E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R206",
+        "reactants" : {
+          "TERP" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "FORM" : { "yield" : 0.590 } ,
+          "ACET" : { "yield" : 0.060 } ,
+          "HACT" : { "yield" : 0.050 } ,
+          "ISPD" : { "yield" : 0.250 } ,
+          "H2O2" : { "yield" : 0.240 } ,
+          "OH" : { "yield" : 0.470 } ,
+          "HO2" : { "yield" : 0.160 } ,
+          "FACD" : { "yield" : 0.040 } ,
+          "XO2" : { "yield" : 0.060 } ,
+          "XO2N" : { "yield" : 0.070 } ,
+          "C2O3" : { "yield" : 0.250 } ,
+          "OPO3" : { "yield" : 0.040 } ,
+          "RO2" : { "yield" : 0.130 }
+        },
+        "orig params" : "CMAQ_1to4(4.46E-15, 0.0E+00, 960.0)",
+        "type" : "ARRHENIUS",
+        "A" : 4.46E-15,
+        "B" : 0.0E+00,
+        "C" : -960.0
+      },
+      {
+        "rxn id" : "R207",
+        "reactants" : {
+          "TERP" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.300 } ,
+          "NTR2" : { "yield" : 0.700 } ,
+          "ACET" : { "yield" :0.120 } ,
+          "ISPD" : { "yield" : 0.300 } ,
+          "OH" : { "yield" : 0.480 } ,
+          "HO2" : { "yield" : 0.300 }
+        },
+        "orig params" : "CMAQ_1to4(7.0E-12, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 7.0E-12,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R208",
+        "reactants" : {
+          "SQT" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "SQO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.0E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.0E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R210",
+        "reactants" : {
+          "SQO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "ISPD" : { "yield" : 0.100 } ,
+          "HO2" : { "yield" : 0.100 } ,
+          "OH" : { "yield" : 0.100 } ,
+          "ROOH" : { "yield" : 0.900 }
+        },
+        "orig params" : "CMAQ_1to4(2.6E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.6E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R211",
+        "reactants" : {
+          "SQO2" : {} ,
+          "RO2" : {}
+        },
+        "products" : {
+          "ISPD" : { "yield" : 0.100 } ,
+          "HO2" : { "yield" : 0.100 } ,
+          "RO2" : { "yield" : 0.900 }
+        },
+        "orig params" : "CMAQ_1to4(2.6E-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.6E-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "R212",
+        "reactants" : {
+          "SQT" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "FORM" : { "yield" : 0.080 } ,
+          "ISPD" : { "yield" : 0.870 } ,
+          "H2O2" : { "yield" : 0.170 } ,
+          "OH" : { "yield" : 0.080 } ,
+          "HO2" : { "yield" : 0.080 } ,
+          "XO2N" : { "yield" : 0.260 } ,
+          "RO2" : { "yield" : 0.260 }
+        },
+        "orig params" : "CMAQ_1to4(1.2E-14, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.2E-14,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R213",
+        "reactants" : {
+          "SQT" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO2" : { "yield" : 0.240 } ,
+          "NTR2" : { "yield" : 0.760 } ,
+          "ISPD" : { "yield" : 0.240 } ,
+          "OH" : { "yield" : 0.470 } 
+        },
+        "orig params" : "CMAQ_1to4(1.9E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.9E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R214",
+        "reactants" : {
+          "I2" : {}
+        },
+        "products" : {
+          "I" : { "yield" : 2.000 }
+        },
+	      "scaling factor" : 0.0036,
+        "orig params" : "0.0036 * TUV_J(89, THETA)",
+        "base rate" : 5.50e-7,
+        "Fast-J id" : "ISPD",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R215",
+        "reactants" : {
+          "HOI" : {}
+        },
+        "products" : {
+          "I" : {} ,
+          "OH" : {}
+        },
+	      "scaling factor" : 0.0036,
+        "orig params" : "0.0036 * TUV_J(89, THETA)",
+        "base rate" : 5.50e-7,
+        "Fast-J id" : "ISPD",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R216",
+        "reactants" : {
+          "I" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "IO" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.1E-11, 0.0E+00, 830.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.1E-11,
+        "B" : 0.0E+00,
+        "C" : -830.0
+      },
+      {
+        "rxn id" : "R217",
+        "reactants" : {
+          "IO" : {}
+        },
+        "products" : {
+          "I" : {} ,
+          "O" : {}
+        },
+	      "scaling factor" : 0.0036,
+        "orig params" : "0.0036 * TUV_J(89, THETA)",
+        "base rate" : 5.50e-7,
+        "Fast-J id" : "ISPD",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R218",
+        "reactants" : {
+          "IO" : { "qty": 2.000 }
+        },
+        "products" : {
+          "I" : { "yield" : 0.400 } ,
+          "OIO" : { "yield" : 0.400 } ,
+          "I2O2" : { "yield" : 0.600 } 
+        },
+        "orig params" : "CMAQ_1to4(5.4E-11, 0.0E+00, -180.0)",
+        "type" : "ARRHENIUS",
+        "A" : 5.4E-11,
+        "B" : 0.0E+00,
+        "C" : 180.0
+      },
+      {
+        "rxn id" : "R219",
+        "reactants" : {
+          "IO" : {} ,
+          "HO2" : {} 
+        },
+        "products" : {
+          "HOI" : {} 
+        },
+        "orig params" : "CMAQ_1to4(1.4E-11, 0.0E+00, -540.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.4E-11,
+        "B" : 0.0E+00,
+        "C" : 540.0
+      },
+      {
+        "rxn id" : "R220",
+        "reactants" : {
+          "IO" : {} ,
+          "NO" : {} 
+        },
+        "products" : {
+          "I" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(7.15E-12, 0.0E+00, -300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 7.15E-12,
+        "B" : 0.0E+00,
+        "C" : 300.0
+      },
+      {
+        "rxn id" : "R221",
+        "reactants" : {
+          "IO" : {} ,
+          "NO2" : {}
+        },
+        "products" : {
+          "INO3" : {}
+        },
+        "orig params" : "CMAQ_10(7.7E-31, -5.0, 0.0E+00, 1.6E-11, 0.0E+00, 0.0E+00, 0.4, 1.26)",
+        "type" : "TROE",
+        "k0_A" : 7.7E-31,
+        "k0_B" : -5.0,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 1.6E-11,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : -0.0E+00,
+        "Fc" : 0.4,
+        "N" : 1.26
+      },
+      {
+        "rxn id" : "R218",
+        "reactants" : {
+          "OIO" : {}
+        },
+        "products" : {
+          "I" : {}
+        },
+	      "scaling factor" : 0.0036,
+        "orig params" : "0.0036 * TUV_J(89, THETA)",
+        "base rate" : 5.50e-7,
+        "Fast-J id" : "ISPD",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R223",
+        "reactants" : {
+          "OIO" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "IXOY" : { "yield": 0.500}
+        },
+        "orig params" : "CMAQ_10(1.5E-27, -3.93, 0.0E+00, 5.5E-10, 0.0E+00, -46.0, 0.3, 1.41)",
+        "type" : "TROE",
+        "k0_A" : 1.5e-27,
+        "k0_B" : -3.93,
+        "k0_C" : -0.0E+00,
+        "kinf_A" : 5.5E-10,
+        "kinf_B" : 0.0E+00,
+        "kinf_C" : 46.0,
+        "Fc" : 0.3,
+        "N" : 1.41
+      },
+      {
+        "rxn id" : "R224",
+        "reactants" : {
+          "OIO" : {} ,
+          "IO" : {} 
+        },
+        "products" : {
+          "IXOY" : {} 
+        },
+        "orig params" : "CMAQ_1to4(1.0E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R225",
+        "reactants" : {
+          "OIO" : {} ,
+          "NO" : {} 
+        },
+        "products" : {
+          "IO" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.1E-12, 0.0E+00, -542.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.1E-12,
+        "B" : 0.0E+00,
+        "C" : 542.0
+      },
+      {
+        "rxn id" : "R226",
+        "reactants" : {
+          "I2O2" : {} 
+        },
+        "products" : {
+          "I" : {} ,
+          "OIO" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.0E+1, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.0E+1,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R227",
+        "reactants" : {
+          "I2O2" : {} 
+        },
+        "products" : {
+          "IXOY" : {} 
+        },
+        "orig params" : "CMAQ_1to4(3.0E-1, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.0E-1,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "R228",
+        "reactants" : {
+          "INO3" : {}
+        },
+        "products" : {
+          "I" : {} ,
+          "NO3" : {}
+        },
+	      "scaling factor" : 0.0036,
+        "orig params" : "0.0036 * TUV_J(89, THETA)",
+        "base rate" : 5.50e-7,
+        "Fast-J id" : "ISPD",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "R228",
+        "reactants" : {
+          "INO3" : {} ,
+          "H2O" : {}
+        },
+        "products" : {
+          "HOI" : {} ,
+          "HNO3" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.5E-22, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.5E-22,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL1",
+        "reactants" : {
+          "CL2" : {}
+        },
+        "products" : {
+          "CL" : { "yield" : 2.000 }
+        },
+        "orig params" : "TUV_J(58, THETA)",
+        "base rate" : 0.00e+1,
+        "notes" : "Fast-J does not currently calculate Cl2 photolysis",
+        "type" : "PHOTOLYSIS"
+      },
+      {
+        "rxn id" : "CL3",
+        "reactants" : {
+          "CL" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "CLO" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.3E-11, 0.0E+00, 200.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.3E-11,
+        "B" : 0.0E+00,
+        "C" : -200.0
+      },
+      {
+        "rxn id" : "CL4",
+        "reactants" : {
+          "CLO" : { "qty" : 2 }
+        },
+        "products" : {
+          "CL2" : { "yield" : 0.300 } ,
+          "CL" : { "yield" : 1.400 }
+        },
+        "orig params" : "CMAQ_1to4(1.63E-14, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.63E-14,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL5",
+        "reactants" : {
+          "CLO" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "CL" : {} ,
+          "NO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(6.4E-12, 0.0E+00, -290.0)",
+        "type" : "ARRHENIUS",
+        "A" : 6.4E-12,
+        "B" : 0.0E+00,
+        "C" : 290.0
+      },
+      {
+        "rxn id" : "CL6",
+        "reactants" : {
+          "CLO" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "HOCL" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.7E-12, 0.0E+00, -220.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.7E-12,
+        "B" : 0.0E+00,
+        "C" : 220.0
+      },
+      {
+        "rxn id" : "CL7",
+        "reactants" : {
+          "OH" : {} ,
+          "FMCL" : {}
+        },
+        "products" : {
+          "CL" : {} ,
+          "CO" : {}
+        },
+        "orig params" : "CMAQ_1to4(5.0E-13, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 5.0E-13,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL9",
+        "reactants" : {
+          "CL" : {} ,
+          "CH4" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "MEO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(6.6E-12, 0.0E+00, 1240.0)",
+        "type" : "ARRHENIUS",
+        "A" : 6.6E-12,
+        "B" : 0.0E+00,
+        "C" : -1240.0
+      },
+      {
+        "rxn id" : "CL10",
+        "reactants" : {
+          "CL" : {} ,
+          "PAR" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "XO2" : { "yield" : 0.870 } ,
+          "XO2N" : { "yield" : 0.130 } ,
+          "HO2" : { "yield" : 0.110 } ,
+          "ALD2" : { "yield" : 0.060 } ,
+          "PAR" : { "yield" : -0.110 } ,
+          "ROR" : { "yield" : 0.760 } ,
+          "ALDX" : { "yield" : 0.050 }
+        },
+        "orig params" : "CMAQ_1to4(5.0E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 5.0E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL11",
+        "reactants" : {
+          "CL" : {} ,
+          "ETHA" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "ALD2" : { "yield" : 0.991 } ,
+          "XO2" : { "yield" : 0.991 } ,
+          "XO2N" : { "yield" : 0.009 } ,
+          "HO2" : {}
+        },
+        "orig params" : "CMAQ_1to4(8.3E-11, 0.0E+00, 100.0)",
+        "type" : "ARRHENIUS",
+        "A" : 8.3E-11,
+        "B" : 0.0E+00,
+        "C" : -100.0
+      },
+      {
+        "rxn id" : "CL12",
+        "reactants" : {
+          "CL" : {} ,
+          "ETH" : {}
+        },
+        "products" : {
+          "FMCL" : {} ,
+          "XO2" : { "yield" : 2.000 } ,
+          "HO2" : { "yield" : 1.000 } ,
+          "FORM" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(1.07E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.07E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL13",
+        "reactants" : {
+          "CL" : {} ,
+          "OLE" : {}
+        },
+        "products" : {
+          "FMCL" : {} ,
+          "ALD2" : { "yield" : 0.330 } ,
+          "ALDX" : { "yield" : 0.670 } ,
+          "XO2" : { "yield" : 2.000 } ,
+          "HO2" : { "yield" : 1.000 } ,
+          "PAR" : { "yield" : -1.000 }
+        },
+        "orig params" : "CMAQ_1to4(2.5E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 2.5E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL14",
+        "reactants" : {
+          "CL" : {} ,
+          "IOLE" : {}
+        },
+        "products" : {
+          "HCL" : { "yield" : 0.300 } ,
+          "FMCL" : { "yield" : 0.700 } ,
+          "ALD2" : { "yield" : 0.450 } ,
+          "ALDX" : { "yield" : 0.550 } ,
+          "OLE" : { "yield" : 0.300 } ,
+          "PAR" : { "yield" : 0.300 } ,
+          "XO2" : { "yield" : 1.700 } ,
+          "HO2" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(3.5E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 3.5E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL15",
+        "reactants" : {
+          "CL" : {} ,
+          "ISOP" : {}
+        },
+        "products" : {
+          "HCL" : { "yield" : 0.15 } ,
+          "XO2" : { "yield" : 1.000 } ,
+          "HO2" : { "yield" : 1.000 } ,
+          "FMCL" : { "yield" : 0.850 } ,
+          "ISPD" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(4.3E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 4.3E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL16",
+        "reactants" : {
+          "CL" : {} ,
+          "FORM" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "HO2" : { "yield" : 1.000 },
+          "CO" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(8.2E-11, 0.0E+00, 34.0)",
+        "type" : "ARRHENIUS",
+        "A" : 8.2E-11,
+        "B" : 0.0E+00,
+        "C" : -34.0
+      },
+      {
+        "rxn id" : "CL17",
+        "reactants" : {
+          "CL" : {} ,
+          "ALD2" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "C2O3" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(7.9E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 7.9E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL18",
+        "reactants" : {
+          "CL" : {} ,
+          "ALDX" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "CXO3" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(1.3E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.3E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL19",
+        "reactants" : {
+          "CL" : {} ,
+          "MEOH" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "HO2" : { "yield" : 1.000 },
+          "FORM" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(5.5E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 5.5E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "CL20",
+        "reactants" : {
+          "CL" : {} ,
+          "ETOH" : {}
+        },
+        "products" : {
+          "HCL" : {} ,
+          "HO2" : { "yield" : 1.000 },
+          "ALD2" : { "yield" : 1.000 }
+        },
+        "orig params" : "CMAQ_1to4(8.2E-11, 0.0E+00, -45.0)",
+        "type" : "ARRHENIUS",
+        "A" : 8.2E-11,
+        "B" : 0.0E+00,
+        "C" : 45.0
+      },
+      {
+        "rxn id" : "CL21",
+        "reactants" : {
+          "HCL" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "CL" : {}
+        },
+        "orig params" : "CMAQ_1to4(6.58E-13, 1.16, -58.0)",
+        "type" : "ARRHENIUS",
+        "A" : 6.58E-13,
+        "B" : 1.16,
+        "C" : 58.0
+      },
+      {
+        "rxn id" : "SA01",
+        "reactants" : {
+          "TOLRO2" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO" : {} ,
+          "TOLNRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.70e-12, 0.0E+00, -360.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.70e-12,
+        "B" : 0.0E+00,
+        "C" : 360.0
+      },
+      {
+        "rxn id" : "SA02",
+        "reactants" : {
+          "TOLRO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "HO2" : {} ,
+          "TOLHRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.90e-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.90e-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "SA03",
+        "reactants" : {
+          "XYLRO2" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO" : {} ,
+          "XYLNRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.70e-12, 0.0E+00, -360.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.70e-12,
+        "B" : 0.0E+00,
+        "C" : 360.0
+      },
+      {
+        "rxn id" : "SA04",
+        "reactants" : {
+          "XYLRO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "HO2" : {} ,
+          "XYLHRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.90e-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.90e-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "SA05",
+        "reactants" : {
+          "BENZENE" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "OH" : {} ,
+          "BENZRO2" : { "yield" : 0.764 }
+        },
+        "orig params" : "CMAQ_1to4(2.47e-12, 0.0E+00, 206.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.47e-12,
+        "B" : 0.0E+00,
+        "C" : -206.0
+      },
+      {
+        "rxn id" : "SA06",
+        "reactants" : {
+          "BENZRO2" : {} ,
+          "NO" : {}
+        },
+        "products" : {
+          "NO" : {} ,
+          "BNZNRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(2.70e-12, 0.0E+00, -360.0)",
+        "type" : "ARRHENIUS",
+        "A" : 2.70e-12,
+        "B" : 0.0E+00,
+        "C" : 360.0
+      },
+      {
+        "rxn id" : "SA07",
+        "reactants" : {
+          "BENZRO2" : {} ,
+          "HO2" : {}
+        },
+        "products" : {
+          "HO2" : {} ,
+          "BNZHRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.90e-13, 0.0E+00, -1300.0)",
+        "type" : "ARRHENIUS",
+        "A" : 1.90e-13,
+        "B" : 0.0E+00,
+        "C" : 1300.0
+      },
+      {
+        "rxn id" : "SA08",
+        "reactants" : {
+          "SESQ" : {} ,
+          "O3" : {}
+        },
+        "products" : {
+          "O3" : {} ,
+          "SESQRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.16E-14, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.16E-14,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "SA09",
+        "reactants" : {
+          "SESQ" : {} ,
+          "OH" : {}
+        },
+        "products" : {
+          "OH" : {} ,
+          "SESQRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.97E-10, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.97E-10,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "SA10",
+        "reactants" : {
+          "SESQ" : {} ,
+          "NO3" : {}
+        },
+        "products" : {
+          "NO3" : {} ,
+          "SESQRXN" : {}
+        },
+        "orig params" : "CMAQ_1to4(1.90E-11, 0.0E+00, 0.0E+00)",
+        "type" : "ARRHENIUS",
+        "A" : 1.90E-11,
+        "B" : 0.0E+00,
+        "C" : -0.0E+00
+      },
+      {
+        "rxn id" : "jo2",
+        "reactants" : {
+          "O2" : {}
+        },
+        "products" : {
+          "O" : { "yield" : 2 }
+        },
+        "orig params" : "TUV_J(1, THETA)",
+        "base rate" : 0.00e+1,
+        "notes" : "Fast-J does not currently calculate O2 photolysis",
+        "type" : "PHOTOLYSIS"
+      }
+    ]
+}
+]}
