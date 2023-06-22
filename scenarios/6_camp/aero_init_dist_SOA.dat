@@ -1,0 +1,6 @@
+mode_name secondary_organic_aero    # name of mode source
+mass_frac aero_init_comp_SOA.dat  # species mass fraction
+diam_type geometric                 # type of diameter specified
+mode_type mono                      # type of mode/distribution
+num_conc 1e9                        # particle number concentration (#/m^3)
+diam 4.0e-8                         # particle diameter (m)

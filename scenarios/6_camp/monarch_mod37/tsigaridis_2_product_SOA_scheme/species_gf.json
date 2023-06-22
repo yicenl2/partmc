@@ -1,0 +1,113 @@
+{
+  "description" : [
+    "These species needed for the 2 product SOA scheme",
+    "(see mechanism.json for details)"
+  ],
+  "camp-data" : [
+    {
+      "name" : "O3",
+      "type" : "CHEM_SPEC",
+      "molecular weight [kg mol-1]" : 0.048,
+      "description" : "gas-phase product from isoprene oxidation by O3 for condensing on wet AS seeds",
+      "notes" : [
+        "using diffusion coefficient from dry deposition",
+        "see notes on inorganics_wet species"
+      ]
+    },
+    {
+      "name" : "APIN",
+      "type" : "CHEM_SPEC",
+      "absolute integration tolerance" : 1.0E-03,
+      "molecular weight [kg mol-1]" : 0.1362,
+      "description" : "gas-phase product from isoprene oxidation by O3 for condensing on wet AS seeds",
+      "notes" : [
+        "using diffusion coefficient from dry deposition",
+        "see notes on inorganics_wet species"
+      ]
+    },
+    {
+      "name" : "POA",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "absolute integration tolerance" : 1.0E-05,
+      "density [kg m-3]" : 1800.0,
+      "molecular weight [kg mol-1]" : 0.41475,
+      "description" : "lumped hydrophobic particulate matter",
+      "num_ions" : 0,
+      "kappa" : 0.0,
+      "note" : "Using C30H54 for molecular weight. TODO find best surrogate"
+    },
+    {
+      "name" : "SOA",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "absolute integration tolerance" : 1.0E-05,
+      "density [kg m-3]" : 1800.0,
+      "molecular weight [kg mol-1]" : 0.08806,
+      "description" : "First isoprene SOA species in 2-product scheme",
+      "num_ions" : 0,
+      "kappa" : 0.1,
+      "note" : [
+        "Using ketopropanoic acid for molecular weight. TODO find best surrogate",
+        "TODO update SIMPOL parameters based on MW of new surrogate"
+      ]
+    },
+    {
+      "name" : "AS",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "absolute integration tolerance" : 1.0E-05,
+      "density [kg m-3]" : 1770.0,
+      "molecular weight [kg mol-1]" : 0.13214,
+      "description" : "Second isoprene SOA species in 2-product scheme",
+      "num_ions" : 2,
+      "kappa" : 0.65,
+      "note" : [
+        "Properties for inorganic ammonium sulfate",
+				"kappa value from aero_data.dat in urban_plume scenario"
+      ]
+    },
+    {
+      "name" : "H2O_aq",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "tracer type" : "CONSTANT",
+      "absolute integration tolerance" : 1.0E-05,
+      "density [kg m-3]" : 1000.0,
+      "molecular weight [kg mol-1]" : 0.01801528,
+      "decscription" : "aerosol-phase water",
+      "PartMC name" : "H2O",
+      "num_ions" : 0,
+      "kappa" : 0
+    },
+    {
+      "name" : "COV",
+      "type" : "CHEM_SPEC",
+      "absolute integration tolerance" : 1.0E-03,
+      "molecular weight [kg mol-1]" : 0.200,
+      "description" : "Condensed organic vapor that grew particles"
+    },
+    {
+      "name" : "COV_aero",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "absolute integration tolerance" : 1.0E-03,
+      "molecular weight [kg mol-1]" : 0.200,
+      "density [kg m-3]" : 1200,
+      "description" : "Condensed organic vapor in aerosol phase",
+      "num_ions" : 0,
+      "kappa" : 0.1
+    },
+    {
+      "name" : "COV-PROD_aero",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "absolute integration tolerance" : 1.0E-03,
+      "molecular weight [kg mol-1]" : 0.200,
+      "density [kg m-3]" : 1200,
+      "description" : "Products from COV",
+      "num_ions" : 0,
+      "kappa" : 0.1
+    }
+  ]
+}
