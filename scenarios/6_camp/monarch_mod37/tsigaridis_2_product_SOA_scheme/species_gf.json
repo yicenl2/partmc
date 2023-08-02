@@ -85,6 +85,14 @@
       "type" : "CHEM_SPEC",
       "absolute integration tolerance" : 1.0E-03,
       "molecular weight [kg mol-1]" : 0.200,
+      "diffusion coeff [m2 s-1]" :1.530E-05,
+      "description" : "Condensed organic vapor that grew particles"
+    },
+    {
+      "name" : "COV-PROD2",
+      "type" : "CHEM_SPEC",
+      "absolute integration tolerance" : 1.0E-03,
+      "molecular weight [kg mol-1]" : 0.200,
       "description" : "Condensed organic vapor that grew particles"
     },
     {
@@ -99,7 +107,18 @@
       "kappa" : 0.1
     },
     {
-      "name" : "COV-PROD_aero",
+      "name" : "COV-PROD1_aero",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "absolute integration tolerance" : 1.0E-03,
+      "molecular weight [kg mol-1]" : 0.200,
+      "density [kg m-3]" : 1200,
+      "description" : "Products from COV",
+      "num_ions" : 0,
+      "kappa" : 0.1
+    },
+    {
+      "name" : "COV-PROD2_aero",
       "type" : "CHEM_SPEC",
       "phase" : "AEROSOL",
       "absolute integration tolerance" : 1.0E-03,

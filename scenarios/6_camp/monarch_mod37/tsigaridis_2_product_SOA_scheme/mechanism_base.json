@@ -18,21 +18,21 @@
           "gas-phase species" : "COV",
           "aerosol phase" : "organic_matter",
           "aerosol-phase species" : "COV_aero",
-          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+          "B" : [ 3.81e3, -2.13e1, 0.0, 0.0 ]
         },
         {
           "type" : "SIMPOL_PHASE_TRANSFER",
           "gas-phase species" : "COV",
           "aerosol phase" : "inorganics_dry",
           "aerosol-phase species" : "COV_aero",
-          "B" : [ 3.81e3, -2.09e1, 0.0, 0.0 ]
+          "B" : [ 3.81e3, -2.13e1, 0.0, 0.0 ]
         },
         {
           "type" : "SIMPOL_PHASE_TRANSFER",
           "gas-phase species" : "COV",
           "aerosol phase" : "inorganics_wet",
           "aerosol-phase species" : "COV_aero",
-          "B" : [ 0.0, 0.0, 0.0, 0.0 ]
+          "B" : [ 3.81e3, -2.13e1, 0.0, 0.0 ]
         },
         {
           "type" : "CONDENSED_PHASE_ARRHENIUS",
@@ -42,11 +42,11 @@
             "COV_aero" : {}
           },
           "products" : {
-            "COV-PROD_aero" : {}
+            "COV-PROD1_aero" : {}
           },
           "A" : 0.0E+00,
           "B" : 0.0E+00,
-          "C" : -1912.0
+          "C" : 0.0E+00
 				},
         {
           "type" : "CONDENSED_PHASE_ARRHENIUS",
@@ -56,11 +56,11 @@
             "COV_aero" : {}
           },
           "products" : {
-            "COV-PROD_aero" : {}
+            "COV-PROD1_aero" : {}
           },
           "A" : 0.0E+00,
           "B" : 0.0E+00,
-          "C" : -1912.0
+          "C" : 0.0E+00
 				},
         {
           "type" : "CONDENSED_PHASE_ARRHENIUS",
@@ -70,11 +70,11 @@
             "COV_aero" : {}
           },
           "products" : {
-            "COV-PROD_aero" : {}
+            "COV-PROD1_aero" : {}
           },
           "A" : 0.0E+00,
           "B" : 0.0E+00,
-          "C" : -1912.0
+          "C" : 0.0E+00
 				}
       ]
     }
