@@ -1,0 +1,38 @@
+{
+  "notes" : [
+    "2-product SOA scheme from MONARCH model. Based on Tsigaridis and Kanakidou (2007).",
+    "Details in Spada et al. (2013) in prep for Geosci. Model Dev.",
+    "Gas-phase rate constants taken from CB05 reactions with same reactants",
+    "TODO the CB05 reactions should be updated/removed to avoid competition with SOA scheme",
+    "Clausius clapyron parameters (C* and -dH/R) converted to SIMPOL.1 paramaters"
+  ],
+  "camp-data" : [
+    {
+      "name" : "MONARCH mod37",
+      "type" : "MECHANISM",
+      "reactions" : [
+        {
+          "type" : "SIMPOL_PHASE_TRANSFER",
+          "gas-phase species" : "COV",
+          "aerosol phase" : "organic_matter",
+          "aerosol-phase species" : "COV_aero",
+          "B" : [ 3.81e3, -2.13e1, 0.0, 0.0 ]
+        },
+        {
+					"type" : "CONDENSED_PHASE_ARRHENIUS",
+					"aerosol phase" : "organic_matter",
+          "units" : "mol m-3",
+          "reactants" : {
+            "COV_aero" : {}
+          },
+          "products" : {
+            "COV-PROD1_aero" : {}
+          },
+          "A" : 0.0E+00,
+          "B" : 0.0E+00,
+          "C" : 0.0E+00
+        }
+      ]
+    }
+  ]
+}

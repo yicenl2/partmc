@@ -1,0 +1,8 @@
+{
+	"camp-files" : [
+    "aerosol_representation.json",
+    "monarch_mod37/aerosol_phases_COV.json",
+    "monarch_mod37/tsigaridis_2_product_SOA_scheme/mechanism_base.json",
+    "monarch_mod37/tsigaridis_2_product_SOA_scheme/species_base.json"
+  ]
+}
