@@ -15,7 +15,7 @@ camp_config config_COV.json
 gas_init gas_init_COV.dat           # initial gas concentrations
 
 do_fractal no                   # whether to do fractal treatment
-aerosol_init aero_init_dist_COV.dat # aerosol initial condition file
+aerosol_init aero_init_dist.dat # aerosol initial condition file
 
 temp_profile temp.dat           # temperature profile file
 pressure_profile pres.dat       # pressure profile file
@@ -41,6 +41,7 @@ do_nucleation no                # whether to do nucleation (yes/no)
 rand_init 1                     # random initialization (0 to use time)
 allow_doubling no             # whether to allow doubling (yes/no)
 allow_halving no               # whether to allow halving (yes/no)
-do_select_weighting no          # whether to select weighting explicitly (yes/no)
+do_select_weighting yes          # whether to select weighting explicitly (yes/no)
+weight_type flat								# specify the weighting function
 record_removals yes             # whether to record particle removals (yes/no)
 do_parallel no                  # whether to run in parallel (yes/no)

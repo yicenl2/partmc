@@ -1,2 +1,3 @@
 #                      mass fractions
-organic_matter.POA  1.0
+organic_matter.POA			  	0.5
+organic_matter.COV_aero			0.5

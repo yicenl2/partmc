@@ -68,6 +68,18 @@
       "type" : "CHEM_SPEC",
       "is gas-phase water" : true,
       "description" : "water vapor"
+    },
+		{
+      "name" : "SOA",
+      "type" : "CHEM_SPEC",
+      "phase" : "AEROSOL",
+      "absolute integration tolerance" : 1.0E-05,
+      "density [kg m-3]" : 1800.0,
+      "molecular weight [kg mol-1]" : 0.41475,
+      "description" : "lumped hydrophobic particulate matter",
+      "num_ions" : 0,
+      "kappa" : 0.0,
+      "note" : "Using C30H54 for molecular weight. TODO find best surrogate"
     }
   ]
 }

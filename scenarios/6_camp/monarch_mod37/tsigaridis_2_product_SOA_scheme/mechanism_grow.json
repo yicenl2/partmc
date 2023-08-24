@@ -14,13 +14,13 @@
         {
           "type" : "SIMPOL_PHASE_TRANSFER",
           "gas-phase species" : "COV",
-          "aerosol phase" : "organic_matter_1",
+          "aerosol phase" : "organic_matter",
           "aerosol-phase species" : "COV_aero",
           "B" : [ 3.81e3, -2.19e1, 0.0, 0.0 ]
         },
         {
 					"type" : "CONDENSED_PHASE_ARRHENIUS",
-					"aerosol phase" : "organic_matter_1",
+					"aerosol phase" : "organic_matter",
           "units" : "mol m-3",
           "reactants" : {
             "COV_aero" : {}
@@ -28,9 +28,9 @@
           "products" : {
             "COV-PROD1_aero" : {}
           },
-          "A" : 0.0E+00,
+          "A" : 2.54e-6,
           "B" : 0.0E+00,
-          "C" : 0.0E+00
+          "C" : 407.6
         }
       ]
     }
