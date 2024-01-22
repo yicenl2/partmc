@@ -20,15 +20,18 @@ program process
   type(aero_state_t) :: aero_state
   type(env_state_t) :: env_state
   integer :: ncid, index, repeat, i_index, i_repeat, n_index, n_repeat
-  real(kind=dp) :: time, del_t, tot_num_conc, tot_mass_conc
-  real(kind=dp) :: d_alpha, d_gamma, chi
+  real(kind=dp) :: time, del_t, tot_num_conc, tot_mass_conc, &
+                   bulk_nanopart_masses
+  real(kind=dp) :: d_alpha, d_gamma, chi, chi_nanopart
   character(len=PMC_UUID_LEN) :: uuid
   real(kind=dp), allocatable :: times(:), dry_diameters(:), num_concs(:), &
        dry_masses(:), masses(:), bc_masses(:), bc_fracs(:), &
        crit_rhs(:), scs(:), num_dist(:), &
-       diam_bc_dist(:,:), diam_sc_dist(:,:)
+       diam_bc_dist(:,:), diam_sc_dist(:,:), &
+       nanopart_masses(:)
   type(stats_1d_t) :: stats_num_dist, stats_d_alpha, stats_tot_num_conc, &
-       stats_tot_mass_conc, stats_d_gamma, stats_chi
+       stats_tot_mass_conc, stats_d_gamma, stats_chi, stats_chi_nanopart, &
+       stats_bulk_nanopart_masses
   type(stats_2d_t) :: stats_diam_bc_dist, stats_diam_sc_dist
   character(len=AERO_NAME_LEN), allocatable :: mixing_state_groups(:,:)
 
@@ -83,6 +86,12 @@ program process
              bc_grid, bc_fracs, num_concs)
         call stats_2d_add(stats_diam_bc_dist, diam_bc_dist)
 
+        nanopart_masses = aero_state_masses(aero_state, aero_data, &
+             include=(/"nano_part"/))
+        bulk_nanopart_masses = sum(nanopart_masses * num_concs)
+
+        call stats_1d_add_entry(stats_bulk_nanopart_masses, bulk_nanopart_masses,i_index)
+
         crit_rhs = aero_state_crit_rel_humids(aero_state, aero_data, &
              env_state)
         scs = crit_rhs - 1d0
@@ -93,9 +102,13 @@ program process
         call aero_state_mixing_state_metrics(aero_state, aero_data, &
              d_alpha, d_gamma, chi, groups=mixing_state_groups)
 
+        call aero_state_mixing_state_metrics(aero_state, aero_data, &
+             d_alpha, d_gamma, chi_nanopart, group=(/"nano_part"/))
+
         call stats_1d_add_entry(stats_d_alpha, d_alpha, i_index)
         call stats_1d_add_entry(stats_d_gamma, d_gamma, i_index)
         call stats_1d_add_entry(stats_chi, chi, i_index)
+        call stats_1d_add_entry(stats_chi_nanopart, chi_nanopart, i_index)
 
      end do
 
@@ -137,6 +150,10 @@ program process
        "d_gamma", dim_name="time", unit="1")
   call stats_1d_output_netcdf(stats_chi, ncid, "chi", &
        dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_chi_nanopart, ncid, "chi_nanopart", &
+       dim_name="time", unit="1")
+  call stats_1d_output_netcdf(stats_bulk_nanopart_masses, ncid, "bulk_nanopart_masses", &
+       dim_name="time", unit="kg m^{-3}")
   call pmc_nc_close(ncid)
 
   call pmc_mpi_finalize()
