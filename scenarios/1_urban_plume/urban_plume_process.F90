@@ -103,7 +103,7 @@ program process
              d_alpha, d_gamma, chi, groups=mixing_state_groups)
 
         call aero_state_mixing_state_metrics(aero_state, aero_data, &
-             d_alpha, d_gamma, chi_nanopart, group=(/"nano_part"/))
+             d_alpha, d_gamma, chi_nanopart, exclude=(/"H2O"/))
 
         call stats_1d_add_entry(stats_d_alpha, d_alpha, i_index)
         call stats_1d_add_entry(stats_d_gamma, d_gamma, i_index)
